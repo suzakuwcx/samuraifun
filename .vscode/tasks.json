@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"id": "default",
+			"type": "gradle",
+			"script": "run",
+			"description": "Assembles a jar archive containing the main classes.",
+			"project": "HotReload",
+			"buildFile": "${workspaceFolder}/build.gradle",
+			"rootProject": "HotReload",
+			"projectFolder": "${workspaceFolder}",
+			"workspaceFolder": "${workspaceFolder}",
+			"args": "",
+			"javaDebug": false,
+			"problemMatcher": [
+				"$gradle"
+			],
+			"group": "build",
+			"label": "build"
+		}
+	]
+}

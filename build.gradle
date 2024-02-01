@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.suzakuwcx'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+    }
+    maven {
+        name = 'papermc-repo'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+    flatDir {
+       dirs("server")
+    }
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    runtimeOnly ':paper-1.20.2-280'
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+// copy generated jar into server plugin directory
+tasks.register("run") {
+    group 'build'
+    dependsOn("jar")
+    doLast { 
+        copy {
+            from jar
+            into 'server/plugins'
+        }
+    }
+}

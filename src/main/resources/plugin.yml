@@ -1,0 +1,7 @@
+name: csol
+version: 1.0.0
+main: csol
+description: Counter-Strike of Legends
+author: suzakuwcx.com
+website: https://www.spigotmc.org/
+api-version: '1.20'
