@@ -12,6 +12,7 @@ public class ItemDatabase {
     private static Set<ItemStack> set = new HashSet<>();
 
     static {
+        set.add(new Rifle());
     }
 
     public static Set<ItemStack> getSet() {
