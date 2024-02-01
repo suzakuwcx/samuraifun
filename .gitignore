@@ -6,4 +6,7 @@ build
 
 server/*
 !server/*.jar
+
+# For server restart
+!server/start.sh
 !server/plugins/.gitkeep
