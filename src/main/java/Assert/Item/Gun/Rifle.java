@@ -1,7 +1,5 @@
 package Assert.Item.Gun;
 
-import java.util.Set;
-
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -28,4 +26,15 @@ public class Rifle extends ItemStack {
         meta.setUnbreakable(true);
         this.setItemMeta(meta);
     }
+
+
+    public static boolean _instanceof(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if (item.getType() != material)
+            return false;
+        else if (!(display_name.equals(meta.displayName())))
+            return false;
+        return true;
+    }
+    
 }
