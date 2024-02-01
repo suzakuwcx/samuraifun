@@ -2,17 +2,22 @@ package Assert.Command;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import Assert.Item.ItemDatabase;
 import FunctionBus.ItemBus;
+import net.kyori.adventure.text.Component;
 
 public class CsolCommand implements CommandExecutor, TabCompleter {
 
@@ -50,6 +55,14 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
     }
 
 
+    private boolean onItemDBCommand(Player player, Command command, String label, String[] args) {
+        Inventory inventory = Bukkit.createInventory(null, 54, Component.text("物品"));
+        inventory.addItem(ItemDatabase.getSet().toArray(new ItemStack[0]));
+        player.openInventory(inventory);
+        return true;
+    }
+
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
@@ -57,6 +70,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
             switch (args[0]) {
                 case "itemnbt":
                     return onItemnbtCommand(player, command, label, args);
+                case "itemdb":
+                    return onItemDBCommand(player, command, label, args);
                 default:
                     return false;
             }
@@ -79,7 +94,7 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1)
-            return Arrays.asList("itemnbt");
+            return Arrays.asList("itemnbt", "itemdb");
 
         switch (args[0]) {
             case "itemnbt":
