@@ -5,3 +5,9 @@ description: Counter-Strike of Legends
 author: suzakuwcx.com
 website: https://www.spigotmc.org/
 api-version: '1.20'
+
+commands:
+  csol:
+    description: Your description
+    usage: /csol <subcommand>
+    permission: csol.csol
