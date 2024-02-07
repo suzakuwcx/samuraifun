@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'io.papermc.paperweight.userdev' version "1.5.5"
 }
 
 group = 'com.suzakuwcx'
 version = '1.0'
+
 
 repositories {
     mavenCentral()
@@ -21,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.20.2-R0.1-SNAPSHOT")
     runtimeOnly ':paper-1.20.2-280'
 }
 
@@ -44,10 +46,10 @@ tasks.withType(JavaCompile).configureEach {
 // copy generated jar into server plugin directory
 tasks.register("run") {
     group 'build'
-    dependsOn("jar")
+    dependsOn("reobfJar")
     doLast { 
         copy {
-            from jar
+            from reobfJar
             into 'server/plugins'
         }
     }
