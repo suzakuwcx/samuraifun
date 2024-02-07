@@ -41,6 +41,7 @@ public class RifleTask implements Runnable {
     @Override
     public void run() {
         shoot_core();
+        PlayerPerspectiveRecoilTask.do_recoil(player, 5f, 6, 2);
         this.task_id = Bukkit.getScheduler().runTaskLater(ServerBus.getPlugin(), this, 2).getTaskId();
     }
     
