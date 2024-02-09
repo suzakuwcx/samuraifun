@@ -26,13 +26,31 @@ public class PlayerPerspectiveRecoilTask implements Runnable {
     private Player player;
     private int task_id = 0;
 
-    private boolean is_mode_recover = false; /* Is current mode recover or recoil */
-    private float max_recoil = 5f; /* maximun recoil distance */
-    private float recoil_on_recover_begin; /* The recoil on recover mode begin */
-    private float current_recoil = 0f; /* The value of accumulated recoil */
-    private int tick_count = 6; /* ticks number that will be taken to finish */
-    private int current_tick = 0; /* ticks that already process the recoil */
-    /* minimum number of ticks tolerated without shooting, if exceed this value, treat player stop shooting */
+    private float[] vertical_recoil_table = {5f / 6, 5f / 6, 5f / 6, 5f / 6, 5f / 6, 5f / 6};
+    private float[] vertical_burst_recoil_table = {0f, 0f, 0f, 0f, 0.3f, 0.3f, 0f, 0f, -0.3f, -0.3f};
+    
+    private float[] level_recoil_table = {0.2f, -0.2f, -0.2f, 0.2f, 0.3f, 0.3f, -0.3f, -0.3f, -0.3f, -0.3f, 0.3f, 0.3f};
+    private float[] level_burst_recoil_table = {0f, 0f, 0f, 0f, 1f, 1f, 0f, 0f, -1f, -1f};
+
+    private boolean is_mode_recover = false;
+
+    private int vertical_max_recoil_tick = vertical_recoil_table.length;
+    private int vertical_max_recoil_burst_tick = vertical_burst_recoil_table.length;
+    private int vertical_recoil_tick = 0;
+    private int vertical_recoil_burst_tick = 0;
+    private float vertical_current_recoil = 0;
+    private float recover_begin_vertical_recoil = 0;
+    
+    private int level_max_recoil_tick = level_recoil_table.length;
+    private int level_max_recoil_burst_tick = level_burst_recoil_table.length;
+    private int level_recoil_tick = 0;
+    private int level_recoil_burst_tick = 0;
+    private float level_current_recoil = 0;
+    private float recover_begin_level_recoil = 0;
+
+    private int recover_max_tick = 6;
+    private int recover_tick = 0;
+
     private int shoot_period = 2;
     private int current_shoot_period; /* tick that player not shooting  */
 
@@ -40,117 +58,167 @@ public class PlayerPerspectiveRecoilTask implements Runnable {
         task_mapper = new HashMap<>();
     }
 
-    public PlayerPerspectiveRecoilTask(Player player, float max_recoil, int tick_count, int shoot_period) {
+    public PlayerPerspectiveRecoilTask(Player player) {
         this.player = player;
-        this.max_recoil = max_recoil;
-        this.tick_count = tick_count;
-        this.shoot_period = shoot_period;
-        this.current_shoot_period = shoot_period;
     }
 
-    private void recoil_core()
+    private float get_vertical_recoil(int index, int burst_index)
     {
-        if (current_recoil >= max_recoil)
-            return;
-
-        ((CraftPlayer) player).getHandle().connection.send(new ClientboundPlayerPositionPacket(0, 0, 0, 0, -max_recoil / tick_count, RELATIVE_FLAGS, 0));
-        current_recoil += max_recoil / tick_count;
+        if (index == vertical_max_recoil_tick)
+            return get_vertical_recoil_burst(burst_index);
+        return vertical_recoil_table[index];
     }
 
-    private void recover_core()
+    private float get_level_recoil(int index, int burst_index)
     {
-        ((CraftPlayer) player).getHandle().connection.send(new ClientboundPlayerPositionPacket(0, 0, 0, 0, recoil_on_recover_begin / tick_count, RELATIVE_FLAGS, 0));
-        current_recoil -= recoil_on_recover_begin / tick_count;
+        if (index == level_max_recoil_tick)
+            return get_level_recoil_burst(burst_index);
+        return level_recoil_table[index];
     }
 
-    public static void do_recoil(Player player, float max_recoil, int tick_count, int shoot_period)
+    private float get_vertical_recoil_burst(int index)
+    {
+        return vertical_burst_recoil_table[index];
+    }
+
+    private float get_level_recoil_burst(int index)
+    {
+        return level_burst_recoil_table[index];
+    }
+
+    private void recoil_core(float level, float vertical)
+    {
+        ((CraftPlayer) player).getHandle().connection.send(new ClientboundPlayerPositionPacket(0, 0, 0, -level, -vertical, RELATIVE_FLAGS, 0));
+    }
+
+    private void recover_core(float level, float vertical)
+    {
+        ((CraftPlayer) player).getHandle().connection.send(new ClientboundPlayerPositionPacket(0, 0, 0, level, vertical, RELATIVE_FLAGS, 0));
+    }
+
+    public static void do_recoil(Player player)
     {
         PlayerPerspectiveRecoilTask task;
         task = task_mapper.get(player);
         if (task != null) {
+            task.is_mode_recover = false;
             task.current_shoot_period = task.shoot_period;
-            if (task.is_mode_recover == true) {
-                /* If is on recovering status, stop recovering and continue add recoil */ 
-                task.is_mode_recover = false;
-                task.current_tick = 0;
-            }
             return;
         }
-        task = new PlayerPerspectiveRecoilTask(player, max_recoil, tick_count, shoot_period);
+        task = new PlayerPerspectiveRecoilTask(player);
         task_mapper.put(player, task);
         task.task_id = Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task).getTaskId();
     }
 
-    private boolean is_shooting() {
+    private boolean is_shooting() 
+    {
         if (is_mode_recover == true)
             return false;
-        if (current_shoot_period == 0)
+        if (current_shoot_period < 0)
             return false;
         return true;
     }
 
-    private void on_shooting() {
-        if (current_tick != tick_count) {
-            recoil_core();
-            ++current_tick;
+    private void on_shooting()
+    {
+        if (vertical_recoil_tick < vertical_max_recoil_tick)
+            ++vertical_recoil_tick;
+        else {
+            ++vertical_recoil_burst_tick;
+            if (vertical_recoil_burst_tick == vertical_max_recoil_burst_tick)
+                vertical_recoil_burst_tick = 0;
         }
 
-        --current_shoot_period;
+        if (level_recoil_tick < level_max_recoil_tick)
+            ++level_recoil_tick;
+        else {
+            ++level_recoil_burst_tick;
+            if (level_recoil_burst_tick == level_max_recoil_burst_tick)
+                level_recoil_burst_tick = 0;
+        }
+
+        float vertical = get_vertical_recoil(vertical_recoil_tick, vertical_recoil_burst_tick);
+        float level = get_level_recoil(level_recoil_tick, level_recoil_burst_tick);
+        vertical_current_recoil += vertical;
+        level_current_recoil += level;
+        
+        recoil_core(level, vertical);
+
+        current_shoot_period -= 1;
     }
 
-    private boolean is_recovering() {
-        if (is_mode_recover == false)
-            return false;
-        if (current_tick == tick_count)
-            return false;
-        return true;
-    }
-
-    private void on_recovering() {
-        recover_core();
-        ++current_tick;
-    }
-
-    private boolean is_begin_stoping_shooting() {
+    private boolean is_begin_stoping_shooting()
+    {
         if (is_mode_recover == true)
             return false;
-        if (current_shoot_period != 0)
+        if (current_shoot_period >= 0)
             return false;
         return true;
     }
 
-    private void on_begin_stop_shooting() {
+    private void on_begin_stop_shooting()
+    {
         is_mode_recover = true;
-        current_tick = 0;
-        recoil_on_recover_begin = current_recoil;
+        recover_tick = recover_max_tick;
+        recover_begin_vertical_recoil = vertical_current_recoil;
+        recover_begin_level_recoil = level_current_recoil;
+        vertical_recoil_burst_tick = 0;
+        level_recoil_burst_tick = 0;
     }
 
-    private boolean is_finishing_recover() {
+    private boolean is_recovering()
+    {
         if (is_mode_recover == false)
             return false;
-        if (current_tick != tick_count)
-            return false;
+
         return true;
     }
 
-    private void on_finishing_recover() {
-        task_mapper.remove(player);
+    private void on_recovering()
+    {
+        if (level_recoil_tick > 0)
+            --level_recoil_tick;
+        if (vertical_recoil_tick > 0)
+            --vertical_recoil_tick;
+
+        float level = recover_begin_level_recoil / recover_max_tick;
+        float vertical = recover_begin_vertical_recoil / recover_max_tick;
+        recover_core(level, vertical);
+        level_current_recoil -= level;
+        vertical_current_recoil -= vertical;
+        --recover_tick;
+    }
+
+    private boolean is_player_exist()
+    {
+        if (player.isOnline())
+            return true;
+        return false;
+    }
+
+    private boolean is_finishing_shooting() {
+        if (is_mode_recover == false)
+            return false;
+
+        if (recover_tick != 0)
+            return false;
+
+        return true;
     }
 
     @Override
     public void run() {
-        if (is_finishing_recover()) {
-            on_finishing_recover();
+        if (!is_player_exist() || is_finishing_shooting()) {
+            task_mapper.remove(player);
             return;
         }
 
-        if (is_shooting()) {
+        if (is_shooting())
             on_shooting();
-        } else if (is_recovering()) {
-            on_recovering();
-        } else if (is_begin_stoping_shooting()) {
+        else if (is_begin_stoping_shooting())
             on_begin_stop_shooting();
-        }
+        else if (is_recovering())
+            on_recovering();
 
         this.task_id = Bukkit.getScheduler().runTaskLater(ServerBus.getPlugin(), this, 1).getTaskId();
     }
