@@ -1,6 +1,7 @@
 package Assert.Command;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import Assert.Item.ItemDatabase;
 import FunctionBus.ItemBus;
+import FunctionBus.ServerBus;
 import net.kyori.adventure.text.Component;
 
 public class CsolCommand implements CommandExecutor, TabCompleter {
@@ -63,6 +65,29 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
     }
 
 
+    private List<String> onLogTabComplete(Player player, Command cmd, String commandLabel, String[] args){
+        return null;
+    }
+
+
+    private boolean onLogCommand(Player player, Command command, String label, String[] args) {
+        /*
+         * Will not take effect if using 'Bukkit.getLogger().addHandler()' with unknown reason
+         */
+        Logger logger = ServerBus.getPlugin().getLogger();
+        if (!PlayerMessageLogHandler.hasHandler(player)) {
+            player.sendMessage("Log Enable");
+            logger.addHandler(PlayerMessageLogHandler.getHandler(player));
+        }
+        else {
+            player.sendMessage("Log Disable");
+            logger.removeHandler(PlayerMessageLogHandler.getHandler(player));
+        }
+            
+        return true;
+    }
+
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
@@ -72,6 +97,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                     return onItemnbtCommand(player, command, label, args);
                 case "itemdb":
                     return onItemDBCommand(player, command, label, args);
+                case "log":
+                    return onLogCommand(player, command, label, args);
                 default:
                     return false;
             }
@@ -94,11 +121,13 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1)
-            return Arrays.asList("itemnbt", "itemdb");
+            return Arrays.asList("itemnbt", "itemdb", "log");
 
         switch (args[0]) {
             case "itemnbt":
                 return onItemnbtTabComplete(player, command, label, args);
+            case "log":
+                return onLogTabComplete(player, command, label, args);
             default:
                 return null;
         }
