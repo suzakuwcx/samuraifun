@@ -10,6 +10,7 @@ public class csol extends JavaPlugin {
     public void onEnable() {
         super.onEnable();
         getServer().getPluginManager().registerEvents(new EventBus(), this);
+        PacketBus.onEnable(this);
         Objects.requireNonNull(getCommand("csol")).setExecutor(new CsolCommand());
         SchedulerBus.run();
     }
