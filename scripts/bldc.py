@@ -9,15 +9,27 @@ Usage:
 
 import os
 import bpy
-from mathutils import Quaternion
+from mathutils import Quaternion, Vector
 from math import sin, cos, pi
 
 def xsel(content):
     os.system('echo -n "{}" | xsel -ib'.format(content))
     
+def get_rotate_quaternion(degree, axis):
+    return Quaternion([cos(degree / 2), sin(degree / 2) * (axis[0]), sin(degree / 2) * (axis[1]), sin(degree / 2) * (axis[2])])
+
+def get_geometry_center(obj):
+    """
+    { @cite: https://blender.stackexchange.com/questions/62040/get-center-of-geometry-of-an-object }
+    """
+    x, y, z = [ sum( [v.co[i] for v in obj.data.vertices] ) for i in range(3)]
+    count = float(len(obj.data.vertices))
+    center = obj.matrix_world @ (Vector( (x, y, z ) ) / count )
+    return center
+    
 def get_obj_player_head_transform(obj):
     obj.rotation_mode = 'XYZ'
-    translation = obj.location
+    translation = get_geometry_center(obj)
     left_rotation = obj.rotation_euler
     scale = obj.scale
 
@@ -41,10 +53,25 @@ def get_obj_player_head_transform(obj):
     # player head height is 1.8
     translation.y -= 1.8
     
+    # Minecraft render
+    left_rotation.rotate(get_rotate_quaternion(pi, (1, 0, 0)))
+    
     # Switch to quaternion
     left_rotation = left_rotation.to_quaternion()
     
     return translation, left_rotation, scale
+
+def get_obj_player_head_transform_debug(obj):
+    translation, left_rotation, scale = get_obj_player_head_transform(obj)
+    command = f"""
+            transformation = new Transformation(
+            new Vector3f({translation.x}f, {translation.y}f, {translation.z}f),
+            new Quaternionf({left_rotation.x}f, {left_rotation.y}f, {left_rotation.z}f, {left_rotation.w}f),
+            new Vector3f({scale.x}f, {scale.y}f, {scale.z}f),
+            new Quaternionf(0f, 0f, 0f, 1f)
+        ); 
+    """
+    xsel(command)
 
 def get_frame_range(obj):
     fmin, fmax = obj.animation_data.action.frame_range
@@ -53,16 +80,19 @@ def get_frame_range(obj):
     return range(fmin, fmax + 1)
 
 def get_transformation(obj):
-    obj.rotation_mode = 'QUATERNION'
+    obj.rotation_mode = 'XYZ'
     translation = obj.location
-    left_rotation = obj.rotation_quaternion
+    left_rotation = obj.rotation_euler.to_quaternion()
     scale = obj.scale
+    
+    left_rotation.rotate(get_rotate_quaternion(pi, (0, 1, 0)))
+    
     command = f"""
-           transformation = new Transformation(
+            transformation = new Transformation(
             new Vector3f({translation.x}f, {translation.y}f - 1.8f, {translation.z}f),
             new Quaternionf({left_rotation.x}f, {left_rotation.y}f, {left_rotation.z}f, {left_rotation.w}f),
             new Vector3f({scale.x}f, {scale.y}f, {scale.z}f),
-            new Quaternionf(0f, 1f, 0f, 0f)
+            new Quaternionf(0f, 0f, 0f, 1f)
         ); 
     """
     xsel(command)
@@ -93,14 +123,13 @@ def main():
         sce.frame_set(f)
         translation, left_rotation, scale = get_obj_player_head_transform(obj.copy())
         
-        # Note, the display in minecraft is different with blender, so the right_rotation is (0, 1, 0, 0), not (0, 0, 0, 1)
         command += f"""
             case {i}:
                 transformation = new Transformation(
                     new Vector3f({translation.x}f, {translation.y}f, {translation.z}f),
                     new Quaternionf({left_rotation.x}f, {left_rotation.y}f, {left_rotation.z}f, {left_rotation.w}f),
                     new Vector3f({scale.x}f, {scale.y}f, {scale.z}f),
-                    new Quaternionf(0f, 1f, 0f, 0f)
+                    new Quaternionf(0f, 0f, 0f, 1f)
                 );
                 display.setInterpolationDelay(0);
                 display.setInterpolationDuration(1);
