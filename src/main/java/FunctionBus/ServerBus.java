@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -19,7 +20,14 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
+import com.mojang.math.MatrixUtil;
 
 public class ServerBus {
     private static Plugin plugin;
@@ -90,6 +98,16 @@ public class ServerBus {
 
     public static void dropItemStatic(Location location, ItemStack item) {
         location.getWorld().dropItem(location, item).setVelocity(new Vector(0, 0, 0));;
+    }
+
+    public static Transformation newTransformation(Matrix4f mat) {
+        float f = 1.0F / mat.m33();
+        Triple<Quaternionf, Vector3f, Quaternionf> triple = MatrixUtil.svdDecompose((new Matrix3f(mat)).scale(f));
+        Vector3f translation = mat.getTranslation(new Vector3f()).mul(f);
+        Quaternionf leftRotation = new Quaternionf(triple.getLeft());
+        Vector3f scale = new Vector3f(triple.getMiddle());
+        Quaternionf rightRotation = new Quaternionf(triple.getRight());
+        return new Transformation(translation, leftRotation, scale, rightRotation);
     }
 
     /*
