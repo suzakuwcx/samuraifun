@@ -1,5 +1,8 @@
 package FunctionBus;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
@@ -87,5 +90,29 @@ public class ServerBus {
 
     public static void dropItemStatic(Location location, ItemStack item) {
         location.getWorld().dropItem(location, item).setVelocity(new Vector(0, 0, 0));;
+    }
+
+    /*
+     * @cite {https://www.spigotmc.org/threads/local-coordinates-calcul.456561/}
+     */
+    public static Location toLocalCoordinates(Location origin, double left, double up, double forwards) {
+        double f = cos((origin.getYaw() + 90.0F) * ((float)Math.PI / 180F));
+        double g = sin((origin.getYaw() + 90.0F) * ((float)Math.PI / 180F));
+        double h = cos(-origin.getPitch() * ((float)Math.PI / 180F));
+        double i = sin(-origin.getPitch() * ((float)Math.PI / 180F));
+        double j = cos((-origin.getPitch() + 90.0F) * ((float)Math.PI / 180F));
+        double k = sin((-origin.getPitch() + 90.0F) * ((float)Math.PI / 180F));
+    
+        Vector vec32 = new Vector(f * h, i, (double)(g * h));
+        Vector vec33 = new Vector(f * j, k, (double)(g * j));
+        Vector vec34 = vec32.clone().crossProduct(vec33).multiply(-1.0D);
+        double d = vec32.getX() * forwards + vec33.getX() * up + vec34.getX() * left;
+        double e = vec32.getY() * forwards + vec33.getY() * up + vec34.getY() * left;
+        double l = vec32.getZ() * forwards + vec33.getZ() * up + vec34.getZ() * left;
+        return new Location(origin.getWorld(), origin.getX() + d, origin.getY() + e, origin.getZ() + l);
+    }
+
+    public static Location toLocalCoordinates(Location origin, Vector vec) {
+        return toLocalCoordinates(origin, vec.getX(), vec.getY(), vec.getZ());
     }
 }
