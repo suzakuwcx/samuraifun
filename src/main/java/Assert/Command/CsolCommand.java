@@ -88,6 +88,29 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
     }
 
 
+    private boolean onCharCommand(Player player, Command command, String label, String[] args) {
+        if (args.length != 2)
+            return false;
+
+        String raw = args[1];
+        char ch;
+
+        try {
+            if (raw.startsWith("0x"))
+                ch = (char) Integer.parseInt(raw, 2, raw.length(), 16);
+            else
+                ch = (char) Integer.parseInt(args[1], 16);
+
+            player.sendMessage(String.valueOf(ch));
+        }
+        catch (NumberFormatException e) {
+            player.sendMessage(e.getMessage());
+        }
+        
+        return true;
+    }
+
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
@@ -99,6 +122,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                     return onItemDBCommand(player, command, label, args);
                 case "log":
                     return onLogCommand(player, command, label, args);
+                case "char":
+                    return onCharCommand(player, command, label, args);
                 default:
                     return false;
             }
@@ -121,7 +146,7 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1)
-            return Arrays.asList("itemnbt", "itemdb", "log");
+            return Arrays.asList("itemnbt", "itemdb", "log", "char");
 
         switch (args[0]) {
             case "itemnbt":
