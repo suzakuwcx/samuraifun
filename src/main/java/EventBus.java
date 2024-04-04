@@ -35,6 +35,8 @@ public class EventBus implements Listener {
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
         if (PlayerInteractEventBus.isPlayerBeginUsingRifle(event)) {
             PlayerInteractEventBus.onPlayerBeginUsingRifle(event);
+        } else if (PlayerInteractEventBus.isPlayerAttack(event)) {
+            PlayerInteractEventBus.onPlayerAttack(event);
         }
     }
 

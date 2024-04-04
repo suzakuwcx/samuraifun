@@ -13,6 +13,7 @@ public class ItemDatabase {
 
     static {
         set.add(new Rifle());
+        set.add(new Sword());
     }
 
     public static Set<ItemStack> getSet() {
