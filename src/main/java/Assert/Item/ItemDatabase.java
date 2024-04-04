@@ -14,6 +14,7 @@ public class ItemDatabase {
     static {
         set.add(new Rifle());
         set.add(new Sword());
+        set.add(new BackCompass());
     }
 
     public static Set<ItemStack> getSet() {
