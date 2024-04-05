@@ -12,6 +12,7 @@ public class PacketBus {
     }
 
     public static void onEnable(Plugin plugin) {
+        manager.addPacketListener(new ServerNamedSoundEffectPackageBus(plugin));
     }
 
     public static void onDisable() {
