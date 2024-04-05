@@ -29,6 +29,8 @@ import org.joml.Vector3f;
 
 import com.mojang.math.MatrixUtil;
 
+import Schedule.PlayerRealVelocityUpdateSchedule;
+
 public class ServerBus {
     private static Plugin plugin;
     private static Random random;
@@ -132,5 +134,18 @@ public class ServerBus {
 
     public static Location toLocalCoordinates(Location origin, Vector vec) {
         return toLocalCoordinates(origin, vec.getX(), vec.getY(), vec.getZ());
+    }
+
+    public static Location getDirectionLocation(Location location, Vector direction, double delta) {
+        return location.clone().add(direction.normalize().multiply(delta));
+    }
+
+    public static Location getDirectionLocation(Location location, double delta) {
+        return getDirectionLocation(location, location.getDirection(), delta);
+    }
+
+    public static void knockback(Player player, Vector direction, double level) {
+        Vector velocity = PlayerRealVelocityUpdateSchedule.getVelocity(player);
+        player.setVelocity(direction.normalize().multiply(level).setY(velocity.getY()));
     }
 }
