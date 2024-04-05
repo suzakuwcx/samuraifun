@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import net.kyori.adventure.text.Component;
 
@@ -70,5 +71,23 @@ public class PlayerBus {
 
         player_head.put(player, item);
         return item;
+    }
+
+    /**
+     * @param scope The sector angle of the player's perspective, in radians
+     */
+    public static boolean isEntityInFrontOfPlayer(Player player, Entity entity, double distance, double scope) {
+        Location player_location = player.getEyeLocation();
+        Location entity_location = entity.getLocation();
+
+        Vector player_to_entity = entity_location.clone().toVector().setY(0).subtract(player_location.toVector().setY(0));
+
+        if (player_location.distance(entity_location) > distance)
+            return false;
+
+        if (player_location.getDirection().angle(player_to_entity) > scope / 2)
+            return false;
+
+        return true;
     }
 }
