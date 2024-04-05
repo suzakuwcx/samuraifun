@@ -6,7 +6,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import Assert.Item.Sword;
 import Assert.Item.Gun.Rifle;
 import Task.GunTask.RifleTask;
-import Task.SwipeTask.KatateHidariKiriageTask;
 
 public class PlayerInteractEventBus {
     public static boolean isPlayerBeginUsingRifle(PlayerInteractEvent event) {
@@ -22,7 +21,7 @@ public class PlayerInteractEventBus {
         RifleTask.shoot(event.getPlayer());
     }
 
-    public static boolean isPlayerAttack(PlayerInteractEvent event) {
+    public static boolean isPlayerSlash(PlayerInteractEvent event) {
         Action action = event.getAction();
         if (action != Action.LEFT_CLICK_AIR && action != Action.LEFT_CLICK_BLOCK)
             return false;
@@ -31,7 +30,7 @@ public class PlayerInteractEventBus {
         return true;
     }
 
-    public static void onPlayerAttack(PlayerInteractEvent event) {
-        KatateHidariKiriageTask.execute(event.getPlayer());
+    public static void onPlayerSlash(PlayerInteractEvent event) {
+        PlayerSlashBus.onPlayerSlash(event.getPlayer());
     }
 }

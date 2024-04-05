@@ -1,10 +1,12 @@
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import FunctionBus.EntityDamageByEntityEventBus;
 import FunctionBus.PlayerInteractEventBus;
 import FunctionBus.PlayerJoinEventBus;
 import FunctionBus.PlayerMoveEventBus;
@@ -35,8 +37,8 @@ public class EventBus implements Listener {
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
         if (PlayerInteractEventBus.isPlayerBeginUsingRifle(event)) {
             PlayerInteractEventBus.onPlayerBeginUsingRifle(event);
-        } else if (PlayerInteractEventBus.isPlayerAttack(event)) {
-            PlayerInteractEventBus.onPlayerAttack(event);
+        } else if (PlayerInteractEventBus.isPlayerSlash(event)) {
+            PlayerInteractEventBus.onPlayerSlash(event);
         }
     }
 
@@ -52,5 +54,12 @@ public class EventBus implements Listener {
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         PlayerMoveEventBus.onBusTrigger(event);
         PlayerMoveEventBus.onBusComplete(event);
+    }
+
+    @EventHandler
+    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+        if (EntityDamageByEntityEventBus.isPlayerSlash(event)) {
+            EntityDamageByEntityEventBus.onPlayerSlash(event);
+        }
     }
 }
