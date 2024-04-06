@@ -2,6 +2,7 @@ package Task.SwipeTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,13 +23,25 @@ public class KatateMigiKiriageTask implements Runnable {
 
     private Player player;
     private Location location;
-    private Vector axis = new Vector(0, 1, 0).rotateAroundZ(Math.PI / 10).normalize();
-    private Vector vec = (new Vector(0, 0, 1).crossProduct(axis)).normalize().multiply(4).rotateAroundAxis(axis, - Math.PI / 6);
+    private Vector axis;
+    private Vector vec;
     private double rotation = 4 * Math.PI / 3;
     private int tick = MAX_TICK;
 
     static {
         task_mapper = new HashMap<>();
+    }
+
+    {
+        Random r = ServerBus.getRandom();
+        double offset = (double) r.nextInt(0, 400) / 1000.0;
+        if (r.nextBoolean())
+            offset *= -1;
+            
+        offset += 1.0;
+
+        axis = new Vector(0, 1, 0).rotateAroundZ(Math.PI / 10 * offset).normalize();
+        vec = (new Vector(0, 0, 1).crossProduct(axis)).normalize().multiply(4).rotateAroundAxis(axis, - Math.PI / 6);
     }
 
     public static void execute(Player player) {
