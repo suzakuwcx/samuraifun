@@ -97,6 +97,11 @@ public class ServerBus {
     public static Collection<Entity> getNearbyEntities(Location location, double x, double y, double z, EntityType type) {
         return location.getWorld().getNearbyEntities(location, x, y, z, (e) -> e.getType() == type);
     }
+    
+    @SuppressWarnings({"unchecked"})
+    public static <T> Collection<T> getNearbyEntities(Location location, double x, double y, double z, EntityType type, Class<T> clazz) {
+        return (Collection<T>) getNearbyEntities(location, x, y, z, type);
+    }
 
     public static void dropItemStatic(Location location, ItemStack item) {
         location.getWorld().dropItem(location, item).setVelocity(new Vector(0, 0, 0));;
