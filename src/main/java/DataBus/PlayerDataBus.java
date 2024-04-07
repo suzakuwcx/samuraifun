@@ -2,9 +2,6 @@ package DataBus;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.HashSet;
-import java.util.Set;
-
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -18,7 +15,6 @@ import FunctionBus.ServerBus;
 public class PlayerDataBus {
     private static Map<Player, ItemDisplay> item_display_mapper = new HashMap<>();
     private static Map<Player, Integer> player_slash_semaphore = new HashMap<>();
-    private static Set<Player> player_defense_status = new HashSet<>();
 
     public static void addPlayerItemDisplay(Player player) {
         ItemDisplay display = (ItemDisplay) ServerBus.spawnServerEntity(player.getLocation(), EntityType.ITEM_DISPLAY, false);
@@ -64,17 +60,5 @@ public class PlayerDataBus {
         --sem;
         player_slash_semaphore.put(player, sem);
         return true;
-    }
-
-    public static void playerStartDefense(Player player) {
-        player_defense_status.add(player);
-    }
-    
-    public static boolean isPlayerDefense(Player player) {
-        return player_defense_status.contains(player);
-    }
-
-    public static void playerStopDefense(Player player) {
-        player_defense_status.remove(player);
     }
 }

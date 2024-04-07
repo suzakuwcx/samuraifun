@@ -1,11 +1,14 @@
 package FunctionBus;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
 import Assert.Item.Sword;
 import DataBus.PlayerDataBus;
+import Task.AttackTask.DeflectTask;
 
 public class EntityDamageByEntityEventBus {
     public static boolean isPlayerSlash(EntityDamageByEntityEvent event) {
@@ -25,5 +28,38 @@ public class EntityDamageByEntityEventBus {
     public static void onPlayerSlash(EntityDamageByEntityEvent event) {
         event.setCancelled(true);
         PlayerSlashBus.onPlayerSlash((Player) event.getDamager());
+    }
+
+    public static boolean isPlayerDefense(EntityDamageByEntityEvent event) {
+        if (event.getEntityType() != EntityType.PLAYER)
+            return false;
+
+        if (event.getDamage(DamageModifier.BLOCKING) >= - 0.01)
+            return false;
+
+        return true;
+    }
+
+    public static void onPlayerDefense(EntityDamageByEntityEvent event) {
+    }
+
+    public static boolean isPlayerDeflect(EntityDamageByEntityEvent event) {
+        if (event.getEntityType() != EntityType.PLAYER)
+            return false;
+
+        Player player = (Player) event.getEntity();
+        if (event.getDamage(DamageModifier.BLOCKING) < - 0.01)
+            return false;
+
+        if (!DeflectTask.isPlayerDefense(player))
+            return false;
+
+        return true;
+    }
+
+    public static void onPlayerDeflect(EntityDamageByEntityEvent event) {
+        event.setCancelled(true);
+        Player player = (Player) event.getEntity();
+        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1f, 2f);
     }
 }

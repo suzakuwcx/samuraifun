@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import Assert.Item.Sword;
 import Assert.Item.Gun.Rifle;
 import DataBus.PlayerDataBus;
+import Task.AttackTask.DeflectTask;
 import Task.GunTask.RifleTask;
 
 public class PlayerInteractEventBus {
@@ -53,6 +54,6 @@ public class PlayerInteractEventBus {
     }
 
     public static void onPlayerBeginDefense(PlayerInteractEvent event) {
-        PlayerDataBus.playerStartDefense(event.getPlayer());
+        DeflectTask.execute(event.getPlayer());
     }
 }

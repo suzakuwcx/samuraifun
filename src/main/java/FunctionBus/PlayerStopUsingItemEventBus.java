@@ -24,6 +24,6 @@ public class PlayerStopUsingItemEventBus {
     }
 
     public static void onPlayerStopDefense(PlayerStopUsingItemEvent event) {
-        PlayerDataBus.playerStopDefense(event.getPlayer());
+        // PlayerDataBus.playerStopDefense(event.getPlayer());
     }
 }
