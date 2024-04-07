@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import Assert.Item.Sword;
+import DataBus.PlayerDataBus;
 
 public class EntityDamageByEntityEventBus {
     public static boolean isPlayerSlash(EntityDamageByEntityEvent event) {
@@ -15,6 +16,9 @@ public class EntityDamageByEntityEventBus {
         if (!Sword._instanceof(player.getInventory().getItemInMainHand()))
             return false;
 
+        if (PlayerDataBus.upPlayerSlash(player))
+            return false;
+        
         return true;
     }
 
