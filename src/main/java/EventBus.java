@@ -39,6 +39,8 @@ public class EventBus implements Listener {
             PlayerInteractEventBus.onPlayerBeginUsingRifle(event);
         } else if (PlayerInteractEventBus.isPlayerSlash(event)) {
             PlayerInteractEventBus.onPlayerSlash(event);
+        } else if (PlayerInteractEventBus.isPlayerBeginDefense(event)) {
+            PlayerInteractEventBus.onPlayerBeginDefense(event);
         }
     }
 
@@ -47,6 +49,8 @@ public class EventBus implements Listener {
     public void onPlayerStopUsingItemEvent(PlayerStopUsingItemEvent event) {
         if (PlayerStopUsingItemEventBus.isPlayerStopUsingRifle(event)) {
             PlayerStopUsingItemEventBus.onPlayerStopUsingRifle(event);
+        } else if (PlayerStopUsingItemEventBus.isPlayerStopDefense(event)) {
+            PlayerStopUsingItemEventBus.onPlayerStopDefense(event);
         }
     }
 
