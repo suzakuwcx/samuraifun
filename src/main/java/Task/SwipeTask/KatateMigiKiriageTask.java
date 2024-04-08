@@ -23,6 +23,8 @@ public class KatateMigiKiriageTask implements Runnable {
 
     private Player player;
     private Location location;
+    private double range;
+
     private Vector axis;
     private Vector vec;
     private double rotation = 4 * Math.PI / 3;
@@ -41,17 +43,23 @@ public class KatateMigiKiriageTask implements Runnable {
         offset += 1.0;
 
         axis = new Vector(0, 1, 0).rotateAroundZ(Math.PI / 10 * offset).normalize();
-        vec = (new Vector(0, 0, 1).crossProduct(axis)).normalize().multiply(4).rotateAroundAxis(axis, - Math.PI / 6);
     }
 
-    public static void execute(Player player) {
+    private KatateMigiKiriageTask(Player player, Location location, double range) {
+        this.player = player;
+        this.location = location;
+        this.range = range;
+
+        vec = (new Vector(0, 0, 1).crossProduct(axis)).normalize().multiply(range).rotateAroundAxis(axis, - Math.PI / 6);
+    }
+
+    public static void execute(Player player, double range) {
         if (task_mapper.containsKey(player))
             return;
 
-        KatateMigiKiriageTask task = new KatateMigiKiriageTask();
+        KatateMigiKiriageTask task = new KatateMigiKiriageTask(player, player.getEyeLocation(), range);
         task_mapper.put(player, task);
-        task.player = player;
-        task.location = player.getEyeLocation();
+
         /* delay compensation */
         // task.location.add(PlayerRealVelocityUpdateSchedule.getVelocity(player).clone().setY(0).multiply(9));
 

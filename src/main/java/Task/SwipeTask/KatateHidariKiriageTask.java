@@ -19,8 +19,9 @@ public class KatateHidariKiriageTask implements Runnable{
 
     private Player player;
     private Location location;
+    private double range;
     private Vector axis = new Vector(0, 1, 0).rotateAroundZ(- Math.PI / 10).normalize();
-    private Vector vec = (new Vector(0, 0, 1).crossProduct(axis)).normalize().multiply(-4).rotateAroundAxis(axis, Math.PI / 6);
+    private Vector vec;
     private double rotation = - 4 * Math.PI / 3;
     private int tick = MAX_TICK;
 
@@ -28,11 +29,19 @@ public class KatateHidariKiriageTask implements Runnable{
         task_mapper = new HashMap<>();
     }
 
-    public static void execute(Player player) {
+    private KatateHidariKiriageTask(Player player, Location location, double range) {
+        this.player = player;
+        this.location = location;
+        this.range = range;
+
+        vec = (new Vector(0, 0, 1).crossProduct(axis)).normalize().multiply(-range).rotateAroundAxis(axis, Math.PI / 6);
+    }
+
+    public static void execute(Player player, double range) {
         if (task_mapper.containsKey(player))
             return;
 
-        KatateHidariKiriageTask task = new KatateHidariKiriageTask();
+        KatateHidariKiriageTask task = new KatateHidariKiriageTask(player, player.getEyeLocation(), range);
         task_mapper.put(player, task);
         task.player = player;
         task.location = player.getEyeLocation();
