@@ -68,6 +68,8 @@ public class EventBus implements Listener {
             EntityDamageByEntityEventBus.onPlayerDefense(event);
         } else if (EntityDamageByEntityEventBus.isPlayerDeflect(event)) {
             EntityDamageByEntityEventBus.onPlayerDeflect(event);
+        } else if (EntityDamageByEntityEventBus.isPlayerAttackZombie(event)) {
+            EntityDamageByEntityEventBus.onPlayerAttackZombie(event);
         }
     }
 }

@@ -2,6 +2,7 @@ package FunctionBus;
 
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
@@ -9,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import Assert.Item.Sword;
 import DataBus.PlayerDataBus;
 import Task.AttackTask.DeflectTask;
+import Task.DelayTask.SetNoDamageTicksTask;
 
 public class EntityDamageByEntityEventBus {
     public static boolean isPlayerSlash(EntityDamageByEntityEvent event) {
@@ -61,5 +63,20 @@ public class EntityDamageByEntityEventBus {
         event.setCancelled(true);
         Player player = (Player) event.getEntity();
         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1f, 2f);
+    }
+
+    public static boolean isPlayerAttackZombie(EntityDamageByEntityEvent event) {
+        if (event.getEntityType() != EntityType.ZOMBIE)
+            return false;
+
+        if (event.getDamager().getType() != EntityType.PLAYER)
+            return false;
+    
+        return true;
+    }
+
+    public static void onPlayerAttackZombie(EntityDamageByEntityEvent event) {
+        LivingEntity entity = (LivingEntity) event.getEntity();
+        SetNoDamageTicksTask.execute(entity);
     }
 }
