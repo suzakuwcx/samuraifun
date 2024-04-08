@@ -6,11 +6,12 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import Assert.Config.PlayerConfig;
 import FunctionBus.ServerBus;
 
 public class DeflectTask implements Runnable{
     private static Map<Player, DeflectTask> task_mapper;
-    private static final int DeflectTick = 4;
+    private static final int DEFLECT_TICK = PlayerConfig.DEFLECT_TICK;
 
     private Player player;
     private int tick = 0;
@@ -50,7 +51,7 @@ public class DeflectTask implements Runnable{
 
     @Override
     public void run() {
-        if (tick == DeflectTick) {
+        if (tick == DEFLECT_TICK) {
             task_mapper.remove(player);
             return;
         }

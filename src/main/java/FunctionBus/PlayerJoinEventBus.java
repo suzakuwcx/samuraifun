@@ -2,12 +2,13 @@ package FunctionBus;
 
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import Assert.Config.PlayerConfig;
 import DataBus.PlayerDataBus;
 
 public class PlayerJoinEventBus {
     public static void onBusTrigger(PlayerJoinEvent event) {
         PlayerDataBus.addPlayerItemDisplay(event.getPlayer());
-        event.getPlayer().setShieldBlockingDelay(4);
+        event.getPlayer().setShieldBlockingDelay(PlayerConfig.DEFLECT_TICK);
     }
 
     public static void onBusComplete(PlayerJoinEvent event) {
