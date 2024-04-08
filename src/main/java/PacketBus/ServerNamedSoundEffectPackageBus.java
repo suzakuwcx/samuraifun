@@ -19,6 +19,8 @@ public class ServerNamedSoundEffectPackageBus extends PacketAdapter{
         plugin.getLogger().log(Level.FINE, String.format("onPacketSending: %s", getClass().getName()));
 
         Sound sound = event.getPacket().getSoundEffects().read(0);
+        if (sound == null)
+            return;
         
         switch (sound) {
         /* 
