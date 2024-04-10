@@ -9,8 +9,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
 import Assert.Item.Sword;
 import DataBus.PlayerDataBus;
+import Task.DelayTask;
 import Task.AttackTask.DeflectTask;
-import Task.DelayTask.SetNoDamageTicksTask;
 
 public class EntityDamageByEntityEventBus {
     public static boolean isPlayerSlash(EntityDamageByEntityEvent event) {
@@ -65,8 +65,8 @@ public class EntityDamageByEntityEventBus {
         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1f, 2f);
     }
 
-    public static boolean isPlayerAttackZombie(EntityDamageByEntityEvent event) {
-        if (event.getEntityType() != EntityType.ZOMBIE)
+    public static boolean isPlayerAttackNoInvincibleFrameEntity(EntityDamageByEntityEvent event) {
+        if (event.getEntityType() != EntityType.ZOMBIE && event.getEntityType() != EntityType.PLAYER)
             return false;
 
         if (event.getDamager().getType() != EntityType.PLAYER)
@@ -75,8 +75,10 @@ public class EntityDamageByEntityEventBus {
         return true;
     }
 
-    public static void onPlayerAttackZombie(EntityDamageByEntityEvent event) {
-        LivingEntity entity = (LivingEntity) event.getEntity();
-        SetNoDamageTicksTask.execute(entity);
+    public static void onPlayerAttackNoInvincibleFrameEntity(EntityDamageByEntityEvent event) {
+        DelayTask.execute((args) -> {
+            LivingEntity entity = (LivingEntity) args[0];
+            entity.setNoDamageTicks(0);
+        }, 1, event.getEntity());
     }
 }
