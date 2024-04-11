@@ -5,6 +5,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import FunctionBus.EntityDamageByEntityEventBus;
 import FunctionBus.PlayerInteractEventBus;
@@ -12,6 +13,7 @@ import FunctionBus.PlayerJoinEventBus;
 import FunctionBus.PlayerMoveEventBus;
 import FunctionBus.PlayerQuitEventBus;
 import FunctionBus.PlayerStopUsingItemEventBus;
+import FunctionBus.PlayerSwapHandItemsEventBus;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
 
 public class EventBus implements Listener {    
@@ -73,5 +75,18 @@ public class EventBus implements Listener {
         } else if (EntityDamageByEntityEventBus.isPlayerAttackNoInvincibleFrameEntity(event)) {
             EntityDamageByEntityEventBus.onPlayerAttackNoInvincibleFrameEntity(event);
         }
+    }
+
+    @EventHandler
+    public void onPlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent event) {
+        PlayerSwapHandItemsEventBus.onBusTrigger(event);
+
+        if (PlayerSwapHandItemsEventBus.isPlayerSwitchBodyMode(event)) {
+            PlayerSwapHandItemsEventBus.onPlayerSwitchBodyMode(event);
+        } else if (PlayerSwapHandItemsEventBus.isPlayerSwitchSwordMode(event)) {
+            PlayerSwapHandItemsEventBus.onPlayerSwitchSwordMode(event);
+        }
+
+        PlayerSwapHandItemsEventBus.onBusComplete(event);
     }
 }
