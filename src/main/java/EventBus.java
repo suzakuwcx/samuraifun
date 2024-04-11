@@ -35,7 +35,9 @@ public class EventBus implements Listener {
 
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        if (PlayerInteractEventBus.isPlayerBeginUsingRifle(event)) {
+        if (PlayerInteractEventBus.isTargetBlockInteractAble(event)) {
+            PlayerInteractEventBus.onTargetBlockInteractAble(event);
+        } else if (PlayerInteractEventBus.isPlayerBeginUsingRifle(event)) {
             PlayerInteractEventBus.onPlayerBeginUsingRifle(event);
         } else if (PlayerInteractEventBus.isPlayerSlash(event)) {
             PlayerInteractEventBus.onPlayerSlash(event);
