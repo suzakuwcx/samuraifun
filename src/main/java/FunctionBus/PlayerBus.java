@@ -29,6 +29,16 @@ public class PlayerBus {
     }
 
     public static boolean isPlayerCanCriticalAttack(Player player) {
+        if (!isPlayerCanCriticalAttack(player))
+            return false;
+
+        if (player.isSprinting())
+            return false;
+
+        return true;
+    }
+
+    public static boolean isPlayerCanSprintingCriticalAttack(Player player) {
         if (player.getFallDistance() == 0)
             return false;
 
@@ -42,9 +52,6 @@ public class PlayerBus {
             return false;
 
         if (player.hasPotionEffect(PotionEffectType.BLINDNESS))
-            return false;
-
-        if (player.isSprinting())
             return false;
 
         if (player.getAttackCooldown() < 0.848f)
@@ -87,6 +94,27 @@ public class PlayerBus {
             return false;
 
         if (player_location.getDirection().angle(player_to_entity) > scope / 2)
+            return false;
+
+        return true;
+    }
+
+    /**
+     * @param scope This scope is the level length of the real world, in meter
+     */
+    public static boolean isEntityInFrontOfPlayerLevel(Player player, Entity entity, double max_distance, double scope) {
+        Vector player_location = player.getLocation().clone().toVector().setY(0);
+        Vector entity_location = entity.getLocation().clone().toVector().setY(0);
+
+        Vector player_to_entity = entity_location.clone().subtract(player_location);
+        double distance = player_location.distance(entity_location);
+        Vector direction = player.getLocation().getDirection().setY(0).normalize();
+
+        /* 0.5 is the target bounding box radius */
+        if (distance - 0.5 > max_distance)
+            return false;
+
+        if (player_to_entity.normalize().multiply(distance).crossProduct(direction).length() / direction.length() > scope / 2)
             return false;
 
         return true;
