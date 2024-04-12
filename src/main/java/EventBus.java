@@ -50,6 +50,8 @@ public class EventBus implements Listener {
             PlayerInteractEventBus.onPlayerSlash(event);
         } else if (PlayerInteractEventBus.isPlayerBeginDefense(event)) {
             PlayerInteractEventBus.onPlayerBeginDefense(event);
+        } else if (PlayerInteractEventBus.isPlayerBeginChargedBlow(event)) {
+            PlayerInteractEventBus.onPlayerBeginChargedBlow(event);
         }
     }
 

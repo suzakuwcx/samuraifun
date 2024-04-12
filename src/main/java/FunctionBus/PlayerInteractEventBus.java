@@ -3,7 +3,9 @@ package FunctionBus;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.PlayerInventory;
 
+import Assert.Item.Taijutsu;
 import Assert.Item.Sword;
 import Assert.Item.Gun.Rifle;
 import Task.AttackTask.DeflectTask;
@@ -66,5 +68,20 @@ public class PlayerInteractEventBus {
 
     public static void onPlayerBeginDefense(PlayerInteractEvent event) {
         DeflectTask.execute(event.getPlayer());
+    }
+
+    public static boolean isPlayerBeginChargedBlow(PlayerInteractEvent event) {
+        PlayerInventory inventory = event.getPlayer().getInventory();
+        if (!Taijutsu._instanceof(inventory.getItemInMainHand()))
+            return false;
+
+        if (!Sword._instanceof(inventory.getItemInOffHand()))
+            return false;
+        
+        return true;
+    }
+
+    public static void onPlayerBeginChargedBlow(PlayerInteractEvent event) {
+        event.setCancelled(true);
     }
 }

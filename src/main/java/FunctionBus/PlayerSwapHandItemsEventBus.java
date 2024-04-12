@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import Assert.Config.PlayerConfig;
 import Assert.Item.Sword;
+import Assert.Item.Taijutsu;
 import Task.SwipeTask.YokogiriTask;
 
 public class PlayerSwapHandItemsEventBus {
@@ -24,6 +25,7 @@ public class PlayerSwapHandItemsEventBus {
 
     public static void onPlayerSwitchBodyMode(PlayerSwapHandItemsEvent event) {
         event.setCancelled(false);
+        event.setMainHandItem(new Taijutsu());
     }
 
     public static boolean isPlayerSwitchSwordMode(PlayerSwapHandItemsEvent event) {
