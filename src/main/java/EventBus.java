@@ -1,14 +1,19 @@
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import FunctionBus.EntityDamageByEntityEventBus;
+import FunctionBus.InventoryClickEventBus;
 import FunctionBus.PlayerInteractEventBus;
+import FunctionBus.PlayerItemHeldEventBus;
 import FunctionBus.PlayerJoinEventBus;
 import FunctionBus.PlayerMoveEventBus;
 import FunctionBus.PlayerQuitEventBus;
@@ -88,5 +93,17 @@ public class EventBus implements Listener {
         }
 
         PlayerSwapHandItemsEventBus.onBusComplete(event);
+    }
+    
+    @EventHandler
+    public void onInventoryClickEvent(InventoryClickEvent event) {
+        if (InventoryClickEventBus.isPlayerInAdventure(event))
+            InventoryClickEventBus.onPlayerInAdventure(event);
+    }
+
+    @EventHandler
+    public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
+        if (PlayerItemHeldEventBus.isPlayerInAdventure(event))
+            PlayerItemHeldEventBus.onPlayerInAdventure(event);
     }
 }
