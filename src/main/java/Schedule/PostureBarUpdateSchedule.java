@@ -56,9 +56,7 @@ public class PostureBarUpdateSchedule implements Runnable {
         int hidden_posture = ScoreBoardBus.getPlayerScore(player.getName(), "hidden_posture");
 
         posture -= dmg;
-        if (posture < 0)
-            posture = 0;
-        
+                
         if (hidden_posture < stagger) {
             hidden_posture += stagger;
             if (hidden_posture > stagger)
@@ -78,6 +76,10 @@ public class PostureBarUpdateSchedule implements Runnable {
     }
 
     private static void setPlayerPosture(Player player, int value) {
+        if (value > MAX_POSTURE)
+            value = MAX_POSTURE;
+        else if (value < MAX_POSTURE)
+            value = 0;
         ScoreBoardBus.setPlayerScore(player.getName(), "posture", value);
     }
 
