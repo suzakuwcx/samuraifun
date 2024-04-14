@@ -114,6 +114,9 @@ public class PlayerBus {
         if (distance - 0.5 > max_distance)
             return false;
 
+        if (player_to_entity.dot(direction) < 0)
+            return false;
+
         if (player_to_entity.normalize().multiply(distance).crossProduct(direction).length() / direction.length() > scope / 2)
             return false;
 

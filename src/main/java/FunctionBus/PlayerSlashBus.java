@@ -26,11 +26,11 @@ public class PlayerSlashBus {
             player.attack(e);
         }
 
-        for (Player e: ServerBus.getNearbyEntities(player.getEyeLocation(), range, 2, range, EntityType.PLAYER, Player.class)) {
+        for (Player e: ServerBus.getNearbyEntities(player.getEyeLocation(), range, 4, range, EntityType.PLAYER, Player.class)) {
             if (e.equals(player))
                 continue;
-
-            if (!PlayerBus.isEntityInFrontOfPlayer(player, e, range, Math.PI / 6))
+            
+            if (!PlayerBus.isEntityInFrontOfPlayerLevel(player, e, range, 0.75))
                 continue;
             
             PlayerDataBus.downPlayerSlash(player);
