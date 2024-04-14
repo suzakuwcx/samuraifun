@@ -26,6 +26,7 @@ public class PlayerSwapHandItemsEventBus {
     public static void onPlayerSwitchBodyMode(PlayerSwapHandItemsEvent event) {
         event.setCancelled(false);
         event.setMainHandItem(new Taijutsu());
+        event.getPlayer().setCooldown(new Sword().getType(), 50000);
     }
 
     public static boolean isPlayerSwitchSwordMode(PlayerSwapHandItemsEvent event) {
@@ -39,6 +40,7 @@ public class PlayerSwapHandItemsEventBus {
     public static void onPlayerSwitchSwordMode(PlayerSwapHandItemsEvent event) {
         event.setCancelled(false);
         event.setOffHandItem(new ItemStack(Material.AIR));
+        event.getPlayer().setCooldown(new Sword().getType(), 0);
         YokogiriTask.execute(event.getPlayer(), PlayerConfig.BASIC_ATTACK_RANGE);
     }
 
