@@ -1,5 +1,8 @@
 package Assert.Command;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -22,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import Assert.Item.ItemDatabase;
 import FunctionBus.ItemBus;
 import FunctionBus.ServerBus;
+import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 
 public class CsolCommand implements CommandExecutor, TabCompleter {
@@ -115,23 +119,50 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
 
 
     private boolean onOsCommand(Player player, Command command, String label, String[] args) {
-        ProcessHandle currentProcess = ProcessHandle.current();
-        long pid = currentProcess.pid();
+        if (args.length == 1) {
+            String path = ServerBus.getServerPath() + "/start.sh";
 
-        Bukkit.getScheduler().runTaskAsynchronously(ServerBus.getPlugin(), () -> {
-            try {
-                Process process = new ProcessBuilder("/bin/sh", "-c", String.format("ps -p %d -o args=", pid)).start();
-                try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()))) {
-                    String cmdline = reader.readLine();
-                    player.sendMessage(cmdline);
+            try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    player.sendMessage(line);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+            return true;
+        } else if (args[1].equals("check")) {
+            ProcessHandle currentProcess = ProcessHandle.current();
+            long pid = currentProcess.pid();
 
-        return true;
+            Bukkit.getScheduler().runTaskAsynchronously(ServerBus.getPlugin(), () -> {
+                try {
+                    Process process = new ProcessBuilder("/bin/sh", "-c", String.format("ps -p %d -o args=", pid)).start();
+                    try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(process.getInputStream()))) {
+                        String cmdline = reader.readLine();
+                        player.sendMessage(cmdline);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            return true;
+        } else {
+            String path = ServerBus.getServerPath() + "/start.sh";
+            StringBuilder cmdline = new StringBuilder();
+
+            for (int i = 1; i < args.length; ++i)
+                cmdline.append(args[i]).append(' ');
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+                writer.write(cmdline.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
     }
 
 

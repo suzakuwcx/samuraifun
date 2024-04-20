@@ -52,6 +52,10 @@ public class ServerBus {
         return random;
     }
 
+    public static String getServerPath() {
+        return plugin.getDataFolder().getAbsoluteFile().getParentFile().getParentFile().getAbsolutePath();
+    }
+
 
     public static void playServerSound(Location location, Sound sound, float volume, float pitch) {
         for (Player player : location.getWorld().getPlayers()) {
