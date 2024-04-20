@@ -1,4 +1,7 @@
 package Assert.Command;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -111,9 +114,35 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
     }
 
 
+    private boolean onOsCommand(Player player, Command command, String label, String[] args) {
+        ProcessHandle currentProcess = ProcessHandle.current();
+        long pid = currentProcess.pid();
+
+        Bukkit.getScheduler().runTaskAsynchronously(ServerBus.getPlugin(), () -> {
+            try {
+                Process process = new ProcessBuilder("/bin/sh", "-c", String.format("ps -p %d -o args=", pid)).start();
+                try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()))) {
+                    String cmdline = reader.readLine();
+                    player.sendMessage(cmdline);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return true;
+    }
+
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
+        switch (args[0]) {
+            default:
+                break;
+        }
+
         if (sender instanceof Player player) {
             switch (args[0]) {
                 case "itemnbt":
@@ -124,11 +153,12 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                     return onLogCommand(player, command, label, args);
                 case "char":
                     return onCharCommand(player, command, label, args);
+                case "os":
+                    return onOsCommand(player, command, label, args);
                 default:
                     return false;
             }
-        }
-        else if (sender instanceof BlockCommandSender commandblock) {
+        } else if (sender instanceof BlockCommandSender commandblock) {
             switch (args[0]) {
                 default:
                     return false;
@@ -146,7 +176,7 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1)
-            return Arrays.asList("itemnbt", "itemdb", "log", "char");
+            return Arrays.asList("itemnbt", "itemdb", "log", "char", "os");
 
         switch (args[0]) {
             case "itemnbt":
