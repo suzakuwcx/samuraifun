@@ -1,10 +1,19 @@
 package Assert.Command;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -25,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 import Assert.Item.ItemDatabase;
 import FunctionBus.ItemBus;
 import FunctionBus.ServerBus;
-import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 
 public class CsolCommand implements CommandExecutor, TabCompleter {
@@ -166,10 +174,85 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
     }
 
 
+    private boolean onUpgradeCommand(CommandSender player, Command command, String label, String[] args) {
+        if (args.length != 2)
+            return false;
+
+        String path = ServerBus.getServerPath() + "/plugins/csol-1.0.jar.new";
+        String src = ServerBus.getServerPath() + "/plugins/csol-1.0.jar";
+
+        switch (args[1]) {
+            case "check":
+                MessageDigest digest = null;
+                try {
+                    digest = MessageDigest.getInstance("MD5");
+                } catch (NoSuchAlgorithmException e) {
+                    player.sendMessage(e.getMessage());
+                    return false;
+                }
+                    
+                try (FileInputStream fis = new FileInputStream(path)) {
+                    byte[] byteArray = new byte[1024];
+                    int bytesCount;
+                    while ((bytesCount = fis.read(byteArray)) != -1) {
+                        digest.update(byteArray, 0, bytesCount);
+                    }
+                } catch (IOException e) {
+                    player.sendMessage(e.getMessage());
+                    return false;
+                }
+        
+                byte[] bytes = digest.digest();
+                StringBuilder builder = new StringBuilder();
+                for (byte b : bytes) {
+                    builder.append(String.format("%02x", b));
+                }
+                player.sendMessage(builder.toString());
+                break;
+            case "replace":
+                try {
+                    Files.copy(Paths.get(path), Paths.get(src), StandardCopyOption.REPLACE_EXISTING);
+                    player.sendMessage("Success");
+                } catch (Exception e) {
+                    player.sendMessage(e.getMessage());
+                    return false;
+                }
+                break;
+            default:
+                Bukkit.getScheduler().runTaskAsynchronously(ServerBus.getPlugin(), () -> {
+                    try (BufferedInputStream in = new BufferedInputStream(new URL(args[1]).openStream());
+                        FileOutputStream out = new FileOutputStream(path)) {
+                        byte dataBuffer[] = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                            out.write(dataBuffer, 0, bytesRead);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    player.sendMessage("done");
+                });
+                break;
+        }
+
+        return true;
+    }
+
+
+    private List<String> onUpgradeTabComplete(Player player, Command cmd, String commandLabel, String[] args){
+        if (args.length == 2)
+            return Arrays.asList("check", "replace");
+
+        return null;
+    }
+
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
         switch (args[0]) {
+            case "upgrade":
+                return onUpgradeCommand(sender, command, label, args);
             default:
                 break;
         }
@@ -207,13 +290,15 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1)
-            return Arrays.asList("itemnbt", "itemdb", "log", "char", "os");
+            return Arrays.asList("itemnbt", "itemdb", "log", "char", "os", "upgrade");
 
         switch (args[0]) {
             case "itemnbt":
                 return onItemnbtTabComplete(player, command, label, args);
             case "log":
                 return onLogTabComplete(player, command, label, args);
+            case "upgrade":
+                return onUpgradeTabComplete(player, command, label, args);
             default:
                 return null;
         }
