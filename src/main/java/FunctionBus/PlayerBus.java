@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
@@ -121,5 +122,15 @@ public class PlayerBus {
             return false;
 
         return true;
+    }
+
+    private static final PotionEffect freeze_left_click_effect = new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 39, false, false);
+
+    public static void banPlayerLeftClickAnimation(Player player) {
+        freeze_left_click_effect.apply(player);
+    }
+
+    public static void unbanPlayerLeftClickAnimation(Player player) {
+        player.removePotionEffect(freeze_left_click_effect.getType());
     }
 }
