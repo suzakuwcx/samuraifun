@@ -27,9 +27,9 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.20.2-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.2.0-SNAPSHOT")
-    runtimeOnly ':paper-1.20.2-280'
+    runtimeOnly ':paper-1.20.4-485'
 }
 
 def targetJavaVersion = 17
