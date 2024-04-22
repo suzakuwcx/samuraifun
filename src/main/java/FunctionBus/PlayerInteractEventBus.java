@@ -5,10 +5,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.PlayerInventory;
 
-import Assert.Item.Taijutsu;
 import Assert.Item.Sword;
+import Assert.Item.Taijutsu;
 import Assert.Item.Gun.Rifle;
-import Task.AttackTask.DeflectTask;
+import Schedule.PlayerStateMachineSchedule;
 import Task.GunTask.RifleTask;
 
 public class PlayerInteractEventBus {
@@ -67,7 +67,7 @@ public class PlayerInteractEventBus {
     }
 
     public static void onPlayerBeginDefense(PlayerInteractEvent event) {
-        DeflectTask.execute(event.getPlayer());
+        PlayerStateMachineSchedule.player_defense_map.put(event.getPlayer().getUniqueId(), true);
     }
 
     public static boolean isPlayerBeginChargedBlow(PlayerInteractEvent event) {
@@ -76,6 +76,9 @@ public class PlayerInteractEventBus {
             return false;
 
         if (!Sword._instanceof(inventory.getItemInOffHand()))
+            return false;
+
+        if (event.getPlayer().getCooldown(inventory.getItemInMainHand().getType()) > 0)
             return false;
         
         return true;

@@ -3,6 +3,7 @@ package FunctionBus;
 import Assert.Item.Sword;
 import Assert.Item.Gun.Rifle;
 import DataBus.PlayerDataBus;
+import Schedule.PlayerStateMachineSchedule;
 import Task.GunTask.RifleTask;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
 
@@ -24,6 +25,6 @@ public class PlayerStopUsingItemEventBus {
     }
 
     public static void onPlayerStopDefense(PlayerStopUsingItemEvent event) {
-        // PlayerDataBus.playerStopDefense(event.getPlayer());
+        PlayerStateMachineSchedule.player_defense_map.put(event.getPlayer().getUniqueId(), false);
     }
 }

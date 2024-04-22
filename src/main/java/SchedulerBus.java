@@ -3,6 +3,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import FunctionBus.ServerBus;
 import Schedule.PlayerRealVelocityUpdateSchedule;
+import Schedule.PlayerStateMachineSchedule;
 import Schedule.PostureBarUpdateSchedule;
 
 public class SchedulerBus {
@@ -12,5 +13,6 @@ public class SchedulerBus {
     public static void run() {
         scler.runTaskTimer(plugin, new PlayerRealVelocityUpdateSchedule(), 0, 3);
         scler.runTaskTimer(plugin, new PostureBarUpdateSchedule(), 0, 1);
+        scler.runTaskTimer(plugin, new PlayerStateMachineSchedule(), 0, 1);
     }
 }
