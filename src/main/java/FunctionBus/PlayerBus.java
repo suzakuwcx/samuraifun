@@ -124,13 +124,11 @@ public class PlayerBus {
         return true;
     }
 
-    private static final PotionEffect freeze_left_click_effect = new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 39, false, false);
-
-    public static void banPlayerLeftClickAnimation(Player player) {
-        freeze_left_click_effect.apply(player);
+    public static void banPlayerLeftClickAnimation(Player player, int duration) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, duration, 39, false, false));
     }
 
-    public static void unbanPlayerLeftClickAnimation(Player player) {
-        player.removePotionEffect(freeze_left_click_effect.getType());
+    public static void banPlayerJump(Player player, int duration) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, duration, 128, false, false));
     }
 }
