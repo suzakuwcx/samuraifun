@@ -87,9 +87,16 @@ public class PostureBarUpdateSchedule implements Runnable {
         ScoreBoardBus.setPlayerScore(player.getName(), "hidden_posture", value);
     }
 
-    private static boolean isPostureMax(Player player) {
+    public static boolean isPostureMax(Player player) {
         int posture = getPlayerPosture(player);
         if (posture == MAX_POSTURE)
+            return true;
+
+        return false;
+    }
+
+    public static boolean isPostureEmpty(Player player) {
+        if (getPlayerPosture(player) == 0)
             return true;
 
         return false;
