@@ -14,11 +14,15 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,7 +38,10 @@ import org.jetbrains.annotations.Nullable;
 import Assert.Item.ItemDatabase;
 import FunctionBus.ItemBus;
 import FunctionBus.ServerBus;
+import Task.DelayTask;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.title.Title.Times;
 
 public class CsolCommand implements CommandExecutor, TabCompleter {
 
@@ -103,25 +110,62 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
     }
 
 
+    private List<String> onCharTabComplete(Player player, Command cmd, String commandLabel, String[] args){
+        if (args.length == 2)
+            return Arrays.asList("MESSAGE", "TITLE", "SUBTITLE", "ACTIONBAR", "BOSSBAR");
+        else
+            return Arrays.asList();
+    }
+
+
     private boolean onCharCommand(Player player, Command command, String label, String[] args) {
-        if (args.length != 2)
+        if (args.length != 3)
             return false;
 
-        String raw = args[1];
-        char ch;
+        String mode = args[1];
+        String raw = args[2];
+        char ch = ' ';
+        Title title;
+        BossBar bar;
 
         try {
             if (raw.startsWith("0x"))
                 ch = (char) Integer.parseInt(raw, 2, raw.length(), 16);
             else
                 ch = (char) Integer.parseInt(args[1], 16);
-
-            player.sendMessage(String.valueOf(ch));
         }
         catch (NumberFormatException e) {
             player.sendMessage(e.getMessage());
         }
-        
+
+
+        switch (mode) {
+            case "MESSAGE":
+                player.sendMessage(String.valueOf(ch));
+                break;
+            case "TITLE":
+                title = Title.title(Component.text(ch), Component.text(""), Times.times(Duration.ofSeconds(0), Duration.ofSeconds(40), Duration.ofSeconds(10)));
+                player.showTitle(title);
+                break;
+            case "SUBTITLE":
+                title = Title.title(Component.text(""), Component.text(ch), Times.times(Duration.ofSeconds(0), Duration.ofSeconds(40), Duration.ofSeconds(10)));
+                player.showTitle(title);
+                break;
+            case "ACTIONBAR":
+                player.sendActionBar(Component.text(ch));
+                break;
+            case "BOSSBAR":
+                bar = Bukkit.createBossBar(String.valueOf(ch), BarColor.RED, BarStyle.SOLID);
+                bar.addPlayer(player);
+                DelayTask.execute((argv) -> {
+                    BossBar b = (BossBar) argv[0];
+                    b.removeAll();
+                }, 300, bar);
+                break;
+            default:
+                return false;
+        }
+
         return true;
     }
 
@@ -297,6 +341,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                 return onItemnbtTabComplete(player, command, label, args);
             case "log":
                 return onLogTabComplete(player, command, label, args);
+            case "char":
+                return onCharTabComplete(player, command, label, args);
             case "upgrade":
                 return onUpgradeTabComplete(player, command, label, args);
             default:
