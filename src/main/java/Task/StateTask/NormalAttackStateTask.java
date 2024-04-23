@@ -4,9 +4,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
+import Assert.Entity.HidariDoSwipeAnimation;
+import Assert.Entity.KesagiriSwipeAnimation;
+import Assert.Entity.RightKiriageSwipeAnimation;
 import FunctionBus.PlayerBus;
 import Schedule.PlayerStateMachineSchedule;
+import Task.ModelTask.ItemDisplayAnimationTask;
 
 public class NormalAttackStateTask implements Runnable{
     private Player player;
@@ -14,6 +19,8 @@ public class NormalAttackStateTask implements Runnable{
     private int tick = 0;
     private int stage = 1;
     private boolean is_continue = false;
+
+    private final Vector axis = new Vector(0, 1, 0).rotateAroundZ(- Math.PI / 10).normalize();
 
     public NormalAttackStateTask(Player player) {
         this.player = player;
@@ -25,6 +32,11 @@ public class NormalAttackStateTask implements Runnable{
         else if (tick == 21) {
             player.setCooldown(Material.SHIELD, 6);
         } else if (tick <= 23) {
+            ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 4);
+            ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 3);
+            ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 2);
+            ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 1);
+            // ItemDisplayAnimationTask.execute(new SwordSwipeAnimation(player.getEyeLocation()), 4);
             player.sendMessage("阶段 1: 砍");
         } else if (tick == 24) {
             player.sendMessage("阶段 1: 伤害判定");
@@ -51,6 +63,10 @@ public class NormalAttackStateTask implements Runnable{
             player.setCooldown(Material.SHIELD, 6);
         } else if (tick < 9) {
             player.sendMessage("阶段 2: 砍");
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 4);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 3);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 2);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 1);
         } else if (tick == 9) {
             player.sendMessage("阶段 2: 伤害判定");
         } else if (tick < 14) {
@@ -74,6 +90,10 @@ public class NormalAttackStateTask implements Runnable{
             player.setCooldown(Material.SHIELD, 6);
         } else if (tick < 9) {
             player.sendMessage("阶段 3: 砍");
+            ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 4);
+            ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 3);
+            ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 2);
+            ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 1);
         } else if (tick == 9) {
             player.sendMessage("阶段 3: 伤害判定");
         } else if (tick < 14) {
@@ -97,6 +117,10 @@ public class NormalAttackStateTask implements Runnable{
             player.setCooldown(Material.SHIELD, 6);
         } else if (tick < 9) {
             player.sendMessage("阶段 4: 砍");
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 4);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 3);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 2);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 1);
         } else if (tick == 9) {
             player.sendMessage("阶段 4: 伤害判定");
         } else if (tick < 29) {
