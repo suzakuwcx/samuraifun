@@ -3,11 +3,11 @@ package Assert.Entity;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
-public class SpwanEntity<T extends Entity> {
+public class SpawnEntity<T extends Entity> {
     private Location location;
     private T entity;
 
-    public SpwanEntity(Location location, Class<T> clazz) {
+    public SpawnEntity(Location location, Class<T> clazz) {
         this.location = location;
 
         this.entity = location.getWorld().createEntity(location, clazz);

@@ -10,7 +10,7 @@ import org.joml.Vector3f;
 
 import Assert.Item.SwordSwipe;
 
-public class SwordSwipeAnimation extends SpwanEntity<ItemDisplay>{
+public class SwordSwipeAnimation extends SpawnEntity<ItemDisplay>{
     public SwordSwipeAnimation(Location location) {
         super(location, ItemDisplay.class);
 
