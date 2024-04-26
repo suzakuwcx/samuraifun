@@ -1,6 +1,5 @@
 package Assert.Item;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +15,7 @@ public class ItemDatabase {
         set.add(new Sword());
         set.add(new BackCompass());
         set.add(new Taijutsu());
+        set.add(new BattleFlag());
     }
 
     public static Set<ItemStack> getSet() {

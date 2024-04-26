@@ -1,16 +1,19 @@
 package FunctionBus;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 
+import Assert.Item.BattleFlag;
 import Assert.Item.Sword;
 import Assert.Item.Taijutsu;
 import Assert.Item.Gun.Rifle;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
+import Task.AttackTask.BattleFlagTask;
 import Task.GunTask.RifleTask;
 
 public class PlayerInteractEventBus {
@@ -107,5 +110,26 @@ public class PlayerInteractEventBus {
 
     public static void onPlayerBeginChargedBlow(PlayerInteractEvent event) {
         event.setCancelled(true);
+    }
+
+    public static boolean isPlayerUsingBattleFlag(PlayerInteractEvent event) {
+        Action action = event.getAction();
+
+        if (event.getHand() != EquipmentSlot.HAND)
+            return false;
+
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
+            return false;
+
+        if (!BattleFlag._instanceof(event.getPlayer().getInventory().getItemInMainHand()))
+            return false;
+
+        return true;
+    }
+
+
+    public static void onPlayerUsingBattleFlag(PlayerInteractEvent event) {
+        BattleFlagTask task = new BattleFlagTask(event.getPlayer().getLocation(), 400);
+        Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
     }
 }
