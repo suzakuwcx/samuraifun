@@ -18,6 +18,8 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -119,20 +121,33 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
 
 
     private boolean onCharCommand(Player player, Command command, String label, String[] args) {
-        if (args.length != 3)
+        if (args.length < 3)
             return false;
 
         String mode = args[1];
-        String raw = args[2];
+        String raw = "";
+
+        for (int i = 2; i < args.length - 1; ++i) {
+            raw += args[i];
+            raw += ' ';
+        }
+
+        raw += args[args.length - 1];
+        
+        Pattern pattern = Pattern.compile("0x([0-9A-Fa-f]{4})");
+        Matcher matcher = pattern.matcher(raw);
         char ch = ' ';
         Title title;
         BossBar bar;
 
+        StringBuffer result = new StringBuffer();
+
         try {
-            if (raw.startsWith("0x"))
-                ch = (char) Integer.parseInt(raw, 2, raw.length(), 16);
-            else
-                ch = (char) Integer.parseInt(args[1], 16);
+            while (matcher.find()) {
+                ch = (char) Integer.parseInt(matcher.group(1), 16);
+                matcher.appendReplacement(result, String.valueOf(ch));
+            }
+            matcher.appendTail(result);
         }
         catch (NumberFormatException e) {
             player.sendMessage(e.getMessage());
@@ -144,18 +159,18 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(String.valueOf(ch));
                 break;
             case "TITLE":
-                title = Title.title(Component.text(ch), Component.text(""), Times.times(Duration.ofSeconds(0), Duration.ofSeconds(40), Duration.ofSeconds(10)));
+                title = Title.title(Component.text(result.toString()), Component.text(""), Times.times(Duration.ofSeconds(0), Duration.ofSeconds(40), Duration.ofSeconds(10)));
                 player.showTitle(title);
                 break;
             case "SUBTITLE":
-                title = Title.title(Component.text(""), Component.text(ch), Times.times(Duration.ofSeconds(0), Duration.ofSeconds(40), Duration.ofSeconds(10)));
+                title = Title.title(Component.text(""), Component.text(result.toString()), Times.times(Duration.ofSeconds(0), Duration.ofSeconds(40), Duration.ofSeconds(10)));
                 player.showTitle(title);
                 break;
             case "ACTIONBAR":
-                player.sendActionBar(Component.text(ch));
+                player.sendActionBar(Component.text(result.toString()));
                 break;
             case "BOSSBAR":
-                bar = Bukkit.createBossBar(String.valueOf(ch), BarColor.RED, BarStyle.SOLID);
+                bar = Bukkit.createBossBar(String.valueOf(result.toString()), BarColor.RED, BarStyle.SOLID);
                 bar.addPlayer(player);
                 DelayTask.execute((argv) -> {
                     BossBar b = (BossBar) argv[0];
