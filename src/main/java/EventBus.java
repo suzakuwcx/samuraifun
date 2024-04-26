@@ -2,7 +2,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import FunctionBus.EntityDamageByEntityEventBus;
 import FunctionBus.InventoryClickEventBus;
+import FunctionBus.PlayerDropItemEventBus;
 import FunctionBus.PlayerInteractEventBus;
 import FunctionBus.PlayerItemHeldEventBus;
 import FunctionBus.PlayerJoinEventBus;
@@ -42,7 +43,9 @@ public class EventBus implements Listener {
 
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        if (PlayerInteractEventBus.isTargetBlockInteractAble(event)) {
+        if (PlayerInteractEventBus.isTriggeredByDropItemEvent(event)) {
+            PlayerInteractEventBus.onTriggeredByDropItemEvent(event);
+        } else if (PlayerInteractEventBus.isTargetBlockInteractAble(event)) {
             PlayerInteractEventBus.onTargetBlockInteractAble(event);
         } else if (PlayerInteractEventBus.isPlayerBeginUsingRifle(event)) {
             PlayerInteractEventBus.onPlayerBeginUsingRifle(event);
@@ -107,5 +110,10 @@ public class EventBus implements Listener {
     public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
         if (PlayerItemHeldEventBus.isPlayerInAdventure(event))
             PlayerItemHeldEventBus.onPlayerInAdventure(event);
+    }
+
+    @EventHandler
+    public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
+        PlayerDropItemEventBus.onBusTrigger(event);
     }
 }

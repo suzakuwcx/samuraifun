@@ -15,6 +15,7 @@ import FunctionBus.ServerBus;
 public class PlayerDataBus {
     private static Map<Player, ItemDisplay> item_display_mapper = new HashMap<>();
     private static Map<Player, Integer> player_slash_semaphore = new HashMap<>();
+    private static Map<Player, Integer> player_drop_item_semaphore = new HashMap<>();
 
     public static void addPlayerItemDisplay(Player player) {
         ItemDisplay display = (ItemDisplay) ServerBus.spawnServerEntity(player.getLocation(), EntityType.ITEM_DISPLAY, false);
@@ -59,6 +60,22 @@ public class PlayerDataBus {
         
         --sem;
         player_slash_semaphore.put(player, sem);
+        return true;
+    }
+
+    public static void downPlayerDropItem(Player player) {
+        int sem = player_drop_item_semaphore.getOrDefault(player, 0);
+        ++sem;
+        player_drop_item_semaphore.put(player, sem);
+    }
+
+    public static boolean upPlayerDropItem(Player player) {
+        int sem = player_drop_item_semaphore.getOrDefault(player, 0);
+        if (sem == 0)
+            return false;
+        
+        --sem;
+        player_drop_item_semaphore.put(player, sem);
         return true;
     }
 }

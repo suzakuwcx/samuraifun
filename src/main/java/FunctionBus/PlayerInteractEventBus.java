@@ -8,10 +8,22 @@ import org.bukkit.inventory.PlayerInventory;
 import Assert.Item.Sword;
 import Assert.Item.Taijutsu;
 import Assert.Item.Gun.Rifle;
+import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.GunTask.RifleTask;
 
 public class PlayerInteractEventBus {
+    public static boolean isTriggeredByDropItemEvent(PlayerInteractEvent event) {
+        if (!PlayerDataBus.upPlayerDropItem(event.getPlayer()))
+            return false;
+
+        return true;
+    }
+
+    public static void onTriggeredByDropItemEvent(PlayerInteractEvent event) {
+        
+    }
+
     public static boolean isTargetBlockInteractAble(PlayerInteractEvent event) {
         Action action = event.getAction();
         if (action != Action.RIGHT_CLICK_BLOCK)
