@@ -3,6 +3,7 @@ package FunctionBus;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 
 import Assert.Item.Sword;
@@ -84,6 +85,14 @@ public class PlayerInteractEventBus {
 
     public static boolean isPlayerBeginChargedBlow(PlayerInteractEvent event) {
         PlayerInventory inventory = event.getPlayer().getInventory();
+        Action action = event.getAction();
+
+        if (event.getHand() != EquipmentSlot.HAND)
+            return false;
+
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
+            return false;
+
         if (!Taijutsu._instanceof(inventory.getItemInMainHand()))
             return false;
 
