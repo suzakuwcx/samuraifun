@@ -35,7 +35,7 @@ public class PlayerInteractEventBus {
 
         if (action == Action.RIGHT_CLICK_BLOCK) {
             Player player = event.getPlayer();
-            if (!player.isSneaking() && event.getClickedBlock().getType().isInteractable())
+            if (!player.isSneaking() && !event.getClickedBlock().getType().isInteractable())
                 return false;
         }
 
