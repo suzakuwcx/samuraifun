@@ -8,12 +8,14 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
 
 import Assert.Item.BattleFlag;
+import Assert.Item.SmokingDarts;
 import Assert.Item.Sword;
 import Assert.Item.Taijutsu;
 import Assert.Item.Gun.Rifle;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.AttackTask.BattleFlagTask;
+import Task.AttackTask.SmokingDartsTask;
 import Task.GunTask.RifleTask;
 
 public class PlayerInteractEventBus {
@@ -130,6 +132,28 @@ public class PlayerInteractEventBus {
 
     public static void onPlayerUsingBattleFlag(PlayerInteractEvent event) {
         BattleFlagTask task = new BattleFlagTask(event.getPlayer().getLocation(), 400);
+        Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
+    }
+
+    
+    public static boolean isPlayerUsingSmokingDartsEntity(PlayerInteractEvent event) {
+        Action action = event.getAction();
+
+        if (event.getHand() != EquipmentSlot.HAND)
+            return false;
+
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
+            return false;
+
+        if (!SmokingDarts._instanceof(event.getPlayer().getInventory().getItemInMainHand()))
+            return false;
+
+        return true;
+    }
+
+
+    public static void onPlayerUsingSmokingDartsEntity(PlayerInteractEvent event) {
+        SmokingDartsTask task = new SmokingDartsTask(event.getPlayer().getEyeLocation(), 400);
         Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
     }
 }

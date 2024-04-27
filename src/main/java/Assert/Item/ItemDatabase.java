@@ -16,6 +16,7 @@ public class ItemDatabase {
         set.add(new BackCompass());
         set.add(new Taijutsu());
         set.add(new BattleFlag());
+        set.add(new SmokingDarts());
     }
 
     public static Set<ItemStack> getSet() {
