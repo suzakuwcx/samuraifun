@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import FunctionBus.EntityDamageByEntityEventBus;
 import FunctionBus.InventoryClickEventBus;
@@ -20,6 +21,7 @@ import FunctionBus.PlayerMoveEventBus;
 import FunctionBus.PlayerQuitEventBus;
 import FunctionBus.PlayerStopUsingItemEventBus;
 import FunctionBus.PlayerSwapHandItemsEventBus;
+import FunctionBus.PlayerToggleSneakEventBus;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
 
 public class EventBus implements Listener {    
@@ -119,5 +121,14 @@ public class EventBus implements Listener {
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         PlayerDropItemEventBus.onBusTrigger(event);
+    }
+
+    @EventHandler
+    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
+        if (PlayerToggleSneakEventBus.isPlayerPrepareDash(event)) {
+            PlayerToggleSneakEventBus.onPlayerPrepareDash(event);
+        } else if (PlayerToggleSneakEventBus.isPlayerDash(event)) {
+            PlayerToggleSneakEventBus.onPlayerDash(event);
+        }
     }
 }
