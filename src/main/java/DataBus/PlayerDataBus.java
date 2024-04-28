@@ -1,40 +1,39 @@
 package DataBus;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Transformation;
+import org.bukkit.entity.TextDisplay;
 
-import FunctionBus.ServerBus;
+import Assert.Entity.BloodRingEntity;
+import Assert.Entity.PostureRingEntity;
+import Assert.Entity.RingEntity;
+import Assert.Entity.SpawnEntity;
 
 public class PlayerDataBus {
-    private static Map<Player, ItemDisplay> item_display_mapper = new HashMap<>();
+    private static Map<Player, List<TextDisplay>> item_display_mapper = new HashMap<>();
     private static Map<Player, Integer> player_slash_semaphore = new HashMap<>();
     private static Map<Player, Integer> player_drop_item_semaphore = new HashMap<>();
 
     public static void addPlayerItemDisplay(Player player) {
-        ItemDisplay display = (ItemDisplay) ServerBus.spawnServerEntity(player.getLocation(), EntityType.ITEM_DISPLAY, false);
-        display.setItemStack(new ItemStack(Material.GOLDEN_SWORD));
-        display.setRotation(player.getYaw(), 0);
+        SpawnEntity<TextDisplay> display = new RingEntity(player.getLocation(), 0);
+        SpawnEntity<TextDisplay> blood = new BloodRingEntity(player.getLocation(), 0);
+        SpawnEntity<TextDisplay> posture = new PostureRingEntity(player.getLocation(), 0);
+        display.spwan();
+        blood.spwan();
+        posture.spwan();
 
-        Transformation transformation = display.getTransformation();
-        transformation.getTranslation().set(0, -0.6875, -0.375);
-        transformation.getLeftRotation().set(0f, 0f, 0.9659242f, 0.2588251f);
-        transformation.getRightRotation().set(0f, 0f, 0f, 1f);
-        transformation.getScale().set(0.75, 0.75, 0.5625);
-        display.setTransformation(transformation);
+        item_display_mapper.put(player, Arrays.asList(display.getEntity(), blood.getEntity(), posture.getEntity()));
 
-        item_display_mapper.put(player, display);
-
-        player.addPassenger(display);
+        player.addPassenger(display.getEntity());
+        player.addPassenger(blood.getEntity());
+        player.addPassenger(posture.getEntity());
     }
 
-    public static ItemDisplay getPlayerItemDisplay(Player player) {
+    public static List<TextDisplay> getPlayerItemDisplay(Player player) {
         if (!item_display_mapper.containsKey(player))
             addPlayerItemDisplay(player);
 
@@ -42,9 +41,10 @@ public class PlayerDataBus {
     }
 
     public static void removePlayerItemDisplay(Player player) {
-        ItemDisplay display = item_display_mapper.remove(player);
-        player.removePassenger(display);
-        display.remove();
+        for (TextDisplay display: item_display_mapper.remove(player)) {
+            player.removePassenger(display);
+            display.remove();
+        }
     }
 
     public static void downPlayerSlash(Player player) {
