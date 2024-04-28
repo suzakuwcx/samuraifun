@@ -58,7 +58,7 @@ public class SmokingDartsTask implements Runnable {
             --delay_tick;
         if (delay_tick < 0) {
             --tick;
-            ServerBus.spawnServerDustParticle(location, 20, 4, 2, 4, new DustOptions(Color.WHITE, 50.0f));
+            ServerBus.spawnServerDustParticle(location, 15, 2, 2, 2, new DustOptions(Color.WHITE, 75.0f));
         }
 
         
