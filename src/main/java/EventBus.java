@@ -61,6 +61,8 @@ public class EventBus implements Listener {
             PlayerInteractEventBus.onPlayerUsingBattleFlag(event);
         } else if (PlayerInteractEventBus.isPlayerUsingSmokingDartsEntity(event)) {
             PlayerInteractEventBus.onPlayerUsingSmokingDartsEntity(event);
+        } else if (PlayerInteractEventBus.isPlayerUsingMatchlock(event)) {
+            PlayerInteractEventBus.onPlayerUsingMatchlock(event);
         }
     }
 

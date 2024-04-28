@@ -20,8 +20,10 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -92,6 +94,14 @@ public class ServerBus {
             drop_item = player.getWorld().dropItem(player.getLocation(), to_drop_items.get(i));
             drop_item.setVelocity(drop_item.getVelocity().zero());
         }
+    }
+
+    public static RayTraceResult rayTraceEntities(Location location, Vector direction, double distance) {
+        return location.getWorld().rayTraceEntities(location, direction, distance);
+    }
+
+    public static <T extends Entity> RayTraceResult rayTraceEntities(Location location, Vector direction, double distance, double deviation, EntityType type) {
+        return location.getWorld().rayTraceEntities(location, direction, distance, deviation, e -> (e.getType() == type));
     }
 
     public static void runCommand(String command) {

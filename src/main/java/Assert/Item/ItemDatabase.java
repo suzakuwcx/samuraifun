@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.inventory.ItemStack;
 
+import Assert.Item.Gun.Matchlock;
 import Assert.Item.Gun.Rifle;
 
 public class ItemDatabase {
@@ -17,6 +18,7 @@ public class ItemDatabase {
         set.add(new Taijutsu());
         set.add(new BattleFlag());
         set.add(new SmokingDarts());
+        set.add(new Matchlock());
     }
 
     public static Set<ItemStack> getSet() {

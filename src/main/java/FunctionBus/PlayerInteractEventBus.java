@@ -1,21 +1,27 @@
 package FunctionBus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
 
 import Assert.Item.BattleFlag;
 import Assert.Item.SmokingDarts;
 import Assert.Item.Sword;
 import Assert.Item.Taijutsu;
+import Assert.Item.Gun.Matchlock;
 import Assert.Item.Gun.Rifle;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
+import Task.DelayTask;
 import Task.AttackTask.BattleFlagTask;
 import Task.AttackTask.SmokingDartsTask;
+import Task.GunTask.RecoilTask;
 import Task.GunTask.RifleTask;
 
 public class PlayerInteractEventBus {
@@ -155,5 +161,37 @@ public class PlayerInteractEventBus {
     public static void onPlayerUsingSmokingDartsEntity(PlayerInteractEvent event) {
         SmokingDartsTask task = new SmokingDartsTask(event.getPlayer().getEyeLocation(), 400);
         Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
+    }
+
+    public static boolean isPlayerUsingMatchlock(PlayerInteractEvent event) {
+        Action action = event.getAction();
+
+        if (event.getHand() != EquipmentSlot.HAND)
+            return false;
+
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
+            return false;
+
+        if (!Matchlock._instanceof(event.getPlayer().getInventory().getItemInMainHand()))
+            return false;
+
+        return true;
+    }
+
+    
+    public static void onPlayerUsingMatchlock(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Location location = player.getEyeLocation();
+        RayTraceResult result = ServerBus.rayTraceEntities(location, location.getDirection(), 35);
+        RecoilTask.execute(event.getPlayer(), 0, -16f, 4);
+        DelayTask.execute((args) -> {
+            RecoilTask.execute((Player) args[0], 0, 12f, 10);
+        }, 4, event.getPlayer());
+
+        if (result == null)
+            return;
+
+        Vector velocity = location.toVector().clone().subtract(result.getHitPosition()).normalize().multiply(0.5);
+        result.getHitEntity().setVelocity(velocity);
     }
 }
