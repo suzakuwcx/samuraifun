@@ -13,7 +13,7 @@ public class LeftKiriageSwipeAnimation extends SwordSwipeAnimation {
         display.setTransformation(
             new Transformation(
                 mation.getTranslation().mul(-1).add(0, 0.4f, 0),
-                mation.getLeftRotation().rotateLocalZ((float) (Math.PI - 0.4)),
+                mation.getLeftRotation().rotateLocalZ((float) (Math.PI - 0.3)),
                 mation.getScale(),
                 mation.getRightRotation()
             )
