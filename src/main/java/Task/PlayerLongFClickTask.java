@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -38,12 +39,13 @@ public class PlayerLongFClickTask implements Runnable {
             if (is_execute)
                 return this;
 
+            task.max_tick = tick;
             task.tick = tick;
 
             return this;
         }
 
-        public Builder setCastingFunction(Consumer<Object[]> function, Object... stacks) {
+        public Builder setCastingFunction(BiConsumer<Object[], Integer> function, Object... stacks) {
             if (is_execute)
                 return this;
 
@@ -53,7 +55,7 @@ public class PlayerLongFClickTask implements Runnable {
             return this;
         }
 
-        public Builder setShortPressFunction(Consumer<Object[]> function, Object... stacks) {
+        public Builder setShortPressFunction(BiConsumer<Object[], Integer> function, Object... stacks) {
             if (is_execute)
                 return this;
 
@@ -84,16 +86,17 @@ public class PlayerLongFClickTask implements Runnable {
     }
 
     private Player player;
+    private int max_tick;
     private int tick;
 
     private Object[] casting_stacks;
-    private Consumer<Object[]> casting_function;
+    private BiConsumer<Object[], Integer> casting_function;
 
     private Object[] long_press_stacks;
     private Consumer<Object[]> long_press_function;
 
     private Object[] short_press_stacks;
-    private Consumer<Object[]> short_press_function;
+    private BiConsumer<Object[], Integer> short_press_function;
 
     private long last_time;
 
@@ -139,13 +142,13 @@ public class PlayerLongFClickTask implements Runnable {
     private void short_press() {
         task_mapper.remove(player.getUniqueId());
         if (short_press_function != null)
-            short_press_function.accept(short_press_stacks);
+            short_press_function.accept(short_press_stacks, max_tick);
     }
 
     @Override
     public void run() {
         if (casting_function != null)
-            casting_function.accept(casting_stacks);
+            casting_function.accept(casting_stacks, max_tick - tick);
 
         --tick;
         --period_tick_count;
