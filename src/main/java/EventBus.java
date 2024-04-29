@@ -55,8 +55,6 @@ public class EventBus implements Listener {
             PlayerInteractEventBus.onPlayerSlash(event);
         } else if (PlayerInteractEventBus.isPlayerBeginDefense(event)) {
             PlayerInteractEventBus.onPlayerBeginDefense(event);
-        } else if (PlayerInteractEventBus.isPlayerBeginChargedBlow(event)) {
-            PlayerInteractEventBus.onPlayerBeginChargedBlow(event);
         } else if (PlayerInteractEventBus.isPlayerUsingBattleFlag(event)) {
             PlayerInteractEventBus.onPlayerUsingBattleFlag(event);
         } else if (PlayerInteractEventBus.isPlayerUsingSmokingDartsEntity(event)) {
@@ -98,12 +96,6 @@ public class EventBus implements Listener {
     @EventHandler
     public void onPlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent event) {
         PlayerSwapHandItemsEventBus.onBusTrigger(event);
-
-        if (PlayerSwapHandItemsEventBus.isPlayerSwitchBodyMode(event)) {
-            PlayerSwapHandItemsEventBus.onPlayerSwitchBodyMode(event);
-        } else if (PlayerSwapHandItemsEventBus.isPlayerSwitchSwordMode(event)) {
-            PlayerSwapHandItemsEventBus.onPlayerSwitchSwordMode(event);
-        }
 
         PlayerSwapHandItemsEventBus.onBusComplete(event);
     }

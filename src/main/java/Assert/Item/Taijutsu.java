@@ -1,12 +1,12 @@
 package Assert.Item;
 
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import net.kyori.adventure.text.Component;
 
+@Deprecated
 public class Taijutsu extends ItemStack {
     public static Component display_name;
     public static Material material;

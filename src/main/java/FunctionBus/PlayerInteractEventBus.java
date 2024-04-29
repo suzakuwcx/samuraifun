@@ -94,6 +94,7 @@ public class PlayerInteractEventBus {
         PlayerStateMachineSchedule.player_defense_map.put(event.getPlayer().getUniqueId(), true);
     }
 
+    @Deprecated
     public static boolean isPlayerBeginChargedBlow(PlayerInteractEvent event) {
         PlayerInventory inventory = event.getPlayer().getInventory();
         Action action = event.getAction();
@@ -116,6 +117,7 @@ public class PlayerInteractEventBus {
         return true;
     }
 
+    @Deprecated
     public static void onPlayerBeginChargedBlow(PlayerInteractEvent event) {
         event.setCancelled(true);
     }
