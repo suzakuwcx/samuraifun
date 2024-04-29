@@ -1,6 +1,9 @@
 package FunctionBus;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import Assert.Config.PlayerConfig;
 import DataBus.PlayerDataBus;
@@ -8,8 +11,11 @@ import Schedule.PlayerStateMachineSchedule;
 
 public class PlayerJoinEventBus {
     public static void onBusTrigger(PlayerJoinEvent event) {
-        PlayerDataBus.addPlayerItemDisplay(event.getPlayer());
-        event.getPlayer().setShieldBlockingDelay(PlayerConfig.DEFLECT_TICK);
+        Player player = event.getPlayer();
+        PlayerDataBus.addPlayerItemDisplay(player);
+        player.setShieldBlockingDelay(PlayerConfig.DEFLECT_TICK);
+        player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 40));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40));
 
         PlayerStateMachineSchedule.init(event.getPlayer());
     }
