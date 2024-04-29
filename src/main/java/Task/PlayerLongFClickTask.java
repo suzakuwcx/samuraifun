@@ -142,7 +142,7 @@ public class PlayerLongFClickTask implements Runnable {
     private void short_press() {
         task_mapper.remove(player.getUniqueId());
         if (short_press_function != null)
-            short_press_function.accept(short_press_stacks, max_tick);
+            short_press_function.accept(short_press_stacks, max_tick - tick);
     }
 
     @Override
