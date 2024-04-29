@@ -3,8 +3,9 @@ package Task.StateTask;
 import org.bukkit.entity.Player;
 
 import Schedule.PlayerStateMachineSchedule;
+import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
 
-public class DefenseStateTask implements Runnable {
+public class DefenseStateTask extends BaseStateTask {
     private Player player;
 
     private int tick = 0;
@@ -13,22 +14,13 @@ public class DefenseStateTask implements Runnable {
         this.player = player;
     }
 
-    private boolean isPlayerStopDefense() {
-        if (PlayerStateMachineSchedule.player_defense_map.get(player.getUniqueId()))
-            return false;
-
-        return true;
-    }
-
-    public void onPlayerStopDefense() {
-        PlayerStateMachineSchedule.player_state_map.put(player.getUniqueId(), new NormalStateTask(player));
+    @Override
+    public void onPlayerStopUsingItemEvent(PlayerStopUsingItemEvent event) {
+        PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new NormalStateTask(event.getPlayer()));
     }
 
     @Override
     public void run() {
-        if (isPlayerStopDefense()) {
-            onPlayerStopDefense();
-        }
         player.sendMessage("防御");
     }
 }

@@ -2,7 +2,6 @@ package FunctionBus;
 
 import Assert.Item.Sword;
 import Assert.Item.Gun.Rifle;
-import Schedule.PlayerStateMachineSchedule;
 import Task.GunTask.RifleTask;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
 
@@ -21,9 +20,5 @@ public class PlayerStopUsingItemEventBus {
         if (!Sword._instanceof(event.getPlayer().getInventory().getItemInMainHand()))
             return false;
         return true;
-    }
-
-    public static void onPlayerStopDefense(PlayerStopUsingItemEvent event) {
-        PlayerStateMachineSchedule.player_defense_map.put(event.getPlayer().getUniqueId(), false);
     }
 }

@@ -6,7 +6,6 @@ import org.bukkit.entity.Zombie;
 
 import Assert.Config.PlayerConfig;
 import DataBus.PlayerDataBus;
-import Schedule.PlayerStateMachineSchedule;
 import Task.SwipeTask.KiriotoshiTask;
 
 public class PlayerSlashBus {
@@ -40,8 +39,6 @@ public class PlayerSlashBus {
 
     public static void onPlayerCommonAttack(Player player) {
         double range = PlayerConfig.BASIC_ATTACK_RANGE * player.getAttackCooldown();
-
-        PlayerStateMachineSchedule.player_leftclick_map.put(player.getUniqueId(), true);
     }
 
     public static void onPlayerSlash(Player player) {

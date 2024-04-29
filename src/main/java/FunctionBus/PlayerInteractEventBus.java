@@ -17,7 +17,6 @@ import Assert.Item.Taijutsu;
 import Assert.Item.Gun.Matchlock;
 import Assert.Item.Gun.Rifle;
 import DataBus.PlayerDataBus;
-import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 import Task.AttackTask.BattleFlagTask;
 import Task.AttackTask.SmokingDartsTask;
@@ -78,20 +77,6 @@ public class PlayerInteractEventBus {
 
     public static void onPlayerSlash(PlayerInteractEvent event) {
         PlayerSlashBus.onPlayerSlash(event.getPlayer());
-    }
-
-    public static boolean isPlayerBeginDefense(PlayerInteractEvent event) {
-        Action action = event.getAction();
-        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
-            return false;
-
-        if (!Sword._instanceof(event.getPlayer().getInventory().getItemInMainHand()))
-            return false;
-        return true;
-    }
-
-    public static void onPlayerBeginDefense(PlayerInteractEvent event) {
-        PlayerStateMachineSchedule.player_defense_map.put(event.getPlayer().getUniqueId(), true);
     }
 
     @Deprecated

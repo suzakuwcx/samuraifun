@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
 import Assert.Item.Sword;
-import DataBus.PlayerDataBus;
+import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 import Task.AttackTask.DeflectTask;
 
@@ -20,16 +20,15 @@ public class EntityDamageByEntityEventBus {
         Player player = (Player) event.getDamager();
         if (!Sword._instanceof(player.getInventory().getItemInMainHand()))
             return false;
-
-        if (PlayerDataBus.upPlayerSlash(player))
-            return false;
         
         return true;
     }
 
     public static void onPlayerSlash(EntityDamageByEntityEvent event) {
-        event.setCancelled(true);
-        PlayerSlashBus.onPlayerSlash((Player) event.getDamager());
+        Player player = (Player) event.getDamager();
+        if (PlayerStateMachineSchedule.getStateTask(player).isStateEvent(event)) {
+            PlayerStateMachineSchedule.getStateTask(player).onEntityDamageByEntityEvent(event);
+        }
     }
 
     public static boolean isPlayerDefense(EntityDamageByEntityEvent event) {

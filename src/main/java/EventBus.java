@@ -22,6 +22,7 @@ import FunctionBus.PlayerQuitEventBus;
 import FunctionBus.PlayerStopUsingItemEventBus;
 import FunctionBus.PlayerSwapHandItemsEventBus;
 import FunctionBus.PlayerToggleSneakEventBus;
+import Schedule.PlayerStateMachineSchedule;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
 
 public class EventBus implements Listener {    
@@ -51,16 +52,14 @@ public class EventBus implements Listener {
             PlayerInteractEventBus.onTargetBlockInteractAble(event);
         } else if (PlayerInteractEventBus.isPlayerBeginUsingRifle(event)) {
             PlayerInteractEventBus.onPlayerBeginUsingRifle(event);
-        } else if (PlayerInteractEventBus.isPlayerSlash(event)) {
-            PlayerInteractEventBus.onPlayerSlash(event);
-        } else if (PlayerInteractEventBus.isPlayerBeginDefense(event)) {
-            PlayerInteractEventBus.onPlayerBeginDefense(event);
         } else if (PlayerInteractEventBus.isPlayerUsingBattleFlag(event)) {
             PlayerInteractEventBus.onPlayerUsingBattleFlag(event);
         } else if (PlayerInteractEventBus.isPlayerUsingSmokingDartsEntity(event)) {
             PlayerInteractEventBus.onPlayerUsingSmokingDartsEntity(event);
         } else if (PlayerInteractEventBus.isPlayerUsingMatchlock(event)) {
             PlayerInteractEventBus.onPlayerUsingMatchlock(event);
+        } else if (PlayerStateMachineSchedule.getStateTask(event.getPlayer()).isStateEvent(event)) {
+            PlayerStateMachineSchedule.getStateTask(event.getPlayer()).onPlayerInteractEvent(event);
         }
     }
 
@@ -69,8 +68,8 @@ public class EventBus implements Listener {
     public void onPlayerStopUsingItemEvent(PlayerStopUsingItemEvent event) {
         if (PlayerStopUsingItemEventBus.isPlayerStopUsingRifle(event)) {
             PlayerStopUsingItemEventBus.onPlayerStopUsingRifle(event);
-        } else if (PlayerStopUsingItemEventBus.isPlayerStopDefense(event)) {
-            PlayerStopUsingItemEventBus.onPlayerStopDefense(event);
+        } else if (PlayerStateMachineSchedule.getStateTask(event.getPlayer()).isStateEvent(event)) {
+            PlayerStateMachineSchedule.getStateTask(event.getPlayer()).onPlayerStopUsingItemEvent(event);
         }
     }
 
@@ -84,18 +83,16 @@ public class EventBus implements Listener {
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         if (EntityDamageByEntityEventBus.isPlayerSlash(event)) {
             EntityDamageByEntityEventBus.onPlayerSlash(event);
-        } else if (EntityDamageByEntityEventBus.isPlayerDefense(event)) {
-            EntityDamageByEntityEventBus.onPlayerDefense(event);
-        } else if (EntityDamageByEntityEventBus.isPlayerDeflect(event)) {
-            EntityDamageByEntityEventBus.onPlayerDeflect(event);
-        } else if (EntityDamageByEntityEventBus.isPlayerAttackNoInvincibleFrameEntity(event)) {
-            EntityDamageByEntityEventBus.onPlayerAttackNoInvincibleFrameEntity(event);
         }
     }
 
     @EventHandler
     public void onPlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent event) {
         PlayerSwapHandItemsEventBus.onBusTrigger(event);
+
+        if (PlayerStateMachineSchedule.getStateTask(event.getPlayer()).isStateEvent(event)) {
+            PlayerStateMachineSchedule.getStateTask(event.getPlayer()).onPlayerSwapHandItemsEvent(event);
+        }
 
         PlayerSwapHandItemsEventBus.onBusComplete(event);
     }
