@@ -1,5 +1,7 @@
 package Schedule;
 
+import java.time.Duration;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -11,6 +13,8 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.title.Title.Times;
 
 public class PlayerUISchedule implements Runnable {
     private static BossBar hinibar;
@@ -20,7 +24,7 @@ public class PlayerUISchedule implements Runnable {
         timebar = BossBar.bossBar(Component.text(""), 1f, Color.RED, Overlay.PROGRESS);
 
         hinibar = BossBar.bossBar(Component.text(
-            String.format("%c 攻击 %c 震刀 %c 防御 %c 重击 %c 收/拔刀 %c 垫步",
+            String.format("%c 攻击 %c 振刀 %c 防御 %c 重击 %c 收/拔刀 %c 垫步",
                 FontDatabase.HINI_LEFT_CLICK,
                 FontDatabase.HINI_RIGHT_CLICK,
                 FontDatabase.HINI_LONG_RIGHT_CLICK,
@@ -75,8 +79,15 @@ public class PlayerUISchedule implements Runnable {
         PlayerDataBus.getPlayerPostureDisplay(player).text(Component.text(FontDatabase.getRingFont(FontDatabase.POSTURE_RING_BASE, state.posture)));
     }
 
-    private void updateTime() {
+    private void updateTitle(Player player, State state) {
+        Component title = Component.text("");
+        Component subtitle;
+        if (state.charging <= 0)
+            subtitle = Component.text("");
+        else
+            subtitle = Component.text(FontDatabase.getChargingAttackFont(state.charging));
 
+        player.showTitle(Title.title(title, subtitle, Times.times(Duration.ofSeconds(0), Duration.ofSeconds(40), Duration.ofSeconds(10))));
     }
 
     @Override
@@ -86,7 +97,7 @@ public class PlayerUISchedule implements Runnable {
             state = PlayerStateMachineSchedule.getPlayerState(player);
             updateActionBar(player, state);
             updateRing(player, state);
-            updateTime();
+            updateTitle(player, state);
         }
     }
 

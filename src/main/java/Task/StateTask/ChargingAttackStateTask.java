@@ -6,6 +6,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import Assert.Config.State;
 import FunctionBus.PlayerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.PlayerLongFClickTask;
@@ -24,31 +25,30 @@ public class ChargingAttackStateTask extends BaseStateTask {
         Player player = event.getPlayer();
         PlayerLongFClickTask.execute(player).setTick(10000000).setShortPressFunction((args, t) -> {
             Player p = (Player) args[0];
+            State state = PlayerStateMachineSchedule.getPlayerState(player);
 
             if (!(PlayerStateMachineSchedule.getStateTask(p) instanceof ChargingAttackStateTask))
                 return;
 
-            if (t < 20)
+            if (t < 21)
                 p.sendMessage("蓄力攻击 0");
-            else if (t < 40)
+            else if (t < 41)
                 p.sendMessage("蓄力攻击 1");
-            else if (t < 60)
+            else if (t < 61)
                 p.sendMessage("蓄力攻击 2");
             else
                 p.sendMessage("蓄力攻击 3");
 
+            state.charging = 0;
+
             PlayerStateMachineSchedule.setStateTask(p, new NormalStateTask(p));
         }, player).setCastingFunction((args, t2) -> {
             Player p2 = (Player) args[0];
+            State state = PlayerStateMachineSchedule.getPlayerState(player);
 
-            if (t2 < 20)
-                p2.sendMessage("重击蓄力 0");
-            else if (t2 < 40)
-                p2.sendMessage("重击蓄力 1");
-            else if (t2 < 60)
-                p2.sendMessage("重击蓄力 2");
-            else
-                p2.sendMessage("重击蓄力 3");
+            if (t2 <= 80)
+                state.charging = t2 / 2;
+
 
         }, player).execute();
     }

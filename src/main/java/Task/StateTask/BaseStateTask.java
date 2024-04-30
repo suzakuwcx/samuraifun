@@ -39,7 +39,7 @@ public abstract class BaseStateTask implements Runnable {
     }
 
     public boolean isStateEvent(PlayerSwapHandItemsEvent event) {
-        if (!Sword._instanceof(event.getMainHandItem()))
+        if (!Sword._instanceof(event.getPlayer().getInventory().getItemInMainHand()))
             return false;
 
         return true;
