@@ -6,7 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import net.kyori.adventure.text.Component;
 
-public class Sword extends ItemStack{
+public class Sword extends ItemStack {
     public static Component display_name;
     public static Material material;
 
@@ -16,13 +16,17 @@ public class Sword extends ItemStack{
     }
 
     public Sword() {
+        this(1001);
+    }
+
+    public Sword(int date) {
         super(material);
 
         ItemMeta meta = this.getItemMeta();
 
         meta.displayName(display_name);
         meta.setUnbreakable(true);
-        meta.setCustomModelData(1);
+        meta.setCustomModelData(date);
         this.setItemMeta(meta);
     }
 
@@ -34,5 +38,10 @@ public class Sword extends ItemStack{
         else if (!(display_name.equals(meta.displayName())))
             return false;
         return true;
+    }
+
+
+    public static Material _getType() {
+        return material;
     }
 }

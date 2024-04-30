@@ -26,7 +26,7 @@ public class PlayerSwapHandItemsEventBus {
     public static void onPlayerSwitchBodyMode(PlayerSwapHandItemsEvent event) {
         event.setCancelled(false);
         event.setMainHandItem(new Taijutsu());
-        event.getPlayer().setCooldown(new Sword().getType(), 50000);
+        event.getPlayer().setCooldown(Sword._getType(), 50000);
     }
 
     @Deprecated
@@ -42,7 +42,7 @@ public class PlayerSwapHandItemsEventBus {
     public static void onPlayerSwitchSwordMode(PlayerSwapHandItemsEvent event) {
         event.setCancelled(false);
         event.setOffHandItem(new ItemStack(Material.AIR));
-        event.getPlayer().setCooldown(new Sword().getType(), 0);
+        event.getPlayer().setCooldown(Sword._getType(), 0);
     }
 
     public static void onBusComplete(PlayerSwapHandItemsEvent event) {
