@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
@@ -130,5 +131,11 @@ public class PlayerBus {
 
     public static void banPlayerJump(Player player, int duration) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, duration, 128, false, false));
+    }
+
+    public static void setPlayerInventoryList(Player player, ItemStack item, int... slots) {
+        Inventory inventory = player.getInventory();
+        for (int i : slots)
+            inventory.setItem(i, item);
     }
 }

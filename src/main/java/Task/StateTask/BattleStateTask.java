@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import Assert.Config.State;
 import Assert.Item.Sword;
+import FunctionBus.PlayerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 
@@ -68,16 +69,12 @@ public class BattleStateTask extends BaseStateTask {
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
-            p.getInventory().setItem(0, new Sword(1002));
-            p.getInventory().setItem(3, new Sword(1002));
-            p.getInventory().setItem(6, new Sword(1002));
+            PlayerBus.setPlayerInventoryList(p, new Sword(1002), 0, 3, 6);
         }, 2, event.getPlayer());
 
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
-            p.getInventory().setItem(0, new Sword(1001));
-            p.getInventory().setItem(3, new Sword(1001));
-            p.getInventory().setItem(6, new Sword(1001));
+            PlayerBus.setPlayerInventoryList(p, new Sword(1001), 0, 3, 6);
         }, 4, event.getPlayer());
         PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new NormalStateTask(event.getPlayer()));
     }
