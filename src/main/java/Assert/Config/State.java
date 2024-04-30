@@ -16,6 +16,13 @@ public class State {
     
     public BaseStateTask state;
 
+    public int health = 7;
+    public int posture = 7;
+    public Role role = Role.SAMURAI;
+    public int sword_cooldown = 12;
+    public int bow_cooldown = 12;
+    public int skill_cooldown = 12;
+
     public State(Player player) {
         state = new NormalStateTask(player);
     }

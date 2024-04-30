@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import Assert.Font.FontDatabase;
 import net.kyori.adventure.text.Component;
 
 public class BattleFlag extends ItemStack {
@@ -12,7 +13,7 @@ public class BattleFlag extends ItemStack {
     private static int custom_mode_data;
 
     static {
-        display_name = Component.text("");
+        display_name = Component.text(String.format("%c%c%c", FontDatabase.SWORD_NO_CHOSEN, FontDatabase.SKILL_ITEM_CHOSEN, FontDatabase.BOW_NO_CHOSEN));
         material = Material.BRICK;
         custom_mode_data = 1;
     }

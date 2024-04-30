@@ -8,6 +8,7 @@ import org.bukkit.potion.PotionEffectType;
 import Assert.Config.PlayerConfig;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
+import Schedule.PlayerUISchedule;
 
 public class PlayerJoinEventBus {
     public static void onBusTrigger(PlayerJoinEvent event) {
@@ -18,6 +19,7 @@ public class PlayerJoinEventBus {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40));
 
         PlayerStateMachineSchedule.init(event.getPlayer());
+        PlayerUISchedule.init(player);
     }
 
     public static void onBusComplete(PlayerJoinEvent event) {

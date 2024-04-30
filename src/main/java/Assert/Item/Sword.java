@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import Assert.Font.FontDatabase;
 import net.kyori.adventure.text.Component;
 
 public class Sword extends ItemStack {
@@ -11,7 +12,7 @@ public class Sword extends ItemStack {
     public static Material material;
 
     static {
-        display_name = Component.text("Furinkazan");
+        display_name = Component.text(String.format("%c%c%c", FontDatabase.SWORD_CHOSEN, FontDatabase.SKILL_ITEM_NO_CHOSEN, FontDatabase.BOW_NO_CHOSEN));
         material = Material.SHIELD;
     }
 

@@ -21,12 +21,34 @@ public class PlayerStateMachineSchedule implements Runnable {
         player_state_map.put(player.getUniqueId(), new State(player));
     }
 
+    public static State getPlayerState(Player player) {
+        return player_state_map.get(player.getUniqueId());
+    }
+
     public static BaseStateTask getStateTask(Player player) {
-        return player_state_map.get(player.getUniqueId()).state;
+        return getPlayerState(player).state;
     }
 
     public static void setStateTask(Player player, BaseStateTask task) {
-        player_state_map.get(player.getUniqueId()).state = task;
+        getPlayerState(player).state = task;
+    }
+
+    private static int noMinusDecrease(int arg, int value) {
+        int ret = arg - value;
+        if (ret < 0)
+            return 0;
+        
+        return ret;
+    }
+
+    public static void damageHealth(Player player, int damage) {
+        State state = getPlayerState(player);
+        state.health = noMinusDecrease(state.health, damage);
+    }
+
+    public static void damagePosture(Player player, int damage) {
+        State state = getPlayerState(player);
+        state.posture = noMinusDecrease(state.health, damage);
     }
 
     @Override

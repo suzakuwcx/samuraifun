@@ -40,6 +40,18 @@ public class PlayerDataBus {
         return item_display_mapper.get(player);
     }
 
+    public static TextDisplay getPlayerRingDisplay(Player player) {
+        return getPlayerItemDisplay(player).get(0);
+    }
+
+    public static TextDisplay getPlayerHealthDisplay(Player player) {
+        return getPlayerItemDisplay(player).get(1);
+    }
+
+    public static TextDisplay getPlayerPostureDisplay(Player player) {
+        return getPlayerItemDisplay(player).get(2);
+    }
+
     public static void removePlayerItemDisplay(Player player) {
         for (TextDisplay display: item_display_mapper.remove(player)) {
             player.removePassenger(display);

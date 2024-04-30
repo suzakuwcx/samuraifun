@@ -15,6 +15,7 @@ import FunctionBus.ScoreBoardBus;
 import FunctionBus.ServerBus;
 import net.kyori.adventure.text.Component;
 
+@Deprecated
 public class PostureBarUpdateSchedule implements Runnable {
     private static final int MAX_POSTURE = 250;
     private static final int TICK_LOOP = 8;
