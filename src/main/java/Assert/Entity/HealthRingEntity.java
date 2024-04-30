@@ -10,10 +10,10 @@ import org.joml.Vector3f;
 
 import net.kyori.adventure.text.Component;
 
-public class BloodRingEntity extends SpawnEntity<TextDisplay> {
+public class HealthRingEntity extends SpawnEntity<TextDisplay> {
     private static final char base = 0xea14;
 
-    public BloodRingEntity(Location location, int status) {
+    public HealthRingEntity(Location location, int status) {
         super(location, TextDisplay.class);
 
         TextDisplay display = super.getEntity();
