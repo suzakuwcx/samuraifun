@@ -41,7 +41,7 @@ public class ChargingAttackStateTask extends BaseStateTask {
 
             state.charging = 0;
 
-            PlayerStateMachineSchedule.setStateTask(p, new NormalStateTask(p));
+            PlayerStateMachineSchedule.setStateTask(p, new BattleStateTask(p));
         }, player).setCastingFunction((args, t2) -> {
             Player p2 = (Player) args[0];
             State state = PlayerStateMachineSchedule.getPlayerState(player);

@@ -23,7 +23,7 @@ public class PlayerStunTask implements Runnable {
         if (tick <= 40) {
             PlayerBus.banPlayerJump(player, 2);
         } else {
-            PlayerStateMachineSchedule.player_state_map.put(player.getUniqueId(), new NormalStateTask(player));
+            PlayerStateMachineSchedule.player_state_map.get(player.getUniqueId()).state = new BattleStateTask(player);
         }
     }
 }

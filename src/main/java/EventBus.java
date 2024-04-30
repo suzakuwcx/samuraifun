@@ -15,7 +15,6 @@ import FunctionBus.EntityDamageByEntityEventBus;
 import FunctionBus.InventoryClickEventBus;
 import FunctionBus.PlayerDropItemEventBus;
 import FunctionBus.PlayerInteractEventBus;
-import FunctionBus.PlayerItemHeldEventBus;
 import FunctionBus.PlayerJoinEventBus;
 import FunctionBus.PlayerMoveEventBus;
 import FunctionBus.PlayerQuitEventBus;
@@ -105,13 +104,18 @@ public class EventBus implements Listener {
 
     @EventHandler
     public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
-        if (PlayerItemHeldEventBus.isPlayerInAdventure(event))
-            PlayerItemHeldEventBus.onPlayerInAdventure(event);
+        if (PlayerStateMachineSchedule.getStateTask(event.getPlayer()).isStateEvent(event)) {
+            PlayerStateMachineSchedule.getStateTask(event.getPlayer()).onPlayerItemHeldEvent(event);
+        }
     }
 
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         PlayerDropItemEventBus.onBusTrigger(event);
+
+        if (PlayerStateMachineSchedule.getStateTask(event.getPlayer()).isStateEvent(event)) {
+            PlayerStateMachineSchedule.getStateTask(event.getPlayer()).onPlayerDropItemEvent(event);
+        }
     }
 
     @EventHandler

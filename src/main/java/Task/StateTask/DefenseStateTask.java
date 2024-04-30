@@ -16,7 +16,7 @@ public class DefenseStateTask extends BaseStateTask {
 
     @Override
     public void onPlayerStopUsingItemEvent(PlayerStopUsingItemEvent event) {
-        PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new NormalStateTask(event.getPlayer()));
+        PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new BattleStateTask(event.getPlayer()));
     }
 
     @Override

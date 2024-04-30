@@ -50,6 +50,9 @@ public abstract class BaseStateTask implements Runnable {
     }
 
     public boolean isStateEvent(PlayerDropItemEvent event) {
+        if (!Sword._instanceof(event.getItemDrop().getItemStack()))
+            return false;
+
         return true;
     }
 

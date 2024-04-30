@@ -41,7 +41,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 29) {
             player.sendMessage("阶段 1: 结束");
             if (is_continue == false)
-                PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
+                PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
             
             ++stage;
             tick = 0;
@@ -67,7 +67,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 14) {
             player.sendMessage("阶段 2: 结束");
             if (is_continue == false)
-                PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
+                PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
             
             ++stage;
             tick = 0;
@@ -92,7 +92,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 14) {
             player.sendMessage("阶段 3: 结束");
             if (is_continue == false)
-                PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
+                PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
             
             ++stage;
             tick = 0;
@@ -117,7 +117,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 29) {
             player.sendMessage("阶段 4: 结束");
             if (is_continue == false)
-                PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
+                PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
             
             ++stage;
             tick = 0;
@@ -155,7 +155,7 @@ public class NormalAttackStateTask extends BaseStateTask {
                 doStage4();
                 break;
             default:
-                PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
+                PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
                 break;
         }
     }
