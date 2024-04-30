@@ -22,6 +22,7 @@ import FunctionBus.PlayerStopUsingItemEventBus;
 import FunctionBus.PlayerSwapHandItemsEventBus;
 import FunctionBus.PlayerToggleSneakEventBus;
 import Schedule.PlayerStateMachineSchedule;
+import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
 
 public class EventBus implements Listener {    
@@ -125,5 +126,10 @@ public class EventBus implements Listener {
         } else if (PlayerToggleSneakEventBus.isPlayerDash(event)) {
             PlayerToggleSneakEventBus.onPlayerDash(event);
         }
+    }
+
+    @EventHandler
+    public void onPlayerArmSwingEvent(PlayerArmSwingEvent event) {
+        event.setCancelled(true);
     }
 }
