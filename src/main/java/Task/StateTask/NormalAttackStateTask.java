@@ -1,6 +1,7 @@
 package Task.StateTask;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
@@ -12,6 +13,7 @@ import Assert.Entity.KesagiriSwipeAnimation;
 import Assert.Entity.RightKiriageSwipeAnimation;
 import Assert.Item.Sword;
 import FunctionBus.PlayerBus;
+import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.ModelTask.ItemDisplayAnimationTask;
 
@@ -39,11 +41,16 @@ public class NormalAttackStateTask extends BaseStateTask {
     }
 
     private void doStage1() {
-        if (tick <= 20) {
+        if (tick == 1) {
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
             PlayerBus.setPlayerInventoryList(player, new Sword(1004), 0, 3, 6);
             state.current_sword_frame = 1004;
+        } else if (tick <= 20) {
             player.sendMessage("阶段 1: 准备");
         } else if (tick == 21) {
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
         } else if (tick <= 23) {
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 4);
@@ -69,11 +76,16 @@ public class NormalAttackStateTask extends BaseStateTask {
     }
 
     private void doStage2() {
-        if (tick <= 5) {
+        if (tick == 1) {
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
             PlayerBus.setPlayerInventoryList(player, new Sword(1007), 0, 3, 6);
             state.current_sword_frame = 1007;
+        } else if (tick <= 5) {
             player.sendMessage("阶段 2: 准备");
         } else if (tick == 6) {
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
         } else if (tick < 9) {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 4);
@@ -99,11 +111,15 @@ public class NormalAttackStateTask extends BaseStateTask {
     }
 
     private void doStage3() {
-        if (tick <= 5) {
+        if (tick == 1) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1010), 0, 3, 6);
             state.current_sword_frame = 1010;
+        } else if (tick <= 5) {
             player.sendMessage("阶段 3: 准备");
         } else if (tick == 6) {
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
         } else if (tick < 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1011), 0, 3, 6);
@@ -129,11 +145,15 @@ public class NormalAttackStateTask extends BaseStateTask {
     }
 
     private void doStage4() {
-        if (tick <= 5) {
+        if (tick == 1) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1007), 0, 3, 6);
             state.current_sword_frame = 1007;
+        } else if (tick <= 5) {
             player.sendMessage("阶段 4: 准备");
         } else if (tick == 6) {
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
         } else if (tick < 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1008), 0, 3, 6);
