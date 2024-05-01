@@ -5,6 +5,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
@@ -12,6 +13,7 @@ import Assert.Config.PlayerConfig;
 import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
+import Task.AttackTask.DeflectTask;
 
 public class StateEventBus {
     public static boolean isPlayerAttack(PlayerInteractEvent event) {
@@ -54,6 +56,30 @@ public class StateEventBus {
 
     public static boolean isPlayerSlash(Player player) {
         if (!PlayerDataBus.upPlayerSlash(player))
+            return false;
+
+        return true;
+    }
+
+    public static boolean isPlayerDefense(EntityDamageByEntityEvent event) {
+        if (event.getEntityType() != EntityType.PLAYER)
+            return false;
+
+        if (event.getDamage(DamageModifier.BLOCKING) >= - 0.01)
+            return false;
+
+        return true;
+    }
+
+    public static boolean isPlayerDeflect(EntityDamageByEntityEvent event) {
+        if (event.getEntityType() != EntityType.PLAYER)
+            return false;
+
+        Player player = (Player) event.getEntity();
+        if (event.getDamage(DamageModifier.BLOCKING) < - 0.01)
+            return false;
+
+        if (!DeflectTask.isPlayerDefense(player))
             return false;
 
         return true;

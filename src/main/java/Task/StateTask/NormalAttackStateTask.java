@@ -121,7 +121,18 @@ public class NormalAttackStateTask extends BaseStateTask {
         /* Check if this damage event is trigged by slash attack or normal attack, if it is not slash attack, trigger it by left click */
         if (!StateEventBus.isPlayerSlash(player)) {
             is_continue = true;
+        } else if (StateEventBus.isPlayerDefense(event)) { /* Defense handler */
+            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.5f, 0.8f);
+            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
+            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
+        } else if (StateEventBus.isPlayerDeflect(event)) { /* Deflect handler */
+            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
+            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
+            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
+            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
         } else {
+            event.setCancelled(false);
+            event.setDamage(0);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 0.8f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_HIT, 1f, 0.5f);
 

@@ -1,5 +1,6 @@
 package FunctionBus;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
@@ -17,6 +18,8 @@ public class PlayerJoinEventBus {
         player.setShieldBlockingDelay(PlayerConfig.DEFLECT_TICK);
         player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 40));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40));
+        player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
+        player.setWalkSpeed(0.2f);
 
         PlayerStateMachineSchedule.init(event.getPlayer());
         PlayerUISchedule.init(player);

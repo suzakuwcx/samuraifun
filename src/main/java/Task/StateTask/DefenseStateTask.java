@@ -3,6 +3,7 @@ package Task.StateTask;
 import org.bukkit.entity.Player;
 
 import Schedule.PlayerStateMachineSchedule;
+import Task.AttackTask.DeflectTask;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
 
 public class DefenseStateTask extends BaseStateTask {
@@ -12,7 +13,10 @@ public class DefenseStateTask extends BaseStateTask {
 
     public DefenseStateTask(Player player) {
         this.player = player;
+
+        DeflectTask.execute(player);
     }
+
 
     @Override
     public void onPlayerStopUsingItemEvent(PlayerStopUsingItemEvent event) {
@@ -21,6 +25,5 @@ public class DefenseStateTask extends BaseStateTask {
 
     @Override
     public void run() {
-        player.sendMessage("防御");
     }
 }
