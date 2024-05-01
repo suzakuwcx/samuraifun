@@ -33,6 +33,7 @@ public class BattleStateTask extends BaseStateTask {
     }
 
     private static void onPlayerDefense(PlayerInteractEvent event) {
+        PlayerBus.setPlayerInventoryList(event.getPlayer(), new Sword(1003), 0, 3, 6);
         PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new DefenseStateTask(event.getPlayer()));
     }
 

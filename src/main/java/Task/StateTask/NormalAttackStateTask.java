@@ -218,6 +218,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         if (StateEventBus.isPlayerAttack(event)) {
             is_continue = true;
         } else if (StateEventBus.isPlayerDefense(event)) {
+            PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
             PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new DefenseStateTask(event.getPlayer()));
         }
     }

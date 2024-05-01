@@ -84,8 +84,10 @@ public class ChargingAttackStateTask extends BaseStateTask {
 
     @Override
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        if (StateEventBus.isPlayerDefense(event))
+        if (StateEventBus.isPlayerDefense(event)) {
+            PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
             PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new DefenseStateTask(event.getPlayer()));
+        }
     }
 
 
