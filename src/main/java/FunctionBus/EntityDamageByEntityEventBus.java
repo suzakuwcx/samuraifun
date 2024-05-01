@@ -13,6 +13,29 @@ import Task.DelayTask;
 import Task.AttackTask.DeflectTask;
 
 public class EntityDamageByEntityEventBus {
+    public static void onBusTrigger(EntityDamageByEntityEvent event) {
+        event.setCancelled(true);
+    }
+
+    public static void onBusComplete(EntityDamageByEntityEvent event) {
+        
+    }
+
+    public static boolean isPlayerAttack(EntityDamageByEntityEvent event) {
+        if (event.getDamager().getType() != EntityType.PLAYER)
+            return false;
+        
+        return true;
+    }
+
+    public static void onPlayerAttack(EntityDamageByEntityEvent event) {
+        Player player = (Player) event.getDamager();
+        
+        if (PlayerStateMachineSchedule.getStateTask(player).isStateEvent(event)) {
+            PlayerStateMachineSchedule.getStateTask(player).onEntityDamageByEntityEvent(event);
+        }
+    }
+
     public static boolean isPlayerSlash(EntityDamageByEntityEvent event) {
         if (event.getDamager().getType() != EntityType.PLAYER)
             return false;

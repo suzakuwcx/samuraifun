@@ -81,9 +81,13 @@ public class EventBus implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        if (EntityDamageByEntityEventBus.isPlayerSlash(event)) {
-            EntityDamageByEntityEventBus.onPlayerSlash(event);
+        EntityDamageByEntityEventBus.onBusTrigger(event);
+
+        if (EntityDamageByEntityEventBus.isPlayerAttack(event)) {
+            EntityDamageByEntityEventBus.onPlayerAttack(event);
         }
+
+        EntityDamageByEntityEventBus.onBusComplete(event);
     }
 
     @EventHandler

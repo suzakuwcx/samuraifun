@@ -2,7 +2,9 @@ package Task.StateTask;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -12,6 +14,7 @@ import Assert.Entity.HidariDoSwipeAnimation;
 import Assert.Entity.KesagiriSwipeAnimation;
 import Assert.Entity.RightKiriageSwipeAnimation;
 import Assert.Item.Sword;
+import FunctionBus.EntityBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
@@ -63,6 +66,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 24) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1006), 0, 3, 6);
             state.current_sword_frame = 1006;
+            StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
             player.sendMessage("阶段 1: 伤害判定");
         } else if (tick < 29) {
             player.sendMessage("阶段 1: 结束动作");
@@ -98,6 +102,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
             state.current_sword_frame = 1009;
+            StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
             player.sendMessage("阶段 2: 伤害判定");
         } else if (tick < 14) {
             player.sendMessage("阶段 2: 结束动作");
@@ -107,6 +112,23 @@ public class NormalAttackStateTask extends BaseStateTask {
             
             ++stage;
             tick = 0;
+        }
+    }
+
+    @Override
+    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+        Entity e = event.getEntity();
+        /* Check if this damage event is trigged by slash attack or normal attack, if it is not slash attack, trigger it by left click */
+        if (!StateEventBus.isPlayerSlash(player)) {
+            is_continue = true;
+        } else {
+            ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 0.8f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_HIT, 1f, 0.5f);
+
+            if (EntityBus.getTargetDistance(event.getDamager(), e) < 1)
+                e.setVelocity(EntityBus.getTargetDirection(event.getDamager(), e).multiply(0.6));
+            else
+                e.setVelocity(EntityBus.getTargetDirection(event.getDamager(), e).multiply(0.3));
         }
     }
 
@@ -130,6 +152,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 1);
             player.sendMessage("阶段 3: 砍");
         } else if (tick == 9) {
+            StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
             player.sendMessage("阶段 3: 伤害判定");
         } else if (tick < 14) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1012), 0, 3, 6);
@@ -164,6 +187,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 1);
             player.sendMessage("阶段 4: 砍");
         } else if (tick == 9) {
+            StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
             player.sendMessage("阶段 4: 伤害判定");
         } else if (tick < 29) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);

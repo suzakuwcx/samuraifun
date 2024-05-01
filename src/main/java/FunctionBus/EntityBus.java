@@ -3,6 +3,7 @@ package FunctionBus;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 
 public class EntityBus {
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -29,5 +30,13 @@ public class EntityBus {
     public static void removeEntityNBT(Entity entity, String key) {
         NamespacedKey namespaced_key = ServerBus.getNamespacedKey(key);
         entity.getPersistentDataContainer().remove(namespaced_key);
+    }
+
+    public static Vector getTargetDirection(Entity source, Entity target) {
+        return target.getLocation().toVector().subtract(source.getLocation().toVector()).normalize();
+    }
+
+    public static double getTargetDistance(Entity source, Entity target) {
+        return target.getLocation().toVector().distance(source.getLocation().toVector());
     }
 }
