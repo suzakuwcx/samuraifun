@@ -18,6 +18,7 @@ import com.comphenix.protocol.wrappers.Pair;
 import Assert.Config.State;
 import Assert.Item.FakeSword;
 import Schedule.PlayerStateMachineSchedule;
+import Task.StateTask.ChargedAttackAnimStateTask;
 import Task.StateTask.NormalAttackStateTask;
 
 public class ServerEntityEquipmentPacketBus extends PacketAdapter {
@@ -35,9 +36,8 @@ public class ServerEntityEquipmentPacketBus extends PacketAdapter {
         Player player = (Player) PacketBus.getEntityByID(entity_id);
         State state = PlayerStateMachineSchedule.getPlayerState(player);
 
-        if (!(state.state instanceof NormalAttackStateTask))
+        if (!(state.state instanceof NormalAttackStateTask) && !(state.state instanceof ChargedAttackAnimStateTask))
             return;
-
 
         Pair<EnumWrappers.ItemSlot, ItemStack> pair = container.getSlotStackPairLists().read(0).get(0);
 

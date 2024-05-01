@@ -6,7 +6,11 @@ import org.bukkit.util.Transformation;
 
 public class RightKiriageSwipeAnimation extends SwordSwipeAnimation {
     public RightKiriageSwipeAnimation(Location location) {
-        super(location);
+        this(location, 1);
+    }
+
+    public RightKiriageSwipeAnimation(Location location, int type) {
+        super(location, type);
 
         ItemDisplay display = super.getEntity();
         Transformation mation = display.getTransformation();

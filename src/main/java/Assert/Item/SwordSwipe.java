@@ -12,11 +12,15 @@ public class SwordSwipe extends ItemStack {
     }
 
     public SwordSwipe() {
+        this(1);
+    }
+
+    public SwordSwipe(int type) {
         super(material);
 
         ItemMeta meta = this.getItemMeta();
 
-        meta.setCustomModelData(1);
+        meta.setCustomModelData(type);
         this.setItemMeta(meta);
     }
 }

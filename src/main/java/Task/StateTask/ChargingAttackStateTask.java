@@ -1,5 +1,6 @@
 package Task.StateTask;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -7,13 +8,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import Assert.Config.State;
+import Assert.Item.Sword;
 import FunctionBus.PlayerBus;
+import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.PlayerLongFClickTask;
 
 public class ChargingAttackStateTask extends BaseStateTask {
     private Player player;
-    private int tick = 0;
 
     public ChargingAttackStateTask(Player player) {
         this.player = player;
@@ -23,7 +25,7 @@ public class ChargingAttackStateTask extends BaseStateTask {
     @Override
     public void onPlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
-        PlayerLongFClickTask.execute(player).setTick(10000000).setShortPressFunction((args, t) -> {
+        PlayerLongFClickTask.execute(player).setTick(82).setShortPressFunction((args, t) -> {
             Player p = (Player) args[0];
             State state = PlayerStateMachineSchedule.getPlayerState(player);
 
@@ -31,17 +33,15 @@ public class ChargingAttackStateTask extends BaseStateTask {
                 return;
 
             if (t < 21)
-                p.sendMessage("蓄力攻击 0");
+                PlayerStateMachineSchedule.setStateTask(p, new ChargedAttackAnimStateTask(player, 0));
             else if (t < 41)
-                p.sendMessage("蓄力攻击 1");
+                PlayerStateMachineSchedule.setStateTask(p, new ChargedAttackAnimStateTask(player, 1));
             else if (t < 61)
-                p.sendMessage("蓄力攻击 2");
+                PlayerStateMachineSchedule.setStateTask(p, new ChargedAttackAnimStateTask(player, 2));
             else
-                p.sendMessage("蓄力攻击 3");
+                PlayerStateMachineSchedule.setStateTask(p, new ChargedAttackAnimStateTask(player, 3));
 
             state.charging = 0;
-
-            PlayerStateMachineSchedule.setStateTask(p, new BattleStateTask(p));
         }, player).setCastingFunction((args, t2) -> {
             Player p2 = (Player) args[0];
             State state = PlayerStateMachineSchedule.getPlayerState(player);
@@ -49,7 +49,35 @@ public class ChargingAttackStateTask extends BaseStateTask {
             if (t2 <= 80)
                 state.charging = t2 / 2;
 
+            if (t2 == 0)
+                ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_ARMOR_EQUIP_DIAMOND, 1f, 0f);
 
+            if (t2 < 20) {
+                PlayerBus.setPlayerInventoryList(player, new Sword(1013), 0, 3, 6);
+            } else if (t2 == 20) {
+                ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 1f);
+            } else if (t2 < 40) {
+                PlayerBus.setPlayerInventoryList(player, new Sword(1014), 0, 3, 6);
+            } else if (t2 == 40) {
+                ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 1.5f);
+            } else if (t2 < 60) {
+                PlayerBus.setPlayerInventoryList(player, new Sword(1015), 0, 3, 6);
+            } else if (t2 == 60) {
+                ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 2f);
+            } else {
+                PlayerBus.setPlayerInventoryList(player, new Sword(1016), 0, 3, 6);
+            }
+
+        }, player).setLongPressFunction((args) -> {
+            Player p3 = (Player) args[0];
+            State state = PlayerStateMachineSchedule.getPlayerState(player);
+
+            if (!(PlayerStateMachineSchedule.getStateTask(p3) instanceof ChargingAttackStateTask))
+                return;
+
+            PlayerStateMachineSchedule.setStateTask(p3, new ChargedAttackAnimStateTask(player, 3));
+
+            state.charging = 0;
         }, player).execute();
     }
 

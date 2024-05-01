@@ -6,7 +6,11 @@ import org.bukkit.util.Transformation;
 
 public class HidariDoSwipeAnimation extends SwordSwipeAnimation {
     public HidariDoSwipeAnimation(Location location) {
-        super(location);
+        this(location, 1);
+    }
+
+    public HidariDoSwipeAnimation(Location location, int type) {
+        super(location, type);
 
         ItemDisplay display = super.getEntity();
         Transformation mation = display.getTransformation();

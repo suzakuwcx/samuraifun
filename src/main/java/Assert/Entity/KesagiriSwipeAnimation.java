@@ -6,7 +6,11 @@ import org.bukkit.util.Transformation;
 
 public class KesagiriSwipeAnimation extends SwordSwipeAnimation {
     public KesagiriSwipeAnimation(Location location) {
-        super(location);
+        this(location, 1);
+    }
+
+    public KesagiriSwipeAnimation(Location location, int type) {
+        super(location, type);
 
         ItemDisplay display = super.getEntity();
         Transformation mation = display.getTransformation();
