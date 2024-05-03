@@ -23,6 +23,7 @@ public class State {
     public int bow_cooldown = 12;
     public int skill_cooldown = 12;
     public int current_sword_frame = 1001;
+    public int dash_cooldown = 80;
 
     public int charging = 0;
 

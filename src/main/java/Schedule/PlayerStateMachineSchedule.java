@@ -51,11 +51,17 @@ public class PlayerStateMachineSchedule implements Runnable {
         state.posture = noMinusDecrease(state.health, damage);
     }
 
+    private static void updateCooldown(Player player) {
+        State state = player_state_map.get(player.getUniqueId());
+        state.dash_cooldown = noMinusDecrease(state.dash_cooldown, 1);
+    }
+
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player_state_map.get(player.getUniqueId()).state.run();
             player_state_map.get(player.getUniqueId()).refresh();
+            updateCooldown(player);
         }
     }
 }

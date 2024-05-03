@@ -70,8 +70,15 @@ public abstract class BaseStateTask implements Runnable {
     public void onPlayerInteractEvent(PlayerInteractEvent event) {};
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {};
     public void onPlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent event) {};
-    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {};
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {};
     public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {};
     public void onPlayerStopUsingItemEvent(PlayerStopUsingItemEvent event) {};
+
+    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
+        if (StateEventBus.isPlayerPrepareDash(event)) {
+            StateEventBus.onPlayerPrepareDash(event);
+        } else if (StateEventBus.isPlayerDash(event)) {
+            StateEventBus.onPlayerDash(event);
+        }
+    };
 }

@@ -14,9 +14,11 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.util.Vector;
 
 import Assert.Config.PlayerConfig;
+import Assert.Config.State;
 import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
+import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 import Task.AttackTask.DashEffectTask;
 import Task.AttackTask.DeflectTask;
@@ -119,21 +121,29 @@ public class StateEventBus {
         Player p = event.getPlayer();
         DashEffectTask.stop(p);
 
+        State s = PlayerStateMachineSchedule.getPlayerState(p);
+        if (s.dash_cooldown != 0)
+            return;
+
         DelayTask.execute((args) -> {
             Player player = (Player) args[0];
             Location location = player.getLocation();
             Vector direction = location.getDirection();
+            State state = PlayerStateMachineSchedule.getPlayerState(p);
             Vector vec = (location.toVector().subtract((Vector) args[1])).setY(0);
+            if (vec.lengthSquared() == 0)
+                return;
+
             float angle = vec.angle(direction);
-            if (vec.lengthSquared() != 0) {
-                ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 1f, 0.8f);
-                ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 1f);
-                /* decrease forward dash value */
-                if (angle < Math.PI / 2)
-                    player.setVelocity(vec.normalize().multiply(0.5 + Math.sin(angle)));
-                else
-                    player.setVelocity(vec.normalize().multiply(1));
-            }
+            ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 1f, 0.8f);
+            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 1f);
+            /* decrease forward dash value */
+            if (angle < Math.PI / 2)
+                player.setVelocity(vec.normalize().multiply(0.5 + Math.sin(angle)));
+            else
+                player.setVelocity(vec.normalize().multiply(1));
+
+            state.dash_cooldown = 80;
         }, 2, p, p.getLocation().toVector());
     }
 }

@@ -2,7 +2,6 @@ package Task.StateTask;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.util.Vector;
 
 import Schedule.PlayerStateMachineSchedule;
 import Task.AttackTask.DeflectTask;
