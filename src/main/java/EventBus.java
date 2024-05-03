@@ -126,10 +126,8 @@ public class EventBus implements Listener {
 
     @EventHandler
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
-        if (PlayerToggleSneakEventBus.isPlayerPrepareDash(event)) {
-            PlayerToggleSneakEventBus.onPlayerPrepareDash(event);
-        } else if (PlayerToggleSneakEventBus.isPlayerDash(event)) {
-            PlayerToggleSneakEventBus.onPlayerDash(event);
+        if (PlayerStateMachineSchedule.getStateTask(event.getPlayer()).isStateEvent(event)) {
+            PlayerStateMachineSchedule.getStateTask(event.getPlayer()).onPlayerToggleSneakEvent(event);
         }
     }
 

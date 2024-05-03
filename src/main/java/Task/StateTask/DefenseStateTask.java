@@ -1,6 +1,8 @@
 package Task.StateTask;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.util.Vector;
 
 import Schedule.PlayerStateMachineSchedule;
 import Task.AttackTask.DeflectTask;
@@ -17,6 +19,14 @@ public class DefenseStateTask extends BaseStateTask {
         DeflectTask.execute(player);
     }
 
+    @Override
+    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
+        if (StateEventBus.isPlayerPrepareDash(event)) {
+            StateEventBus.onPlayerPrepareDash(event);
+        } else if (StateEventBus.isPlayerDash(event)) {
+            PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new ThrushAttackStateTask(event.getPlayer()));
+        }
+    }
 
     @Override
     public void onPlayerStopUsingItemEvent(PlayerStopUsingItemEvent event) {

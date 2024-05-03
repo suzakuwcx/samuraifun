@@ -6,6 +6,7 @@ import static java.lang.Math.sin;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Bukkit;
@@ -23,7 +24,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -100,8 +100,17 @@ public class ServerBus {
         return location.getWorld().rayTraceEntities(location, direction, distance);
     }
 
-    public static <T extends Entity> RayTraceResult rayTraceEntities(Location location, Vector direction, double distance, double deviation, EntityType type) {
-        return location.getWorld().rayTraceEntities(location, direction, distance, deviation, e -> (e.getType() == type));
+    public static <T extends Entity> RayTraceResult rayTraceEntities(Location location, Vector direction, double distance, double deviation, EntityType type, UUID ...excluses) {
+        return location.getWorld().rayTraceEntities(location, direction, distance, deviation, e -> {
+            if (e.getType() != type)
+                return false;
+            
+            for (UUID uuid : excluses) {
+                if (e.getUniqueId().equals(uuid)) return false;
+            }
+
+            return true;
+        });
     }
 
     public static void runCommand(String command) {
@@ -170,5 +179,15 @@ public class ServerBus {
     public static void knockback(Player player, Vector direction, double level) {
         Vector velocity = PlayerRealVelocityUpdateSchedule.getVelocity(player);
         player.setVelocity(direction.normalize().multiply(level).setY(velocity.getY()));
+    }
+
+    /**
+     * To get velocity for entity that can reach the distance
+     * 
+     * @param distance The distance to reach
+     * @return the velocity should entity set
+     */
+    public static double getDistanceVelocity(double distance) {
+        return distance * 0.38;
     }
 }
