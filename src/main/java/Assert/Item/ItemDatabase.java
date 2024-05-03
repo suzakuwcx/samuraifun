@@ -19,6 +19,7 @@ public class ItemDatabase {
         set.add(new BattleFlag());
         set.add(new SmokingDarts());
         set.add(new Matchlock());
+        set.add(new Bow());
     }
 
     public static Set<ItemStack> getSet() {
