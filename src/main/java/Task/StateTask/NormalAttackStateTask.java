@@ -115,6 +115,31 @@ public class NormalAttackStateTask extends BaseStateTask {
         }
     }
 
+    private void onDamageTarget(EntityDamageByEntityEvent event) {
+        Player target =  (Player) event.getEntity();
+        BaseStateTask task = PlayerStateMachineSchedule.getStateTask(target);
+
+        event.setCancelled(false);
+        event.setDamage(0);
+        ServerBus.playServerSound(target.getLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 0.8f);
+        ServerBus.playServerSound(target.getLocation(), Sound.ITEM_TRIDENT_HIT, 1f, 0.5f);
+
+        if (task instanceof ChargedAttackAnimStateTask)
+            return;
+        
+        if (task instanceof ChargingAttackStateTask)
+            return;
+
+
+        if (EntityBus.getTargetDistance(event.getDamager(), target) < 1)
+            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.6));
+        else
+            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.3));
+
+        PlayerBus.setPlayerInventoryList(target, new Sword(1023), 0, 3, 6);
+        PlayerStateMachineSchedule.setStateTask(target, new PlayerStunTask(target));
+    }
+
     @Override
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         Entity e = event.getEntity();
@@ -131,15 +156,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
             ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
         } else {
-            event.setCancelled(false);
-            event.setDamage(0);
-            ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 0.8f);
-            ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_HIT, 1f, 0.5f);
-
-            if (EntityBus.getTargetDistance(event.getDamager(), e) < 1)
-                e.setVelocity(EntityBus.getTargetDirection(event.getDamager(), e).multiply(0.6));
-            else
-                e.setVelocity(EntityBus.getTargetDirection(event.getDamager(), e).multiply(0.3));
+            onDamageTarget(event);
         }
     }
 
