@@ -18,7 +18,8 @@ public class EntityDamageByEntityEventBus {
     }
 
     public static void onBusComplete(EntityDamageByEntityEvent event) {
-        
+        if (isPlayerAttackNoInvincibleFrameEntity(event))
+            onPlayerAttackNoInvincibleFrameEntity(event);
     }
 
     public static boolean isPlayerAttack(EntityDamageByEntityEvent event) {
