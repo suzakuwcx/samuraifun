@@ -3,7 +3,7 @@ package Assert.Config;
 import org.bukkit.entity.Player;
 
 import Task.StateTask.BaseStateTask;
-import Task.StateTask.BattleStateTask;
+import Task.StateTask.NormalStateTask;
 
 public class State {
     public boolean left_click = false;
@@ -28,7 +28,7 @@ public class State {
     public int charging = 0;
 
     public State(Player player) {
-        state = new BattleStateTask(player);
+        state = new NormalStateTask(player);
     }
 
     public void refresh() {

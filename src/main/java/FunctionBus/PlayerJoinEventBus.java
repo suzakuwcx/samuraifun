@@ -7,6 +7,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import Assert.Config.PlayerConfig;
+import Assert.Item.Sword;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
 import Schedule.PlayerUISchedule;
@@ -20,6 +21,8 @@ public class PlayerJoinEventBus {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
         player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
         player.setWalkSpeed(0.2f);
+
+        PlayerBus.setPlayerInventoryList(player, new Sword(1001), 0, 3, 6);
 
         PlayerStateMachineSchedule.init(event.getPlayer());
         PlayerUISchedule.init(player);
