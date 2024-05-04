@@ -1,12 +1,14 @@
 package Task.StateTask;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 
 import Assert.Item.Sword;
 import FunctionBus.PlayerBus;
+import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 
@@ -21,6 +23,7 @@ public class NormalStateTask extends BaseStateTask {
 
     @Override
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
+        ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_IRON, 1f, 1f);
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
             PlayerBus.setPlayerInventoryList(p, new Sword(1002), 0, 3, 6);

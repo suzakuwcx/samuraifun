@@ -1,6 +1,7 @@
 package Task.StateTask;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -11,6 +12,7 @@ import Assert.Config.PlayerConfig;
 import Assert.Config.State;
 import Assert.Item.Sword;
 import FunctionBus.PlayerBus;
+import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 
@@ -74,6 +76,8 @@ public class BattleStateTask extends BaseStateTask {
             return;
 
         state.sword_cooldown = PlayerConfig.SWORD_COOLDOWN;
+        ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_AXE_SCRAPE, 0.5f, 1f);
+        ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_IRON, 1f, 0.8f);
         
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
