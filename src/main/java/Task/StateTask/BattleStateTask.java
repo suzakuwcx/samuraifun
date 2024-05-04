@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import Assert.Config.PlayerConfig;
@@ -66,6 +67,20 @@ public class BattleStateTask extends BaseStateTask {
     public void onPlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent event) {
         if (StateEventBus.isPlayerChargingAttack(event)) {
             onPlayerChargingAttack(event);
+        }
+    }
+
+    @Override
+    public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
+        event.setCancelled(false);
+        if (event.getNewSlot() == 0 || event.getNewSlot() == 3 || event.getNewSlot() == 6) {
+            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_IRON, 1f, 1f);
+        } else if (event.getNewSlot() == 1 || event.getNewSlot() == 4 || event.getNewSlot() == 7) {
+            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_GOLD, 1f, 1f);
+        } else if (event.getNewSlot() == 2 || event.getNewSlot() == 5 || event.getNewSlot() == 8) {
+            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 1f);            
+            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_CROSSBOW_LOADING_START, 1f, 1f);
+            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1f, 1f);
         }
     }
 

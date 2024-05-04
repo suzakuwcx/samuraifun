@@ -36,12 +36,6 @@ public class NormalStateTask extends BaseStateTask {
         PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new BattleStateTask(event.getPlayer()));
     }
 
-
-    @Override
-    public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
-        event.setCancelled(true);
-    }
-
     @Override
     public void run() {
 
