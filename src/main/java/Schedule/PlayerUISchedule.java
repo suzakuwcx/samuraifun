@@ -43,27 +43,27 @@ public class PlayerUISchedule implements Runnable {
         for (int i = 0; i < state.posture; ++i)
             builder.append(FontDatabase.POSTURE_FULL);
 
-        builder.append(FontDatabase.getCooldownFont(FontDatabase.SWORD_COOLDOWN_BASE, state.sword_cooldown));
+        builder.append(FontDatabase.getCooldownFont(FontDatabase.SWORD_COOLDOWN_BASE, state.sword_cooldown / 20));
         
         switch (state.role) {
             case SAMURAI:
-                builder.append(FontDatabase.getCooldownFont(FontDatabase.SAMURAI_SKILL_COOLDOWN_BASE, state.skill_cooldown));
+                builder.append(FontDatabase.getCooldownFont(FontDatabase.SAMURAI_SKILL_COOLDOWN_BASE, state.skill_cooldown / 20));
                 break;
             case RONIN:
-                builder.append(FontDatabase.getCooldownFont(FontDatabase.RONIN_SKILL_COOLDOWN_BASE, state.skill_cooldown));
+                builder.append(FontDatabase.getCooldownFont(FontDatabase.RONIN_SKILL_COOLDOWN_BASE, state.skill_cooldown / 20));
                 break;
             case SHINBI:
-                builder.append(FontDatabase.getCooldownFont(FontDatabase.SHINBI_SKILL_COOLDOWN_BASE, state.skill_cooldown));
+                builder.append(FontDatabase.getCooldownFont(FontDatabase.SHINBI_SKILL_COOLDOWN_BASE, state.skill_cooldown / 20));
                 break;
             case SOHEI:
-                builder.append(FontDatabase.getCooldownFont(FontDatabase.SOHEI_SKILL_COOLDOWN_BASE, state.skill_cooldown));
+                builder.append(FontDatabase.getCooldownFont(FontDatabase.SOHEI_SKILL_COOLDOWN_BASE, state.skill_cooldown / 20));
                 break;
             default:
-                builder.append(FontDatabase.getCooldownFont(FontDatabase.SAMURAI_SKILL_COOLDOWN_BASE, state.skill_cooldown));
+                builder.append(FontDatabase.getCooldownFont(FontDatabase.SAMURAI_SKILL_COOLDOWN_BASE, state.skill_cooldown / 20));
                 break;
         }
 
-        builder.append(FontDatabase.getCooldownFont(FontDatabase.BOW_COOLDOWN_BASE, state.bow_cooldown));
+        builder.append(FontDatabase.getCooldownFont(FontDatabase.BOW_COOLDOWN_BASE, state.bow_cooldown / 20));
 
         for (int i = 0; i < state.health; ++i)
             builder.append(FontDatabase.HEART_FULL);

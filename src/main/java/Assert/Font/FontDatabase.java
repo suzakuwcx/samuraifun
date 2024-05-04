@@ -47,7 +47,7 @@ public class FontDatabase {
     }
 
     public static char getCooldownFont(char base, int remain) {
-        return (char) (base + 12 - remain);
+        return (char) (base + 11 - remain);
     }
 
     public static char getChargingAttackFont(int value) {

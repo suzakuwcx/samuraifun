@@ -54,6 +54,9 @@ public class PlayerStateMachineSchedule implements Runnable {
     private static void updateCooldown(Player player) {
         State state = player_state_map.get(player.getUniqueId());
         state.dash_cooldown = noMinusDecrease(state.dash_cooldown, 1);
+        state.sword_cooldown = noMinusDecrease(state.sword_cooldown, 1);
+        state.skill_cooldown = noMinusDecrease(state.skill_cooldown, 1);
+        state.bow_cooldown = noMinusDecrease(state.bow_cooldown, 1);
     }
 
     @Override

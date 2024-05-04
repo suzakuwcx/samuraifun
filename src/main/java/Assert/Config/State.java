@@ -19,11 +19,11 @@ public class State {
     public int health = 7;
     public int posture = 7;
     public Role role = Role.SAMURAI;
-    public int sword_cooldown = 12;
-    public int bow_cooldown = 12;
-    public int skill_cooldown = 12;
+    public int sword_cooldown = PlayerConfig.SWORD_COOLDOWN;
+    public int bow_cooldown = PlayerConfig.BOW_COOLDOWN;
+    public int skill_cooldown = PlayerConfig.SKILL_COOLDOWN;
     public int current_sword_frame = 1001;
-    public int dash_cooldown = 80;
+    public int dash_cooldown = 4 * 20;
 
     public int charging = 0;
 
