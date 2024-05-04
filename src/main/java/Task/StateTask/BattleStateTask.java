@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
+import Assert.Config.PlayerConfig;
 import Assert.Config.State;
 import Assert.Item.Sword;
 import FunctionBus.PlayerBus;
@@ -68,6 +69,12 @@ public class BattleStateTask extends BaseStateTask {
 
     @Override
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
+        State state = PlayerStateMachineSchedule.getPlayerState(player);
+        if (state.sword_cooldown != 0)
+            return;
+
+        state.sword_cooldown = PlayerConfig.SWORD_COOLDOWN;
+        
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
             PlayerBus.setPlayerInventoryList(p, new Sword(1002), 0, 3, 6);
