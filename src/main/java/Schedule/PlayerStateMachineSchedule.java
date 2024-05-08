@@ -48,7 +48,7 @@ public class PlayerStateMachineSchedule implements Runnable {
 
     public static void damagePosture(Player player, int damage) {
         State state = getPlayerState(player);
-        state.posture = noMinusDecrease(state.health, damage);
+        state.posture = noMinusDecrease(state.posture, damage);
     }
 
     private static void updateCooldown(Player player) {
