@@ -17,8 +17,6 @@ public class PlayerStunTask extends BaseStateTask {
 
     public PlayerStunTask(Player player) {
         this.player = player;
-
-        player.setCooldown(Material.SHIELD, 500000);
     }
 
     @Override
