@@ -7,8 +7,12 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import Assert.Config.PlayerConfig;
 import Assert.Config.State;
+import Assert.Item.Sword;
+import FunctionBus.PlayerBus;
 import Task.StateTask.BaseStateTask;
+import Task.StateTask.PlayerPostureCrashTask;
 
 public class PlayerStateMachineSchedule implements Runnable {
     public static Map<UUID, State> player_state_map = new HashMap<>();
@@ -44,11 +48,19 @@ public class PlayerStateMachineSchedule implements Runnable {
     public static void damageHealth(Player player, int damage) {
         State state = getPlayerState(player);
         state.health = noMinusDecrease(state.health, damage);
+        if (state.health == 0) {
+            player.setHealth(0);
+            state.health = PlayerConfig.MAX_HEALTH;
+        }
     }
 
     public static void damagePosture(Player player, int damage) {
         State state = getPlayerState(player);
         state.posture = noMinusDecrease(state.posture, damage);
+        if (state.posture == 0) {
+            PlayerBus.setPlayerInventoryList(player, new Sword(1023), 0, 3, 6);
+            state.state = new PlayerPostureCrashTask(player);
+        }
     }
 
     private static void updateCooldown(Player player) {

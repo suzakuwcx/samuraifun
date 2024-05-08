@@ -2,7 +2,6 @@ package Task.StateTask;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -115,51 +114,6 @@ public class NormalAttackStateTask extends BaseStateTask {
         }
     }
 
-    private void onDamageTarget(EntityDamageByEntityEvent event) {
-        Player target =  (Player) event.getEntity();
-        BaseStateTask task = PlayerStateMachineSchedule.getStateTask(target);
-
-        event.setCancelled(false);
-        event.setDamage(0);
-        ServerBus.playServerSound(target.getLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 0.8f);
-        ServerBus.playServerSound(target.getLocation(), Sound.ITEM_TRIDENT_HIT, 1f, 0.5f);
-
-        if (task instanceof ChargedAttackAnimStateTask)
-            return;
-        
-        if (task instanceof ChargingAttackStateTask)
-            return;
-
-
-        if (EntityBus.getTargetDistance(event.getDamager(), target) < 1)
-            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.6));
-        else
-            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.3));
-
-        PlayerBus.setPlayerInventoryList(target, new Sword(1023), 0, 3, 6);
-        PlayerStateMachineSchedule.setStateTask(target, new PlayerStunTask(target));
-    }
-
-    @Override
-    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        Entity e = event.getEntity();
-        /* Check if this damage event is trigged by slash attack or normal attack, if it is not slash attack, trigger it by left click */
-        if (!StateEventBus.isPlayerSlash(player)) {
-            is_continue = true;
-        } else if (StateEventBus.isPlayerDefense(event)) { /* Defense handler */
-            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.5f, 0.8f);
-            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
-            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
-        } else if (StateEventBus.isPlayerDeflect(event)) { /* Deflect handler */
-            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
-            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
-            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
-            ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
-        } else {
-            onDamageTarget(event);
-        }
-    }
-
     private void doStage3() {
         if (tick == 1) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1010), 0, 3, 6);
@@ -226,6 +180,66 @@ public class NormalAttackStateTask extends BaseStateTask {
             
             ++stage;
             tick = 0;
+        }
+    }
+
+
+    private void onDamageTarget(EntityDamageByEntityEvent event) {
+        Player target =  (Player) event.getEntity();
+        BaseStateTask task = PlayerStateMachineSchedule.getStateTask(target);
+
+        event.setCancelled(false);
+        event.setDamage(0);
+        PlayerStateMachineSchedule.damageHealth(target, 1);
+        ServerBus.playServerSound(target.getLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 0.8f);
+        ServerBus.playServerSound(target.getLocation(), Sound.ITEM_TRIDENT_HIT, 1f, 0.5f);
+
+        if (task instanceof ChargedAttackAnimStateTask)
+            return;
+        
+        if (task instanceof ChargingAttackStateTask)
+            return;
+
+        if (EntityBus.getTargetDistance(event.getDamager(), target) < 1)
+            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.6));
+        else
+            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.3));
+            
+        if (task instanceof PlayerPostureCrashTask)
+            return;
+            
+        PlayerBus.setPlayerInventoryList(target, new Sword(1023), 0, 3, 6);
+        PlayerStateMachineSchedule.setStateTask(target, new PlayerStunTask(target));
+    }
+
+    private void onPlayerDefense(EntityDamageByEntityEvent event) {
+        Player p = (Player) event.getEntity();
+
+        PlayerStateMachineSchedule.damagePosture(p, 1);
+        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.5f, 0.8f);
+        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
+        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
+    }
+
+    private void onPlayerDeflect(EntityDamageByEntityEvent event) {
+        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
+        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
+        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
+        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
+    }
+
+    @Override
+    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+        Player p = (Player) event.getEntity();
+        /* Check if this damage event is trigged by slash attack or normal attack, if it is not slash attack, trigger it by left click */
+        if (!StateEventBus.isPlayerSlash(player)) {
+            is_continue = true;
+        } else if (StateEventBus.isPlayerDefense(event)) { /* Defense handler */
+            onPlayerDefense(event);
+        } else if (StateEventBus.isPlayerDeflect(event)) { /* Deflect handler */
+            onPlayerDeflect(event);
+        } else {
+            onDamageTarget(event);
         }
     }
 
