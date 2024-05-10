@@ -71,12 +71,19 @@ public class PlayerStateMachineSchedule implements Runnable {
         state.bow_cooldown = noMinusDecrease(state.bow_cooldown, 1);
     }
 
+    private static void updatePlayerEffect(Player player) {
+        if (player.isSneaking()) {
+            PlayerBus.banPlayerJump(player, 3);
+        }
+    }
+
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player_state_map.get(player.getUniqueId()).state.run();
             player_state_map.get(player.getUniqueId()).refresh();
             updateCooldown(player);
+            updatePlayerEffect(player);
         }
     }
 }

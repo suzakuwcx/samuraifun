@@ -1,6 +1,5 @@
 package Task.StateTask;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.potion.PotionEffect;
@@ -21,9 +20,7 @@ public class PlayerStunTask extends BaseStateTask {
 
     @Override
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
-        if (StateEventBus.isPlayerPrepareDash(event)) {
-            StateEventBus.onPlayerPrepareDash(event);
-        } else if (StateEventBus.isPlayerDash(event)) {
+        if (StateEventBus.isPlayerDash(event)) {
             StateEventBus.onPlayerDash(event);
             PlayerStateMachineSchedule.player_state_map.get(player.getUniqueId()).state = new BattleStateTask(player);
         }

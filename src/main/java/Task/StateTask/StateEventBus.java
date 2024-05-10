@@ -20,7 +20,6 @@ import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
-import Task.AttackTask.DashEffectTask;
 import Task.AttackTask.DeflectTask;
 
 public class StateEventBus {
@@ -93,20 +92,6 @@ public class StateEventBus {
         return true;
     }
 
-    public static boolean isPlayerPrepareDash(PlayerToggleSneakEvent event) {
-        if (!event.isSneaking())
-            return false;
-
-        if (Math.abs(event.getPlayer().getVelocity().getY() + 0.0784) > 0.00001)
-            return false;
-
-        return true;
-    }
-
-    public static void onPlayerPrepareDash(PlayerToggleSneakEvent event) {
-        DashEffectTask.execute(event.getPlayer());
-    }
-
     public static boolean isPlayerDash(PlayerToggleSneakEvent event) {
         if (event.isSneaking())
             return false;
@@ -119,7 +104,6 @@ public class StateEventBus {
 
     public static void onPlayerDash(PlayerToggleSneakEvent event) {
         Player p = event.getPlayer();
-        DashEffectTask.stop(p);
 
         State s = PlayerStateMachineSchedule.getPlayerState(p);
         if (s.dash_cooldown != 0)

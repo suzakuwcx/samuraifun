@@ -78,9 +78,7 @@ public abstract class BaseStateTask implements Runnable {
     };
 
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
-        if (StateEventBus.isPlayerPrepareDash(event)) {
-            StateEventBus.onPlayerPrepareDash(event);
-        } else if (StateEventBus.isPlayerDash(event)) {
+        if (StateEventBus.isPlayerDash(event)) {
             StateEventBus.onPlayerDash(event);
         }
     };
