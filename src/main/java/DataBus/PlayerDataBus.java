@@ -34,26 +34,39 @@ public class PlayerDataBus {
     }
 
     public static List<TextDisplay> getPlayerItemDisplay(Player player) {
-        if (!item_display_mapper.containsKey(player))
-            addPlayerItemDisplay(player);
-
         return item_display_mapper.get(player);
     }
 
     public static TextDisplay getPlayerRingDisplay(Player player) {
-        return getPlayerItemDisplay(player).get(0);
+        List<TextDisplay> display = getPlayerItemDisplay(player);
+        if (display == null)
+            return null;
+        else
+            return display.get(0);
     }
 
     public static TextDisplay getPlayerHealthDisplay(Player player) {
-        return getPlayerItemDisplay(player).get(1);
+        List<TextDisplay> display = getPlayerItemDisplay(player);
+        if (display == null)
+            return null;
+        else
+            return display.get(1);
     }
 
     public static TextDisplay getPlayerPostureDisplay(Player player) {
-        return getPlayerItemDisplay(player).get(2);
+        List<TextDisplay> display = getPlayerItemDisplay(player);
+        if (display == null)
+            return null;
+        else
+            return display.get(2);
     }
 
     public static void removePlayerItemDisplay(Player player) {
-        for (TextDisplay display: item_display_mapper.remove(player)) {
+        List<TextDisplay> displays = getPlayerItemDisplay(player);
+        if (displays == null)
+            return;
+
+        for (TextDisplay display: displays) {
             player.removePassenger(display);
             display.remove();
         }

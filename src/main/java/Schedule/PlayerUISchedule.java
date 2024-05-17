@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 
 import Assert.Config.PlayerConfig;
 import Assert.Config.State;
@@ -75,8 +76,15 @@ public class PlayerUISchedule implements Runnable {
     }
 
     private void updateRing(Player player, State state) {
-        PlayerDataBus.getPlayerHealthDisplay(player).text(Component.text(FontDatabase.getRingFont(FontDatabase.HEALTH_RING_BASE, state.health)));
-        PlayerDataBus.getPlayerPostureDisplay(player).text(Component.text(FontDatabase.getRingFont(FontDatabase.POSTURE_RING_BASE, state.posture)));
+        TextDisplay display;
+
+        display = PlayerDataBus.getPlayerHealthDisplay(player);
+        if (display != null)
+            display.text(Component.text(FontDatabase.getRingFont(FontDatabase.HEALTH_RING_BASE, state.health)));
+        
+        display = PlayerDataBus.getPlayerPostureDisplay(player);
+        if (display != null)
+            display.text(Component.text(FontDatabase.getRingFont(FontDatabase.POSTURE_RING_BASE, state.posture)));
     }
 
     private void updateTitle(Player player, State state) {

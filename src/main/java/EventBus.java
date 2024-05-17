@@ -2,6 +2,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -9,19 +10,21 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import FunctionBus.EntityDamageByEntityEventBus;
 import FunctionBus.InventoryClickEventBus;
+import FunctionBus.PlayerDeathEventBus;
 import FunctionBus.PlayerDropItemEventBus;
 import FunctionBus.PlayerInteractEventBus;
 import FunctionBus.PlayerJoinEventBus;
 import FunctionBus.PlayerMoveEventBus;
 import FunctionBus.PlayerQuitEventBus;
+import FunctionBus.PlayerRespawnEventBus;
 import FunctionBus.PlayerStopUsingItemEventBus;
 import FunctionBus.PlayerSwapHandItemsEventBus;
-import FunctionBus.PlayerToggleSneakEventBus;
 import Schedule.PlayerStateMachineSchedule;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
@@ -139,5 +142,15 @@ public class EventBus implements Listener {
     @EventHandler
     public void onFoodLevelChangeEvent(FoodLevelChangeEvent event) {
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerDeathEvent(PlayerDeathEvent event) {
+        PlayerDeathEventBus.onBusTrigger(event);
+    }
+
+    @EventHandler
+    public void onPlayerRespawnEvent(PlayerRespawnEvent event) {
+        PlayerRespawnEventBus.onBusTrigger(event);
     }
 }
