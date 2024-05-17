@@ -26,7 +26,33 @@ public class DeflectTask implements Runnable{
             return false;
 
         DeflectTask task = task_mapper.get(player);
-        if (task.failure > 2)
+        if (task.failure > 4)
+            return false;
+
+        return true;
+    }
+
+    public static boolean isPlayerDeflect(Player player) {
+        if (!task_mapper.containsKey(player))
+            return false;
+
+        DeflectTask task = task_mapper.get(player);
+        if (task.failure >= 2)
+            return false;
+
+        return true;
+    }
+
+
+    public static boolean isPlayerFakeDeflect(Player player) {
+        if (!task_mapper.containsKey(player))
+            return false;
+
+        DeflectTask task = task_mapper.get(player);
+        if (task.failure > 4)
+            return false;
+
+        if (task.failure < 2)
             return false;
 
         return true;
@@ -51,7 +77,7 @@ public class DeflectTask implements Runnable{
 
     @Override
     public void run() {
-        if (tick == DEFLECT_TICK) {
+        if (tick == 1.5 * DEFLECT_TICK) {
             task_mapper.remove(player);
             return;
         }

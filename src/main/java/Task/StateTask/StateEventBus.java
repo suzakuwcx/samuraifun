@@ -78,6 +78,20 @@ public class StateEventBus {
         return true;
     }
 
+    public static boolean isPlayerFakeDeflect(EntityDamageByEntityEvent event) {
+        if (event.getEntityType() != EntityType.PLAYER)
+            return false;
+
+        Player player = (Player) event.getEntity();
+        if (event.getDamage(DamageModifier.BLOCKING) < - 0.01)
+            return false;
+
+        if (!DeflectTask.isPlayerFakeDeflect(player))
+            return false;
+
+        return true;
+    }
+
     public static boolean isPlayerDeflect(EntityDamageByEntityEvent event) {
         if (event.getEntityType() != EntityType.PLAYER)
             return false;
@@ -86,7 +100,7 @@ public class StateEventBus {
         if (event.getDamage(DamageModifier.BLOCKING) < - 0.01)
             return false;
 
-        if (!DeflectTask.isPlayerDefense(player))
+        if (!DeflectTask.isPlayerDeflect(player))
             return false;
 
         return true;
