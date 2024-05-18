@@ -121,14 +121,18 @@ public class PlayerLongFClickTask implements Runnable {
     private void press() {
         long time = System.currentTimeMillis();
 
+        is_press = true;
+        last_time = time;
         /* Sometimes the player swap item event will trigger twice, reason unknown */
-        if (Math.abs(time - last_time - 600) > 100 && Math.abs(time - last_time - 50) > 10 && Math.abs(time - last_time) > 3) {
-            short_press();
-            return;
-        } else {
-            is_press = true;
-            last_time = time;
-        }
+        /*
+            if (Math.abs(time - last_time - 600) > 100 && Math.abs(time - last_time - 50) > 10 && Math.abs(time - last_time) > 3) {
+                short_press();
+                return;
+            } else {
+                is_press = true;
+                last_time = time;
+            }         
+         */
     }
 
     public static Builder execute(Player player) {
