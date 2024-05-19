@@ -37,8 +37,6 @@ public class ThrushAttackStateTask extends BaseStateTask {
             RayTraceResult result = ServerBus.rayTraceEntities(player.getEyeLocation(), player.getEyeLocation().getDirection(), 6, 0.3, EntityType.PLAYER, player.getUniqueId());
             if (result != null)
                 target = (Player) result.getHitEntity();
-        } else if (tick < 4) {
-
         } else if (tick == 4) {
             if (target != null) {
                 double distance = EntityBus.getTargetDistance(player, target) - 0.3;
@@ -47,11 +45,14 @@ public class ThrushAttackStateTask extends BaseStateTask {
                 player.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(2), 0, ServerBus.getDistanceVelocity(2))));
             }
         } else if (tick == 8) {
-            if (target != null)
+            /* Successfully hit */
+            if (target != null) {
                 target.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(2), 0, ServerBus.getDistanceVelocity(2))));
-        } else if (tick < 8) {
+                PlayerStateMachineSchedule.setStateTask(target, new PlayerStunTask(target));
+            }
+        } else if (tick == 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1025), 0, 3, 6);
-        } else {
+        } else if (tick == 10) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
             PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
         }
