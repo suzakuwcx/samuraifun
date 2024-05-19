@@ -7,7 +7,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
+import Assert.Config.PlayerConfig;
 import Assert.Config.State;
 import Assert.Entity.HidariDoSwipeAnimation;
 import Assert.Entity.KesagiriSwipeAnimation;
@@ -234,7 +236,13 @@ public class NormalAttackStateTask extends BaseStateTask {
         /* Check if this damage event is trigged by slash attack or normal attack, if it is not slash attack, trigger it by left click */
         if (!StateEventBus.isPlayerSlash(player)) {
             is_continue = true;
-        } else if (StateEventBus.isPlayerDefense(event) || StateEventBus.isPlayerFakeDeflect(event)) { /* Defense handler */
+        }
+        
+        if (stage > 1) {
+            PlayerStateMachineSchedule.recoverPosture(player, 1);
+        }
+
+        if (StateEventBus.isPlayerDefense(event) || StateEventBus.isPlayerFakeDeflect(event)) { /* Defense handler */
             onPlayerDefense(event);
         } else if (StateEventBus.isPlayerDeflect(event)) { /* Deflect handler */
             onPlayerDeflect(event);

@@ -65,6 +65,13 @@ public class PlayerStateMachineSchedule implements Runnable {
         damagePosture(player, damage, true);
     }
 
+    public static void recoverPosture(Player player, int value) {
+        State state = getPlayerState(player);
+        state.posture += value;
+        if (state.posture > PlayerConfig.MAX_POSTURE)
+            state.posture = PlayerConfig.MAX_POSTURE;
+    }
+
     private static void updateCooldown(Player player) {
         State state = player_state_map.get(player.getUniqueId());
         state.dash_cooldown = noMinusDecrease(state.dash_cooldown, 1);
