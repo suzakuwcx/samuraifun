@@ -12,6 +12,7 @@ import Assert.Entity.HealthRingEntity;
 import Assert.Entity.PostureRingEntity;
 import Assert.Entity.RingEntity;
 import Assert.Entity.SpawnEntity;
+import FunctionBus.ServerBus;
 
 public class PlayerDataBus {
     private static Map<Player, List<TextDisplay>> item_display_mapper = new HashMap<>();
@@ -29,8 +30,13 @@ public class PlayerDataBus {
         item_display_mapper.put(player, Arrays.asList(display.getEntity(), blood.getEntity(), posture.getEntity()));
 
         player.addPassenger(display.getEntity());
+        player.hideEntity(ServerBus.getPlugin(), display.getEntity());
+
         player.addPassenger(blood.getEntity());
+        player.hideEntity(ServerBus.getPlugin(), blood.getEntity());
+
         player.addPassenger(posture.getEntity());
+        player.hideEntity(ServerBus.getPlugin(), posture.getEntity());
     }
 
     public static List<TextDisplay> getPlayerItemDisplay(Player player) {
