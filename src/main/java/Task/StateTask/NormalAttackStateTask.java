@@ -67,7 +67,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1006), 0, 3, 6);
             state.current_sword_frame = 1006;
-            StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
+            StateEventBus.playerSectorSlash(player, Math.PI / 2);
             player.sendMessage("阶段 1: 伤害判定");
         } else if (tick < 14) {
             player.sendMessage("阶段 1: 结束动作");
@@ -103,7 +103,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
             state.current_sword_frame = 1009;
-            StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
+            StateEventBus.playerSectorSlash(player, Math.PI / 2);
             player.sendMessage("阶段 2: 伤害判定");
         } else if (tick < 14) {
             player.sendMessage("阶段 2: 结束动作");
@@ -136,7 +136,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 1);
             player.sendMessage("阶段 3: 砍");
         } else if (tick == 9) {
-            StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
+            StateEventBus.playerSectorSlash(player, Math.PI / 2);
             player.sendMessage("阶段 3: 伤害判定");
         } else if (tick < 14) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1012), 0, 3, 6);
@@ -171,7 +171,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 1);
             player.sendMessage("阶段 4: 砍");
         } else if (tick == 9) {
-            StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
+            StateEventBus.playerSectorSlash(player, Math.PI / 2);
             player.sendMessage("阶段 4: 伤害判定");
         } else if (tick < 29) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
