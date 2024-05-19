@@ -5,13 +5,19 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import Assert.Config.PlayerConfig;
+import Assert.Config.State;
 import DataBus.PlayerDataBus;
+import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 
 public class PlayerRespawnEventBus {
     public static void onBusTrigger(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         PlayerDataBus.addPlayerItemDisplay(player);
+        State state = PlayerStateMachineSchedule.getPlayerState(player);
+        state.posture = PlayerConfig.MAX_POSTURE;
+        state.health = PlayerConfig.MAX_HEALTH;
 
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];

@@ -48,10 +48,8 @@ public class PlayerStateMachineSchedule implements Runnable {
     public static void damageHealth(Player player, int damage) {
         State state = getPlayerState(player);
         state.health = noMinusDecrease(state.health, damage);
-        if (state.health == 0) {
+        if (state.health == 0)
             player.setHealth(0);
-            state.health = PlayerConfig.MAX_HEALTH;
-        }
     }
 
     public static void damagePosture(Player player, int damage, boolean is_crash) {
