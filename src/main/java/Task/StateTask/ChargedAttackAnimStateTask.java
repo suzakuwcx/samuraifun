@@ -1,8 +1,10 @@
 package Task.StateTask;
 
 import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import Assert.Config.State;
@@ -175,8 +177,18 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
 
     private void level_3() {
         if (tick == 0) {
-            Vector vec = player.getEyeLocation().getDirection().setY(0).normalize();
-            player.setVelocity(vec.multiply(new Vector(1.5, 0, 1.5)));
+            Player target;
+            Vector direction = player.getEyeLocation().getDirection().setY(0).normalize();
+            RayTraceResult result = ServerBus.rayTraceEntities(player.getEyeLocation(), player.getEyeLocation().getDirection(), 8, 0.3, EntityType.PLAYER, player.getUniqueId());
+            if (result != null) {
+                target = (Player) result.getHitEntity();
+                double distance = EntityBus.getTargetDistance(player, target) - 2;
+                if (distance < 0)
+                    distance = 0;
+                player.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(distance), 0, ServerBus.getDistanceVelocity(distance))));
+            } else {
+                player.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(3), 0, ServerBus.getDistanceVelocity(3))));
+            }
         } else if (tick == 3) {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 4);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 3);
