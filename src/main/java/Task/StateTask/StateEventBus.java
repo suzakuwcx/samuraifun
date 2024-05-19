@@ -15,6 +15,7 @@ import org.bukkit.util.Vector;
 
 import Assert.Config.PlayerConfig;
 import Assert.Config.State;
+import Assert.Item.Sword;
 import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
@@ -144,5 +145,10 @@ public class StateEventBus {
             PlayerStateMachineSchedule.damagePosture(player, 1, false);
             state.dash_cooldown = 5;
         }, 2, p, p.getLocation().toVector());
+    }
+
+    public static void onPlayerDefense(PlayerInteractEvent event) {
+        PlayerBus.setPlayerInventoryList(event.getPlayer(), new Sword(1003), 0, 3, 6);
+        PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new DefenseStateTask(event.getPlayer()));
     }
 }

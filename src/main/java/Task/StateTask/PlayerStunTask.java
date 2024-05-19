@@ -1,6 +1,7 @@
 package Task.StateTask;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -16,6 +17,13 @@ public class PlayerStunTask extends BaseStateTask {
 
     public PlayerStunTask(Player player) {
         this.player = player;
+    }
+
+    @Override
+    public void onPlayerInteractEvent(PlayerInteractEvent event) {
+        if (StateEventBus.isPlayerDefense(event)) {
+            StateEventBus.onPlayerDefense(event);
+        }
     }
 
     @Override
