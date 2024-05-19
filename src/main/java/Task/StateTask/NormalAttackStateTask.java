@@ -241,6 +241,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         /* Check if this damage event is trigged by slash attack or normal attack, if it is not slash attack, trigger it by left click */
         if (!StateEventBus.isPlayerSlash(player)) {
             is_continue = true;
+            return;
         }
         
         if (stage > 1) {
