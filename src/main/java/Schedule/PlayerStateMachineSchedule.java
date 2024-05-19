@@ -54,13 +54,17 @@ public class PlayerStateMachineSchedule implements Runnable {
         }
     }
 
-    public static void damagePosture(Player player, int damage) {
+    public static void damagePosture(Player player, int damage, boolean is_crash) {
         State state = getPlayerState(player);
         state.posture = noMinusDecrease(state.posture, damage);
-        if (state.posture == 0) {
+        if (is_crash && state.posture == 0) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1023), 0, 3, 6);
             state.state = new PlayerPostureCrashTask(player);
         }
+    }
+
+    public static void damagePosture(Player player, int damage) {
+        damagePosture(player, damage, true);
     }
 
     private static void updateCooldown(Player player) {

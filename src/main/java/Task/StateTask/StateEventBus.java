@@ -141,7 +141,8 @@ public class StateEventBus {
             else
                 player.setVelocity(vec.normalize().multiply(1));
 
-            state.dash_cooldown = 80;
+            PlayerStateMachineSchedule.damagePosture(player, 1, false);
+            state.dash_cooldown = 5;
         }, 2, p, p.getLocation().toVector());
     }
 }
