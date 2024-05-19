@@ -228,6 +228,11 @@ public class NormalAttackStateTask extends BaseStateTask {
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
+
+        Player p = (Player) event.getDamager();
+        Player target = (Player) event.getEntity();
+        Vector direction = EntityBus.getTargetDirection(target, p);
+        p.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE), 0, ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE))));
     }
 
     @Override
