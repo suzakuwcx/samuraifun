@@ -30,6 +30,7 @@ public class PlayerStunTask extends BaseStateTask {
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
         if (StateEventBus.isPlayerDash(event)) {
             StateEventBus.onPlayerDash(event);
+            PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
             PlayerStateMachineSchedule.player_state_map.get(player.getUniqueId()).state = new BattleStateTask(player);
         }
     }
