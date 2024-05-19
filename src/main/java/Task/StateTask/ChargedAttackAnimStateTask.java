@@ -149,7 +149,7 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
 
-        PlayerBus.disableShield(p, 8);
+        PlayerBus.disableShield(p, 15);
         return;
     }
 
