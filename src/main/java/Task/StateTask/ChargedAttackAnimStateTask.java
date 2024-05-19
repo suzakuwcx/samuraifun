@@ -190,10 +190,10 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
                 player.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(3), 0, ServerBus.getDistanceVelocity(3))));
             }
         } else if (tick == 3) {
-            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 4);
-            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 3);
-            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 2);
-            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 1);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 5), 4);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 5), 3);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 5), 2);
+            ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 5), 1);
         } else if (tick == 5) {
             StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
             ServerBus.playServerSound(player.getLocation(), Sound.UI_TOAST_OUT, 3f, 0.1f);
