@@ -24,6 +24,7 @@ public class PostureRingEntity extends SpawnEntity<TextDisplay> {
         display.setBackgroundColor(Color.fromRGB(0, 0, 0).setAlpha(0));
         display.setInterpolationDelay(0);
         display.setTeleportDuration(1);
+        display.addScoreboardTag("ring");
         Transformation mation = display.getTransformation();
         display.setTransformation(
             new Transformation(
