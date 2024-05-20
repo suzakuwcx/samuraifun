@@ -1,5 +1,6 @@
 package Task.StateTask;
 
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -20,6 +21,7 @@ public class ChargingAttackStateTask extends BaseStateTask {
     public ChargingAttackStateTask(Player player) {
         this.player = player;
 
+        player.setCooldown(Material.SHIELD, 500000);
         charging(player);
     }
 
