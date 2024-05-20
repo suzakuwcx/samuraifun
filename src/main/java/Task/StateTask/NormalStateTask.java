@@ -14,6 +14,7 @@ import Task.DelayTask;
 
 public class NormalStateTask extends BaseStateTask {
     private Player player;
+    private int tick = 0;
 
     public NormalStateTask(Player player) {
         this.player = player;
@@ -38,6 +39,11 @@ public class NormalStateTask extends BaseStateTask {
 
     @Override
     public void run() {
+        ++tick;
 
+        if (tick == 20) {
+            PlayerStateMachineSchedule.recoverPosture(player, 1);
+            tick = 0;
+        }
     }
 }
