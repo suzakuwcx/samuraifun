@@ -190,4 +190,10 @@ public class ServerBus {
     public static double getDistanceVelocity(double distance) {
         return distance * 0.38;
     }
+
+    public static void playerHideServerEntity(Player player, Entity entity) {
+        for (Player p : player.getWorld().getPlayers()) {
+            p.hideEntity(plugin, entity);
+        }
+    }
 }

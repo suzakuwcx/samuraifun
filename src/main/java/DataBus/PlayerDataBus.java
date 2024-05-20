@@ -2,8 +2,8 @@ package DataBus;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -30,13 +30,13 @@ public class PlayerDataBus {
         item_display_mapper.put(player, Arrays.asList(display.getEntity(), blood.getEntity(), posture.getEntity()));
 
         player.addPassenger(display.getEntity());
-        player.hideEntity(ServerBus.getPlugin(), display.getEntity());
+        ServerBus.playerHideServerEntity(player, display.getEntity());
 
         player.addPassenger(blood.getEntity());
-        player.hideEntity(ServerBus.getPlugin(), blood.getEntity());
+        ServerBus.playerHideServerEntity(player, blood.getEntity());
 
         player.addPassenger(posture.getEntity());
-        player.hideEntity(ServerBus.getPlugin(), posture.getEntity());
+        ServerBus.playerHideServerEntity(player, posture.getEntity());
     }
 
     public static List<TextDisplay> getPlayerItemDisplay(Player player) {

@@ -19,6 +19,7 @@ import FunctionBus.EntityBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
+import Task.AttackTask.TargetRingShowTask;
 import Task.ModelTask.ItemDisplayAnimationTask;
 
 public class NormalAttackStateTask extends BaseStateTask {
@@ -237,12 +238,15 @@ public class NormalAttackStateTask extends BaseStateTask {
 
     @Override
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        Player p = (Player) event.getEntity();
+        Player target = (Player) event.getEntity();
         /* Check if this damage event is trigged by slash attack or normal attack, if it is not slash attack, trigger it by left click */
         if (!StateEventBus.isPlayerSlash(player)) {
             is_continue = true;
             return;
         }
+
+        TargetRingShowTask.execute(player, target);
+        TargetRingShowTask.execute(target, player);
         
         if (stage > 1) {
             PlayerStateMachineSchedule.recoverPosture(player, 1);
