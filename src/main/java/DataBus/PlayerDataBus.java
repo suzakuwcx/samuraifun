@@ -20,7 +20,7 @@ public class PlayerDataBus {
     private static Map<Player, Integer> player_drop_item_semaphore = new HashMap<>();
 
     public static void addPlayerItemDisplay(Player player) {
-        SpawnEntity<TextDisplay> display = new RingEntity(player.getLocation(), 0);
+        SpawnEntity<TextDisplay> display = new RingEntity(player.getLocation());
         SpawnEntity<TextDisplay> blood = new HealthRingEntity(player.getLocation(), 0);
         SpawnEntity<TextDisplay> posture = new PostureRingEntity(player.getLocation(), 0);
         display.spwan();

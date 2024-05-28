@@ -3,17 +3,21 @@ package Task.StateTask;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import Assert.Config.State;
+import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
+import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.PlayerLongFClickTask;
+import net.kyori.adventure.text.Component;
 
 public class ChargingAttackStateTask extends BaseStateTask {
     private Player player;
@@ -44,29 +48,41 @@ public class ChargingAttackStateTask extends BaseStateTask {
 
             state.charging = 0;
         }, player).setCastingFunction((args, t2) -> {
+            TextDisplay display = PlayerDataBus.getPlayerRingDisplay(player);
+
             Player p2 = (Player) args[0];
             State state = PlayerStateMachineSchedule.getPlayerState(player);
 
             if (t2 <= 40)
                 state.charging = t2;
 
-            if (t2 == 0)
+            if (t2 == 0) {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_ARMOR_EQUIP_DIAMOND, 1f, 0f);
-
-            if (t2 < 10) {
                 PlayerBus.setPlayerInventoryList(player, new Sword(1013), 0, 3, 6);
+                display.text(Component.text(FontDatabase.STATUS_RING_CHARGING_0));
+            }
+
+            if (t2 == 7) {
+                display.text(Component.text(FontDatabase.STATUS_RING_CHARGED_WARNING));
             } else if (t2 == 10) {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 1f);
-            } else if (t2 < 20) {
                 PlayerBus.setPlayerInventoryList(player, new Sword(1014), 0, 3, 6);
+            } else if (t2 == 12) {
+                display.text(Component.text(FontDatabase.STATUS_RING_CHARGING_1));
+            } else if (t2 == 17) {
+                display.text(Component.text(FontDatabase.STATUS_RING_CHARGED_WARNING));
             } else if (t2 == 20) {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 1.5f);
-            } else if (t2 < 30) {
                 PlayerBus.setPlayerInventoryList(player, new Sword(1015), 0, 3, 6);
+            } else if (t2 == 22) {
+                display.text(Component.text(FontDatabase.STATUS_RING_CHARGING_2));
+            } else if (t2 == 27) {
+                display.text(Component.text(FontDatabase.STATUS_RING_CHARGED_WARNING));
             } else if (t2 == 30) {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 2f);
-            } else {
                 PlayerBus.setPlayerInventoryList(player, new Sword(1016), 0, 3, 6);
+            } else if (t2 == 32) {
+                display.text(Component.text(FontDatabase.STATUS_RING_CHARGING_3));
             }
 
         }, player).setLongPressFunction((args) -> {

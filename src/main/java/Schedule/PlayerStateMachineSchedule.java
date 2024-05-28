@@ -12,6 +12,7 @@ import Assert.Config.State;
 import Assert.Item.Sword;
 import FunctionBus.PlayerBus;
 import Task.StateTask.BaseStateTask;
+import Task.StateTask.NormalStateTask;
 import Task.StateTask.PlayerPostureCrashTask;
 
 public class PlayerStateMachineSchedule implements Runnable {
@@ -22,7 +23,13 @@ public class PlayerStateMachineSchedule implements Runnable {
     }
 
     public static void init(Player player) {
-        player_state_map.put(player.getUniqueId(), new State(player));
+        State state;
+        if (!player_state_map.containsKey(player.getUniqueId())) {
+            player_state_map.put(player.getUniqueId(), new State(player));
+        } else {
+            state = player_state_map.get(player.getUniqueId());
+            state.state = new NormalStateTask(player);
+        }
     }
 
     public static State getPlayerState(Player player) {

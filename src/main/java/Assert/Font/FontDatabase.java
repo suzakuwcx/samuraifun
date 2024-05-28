@@ -1,5 +1,7 @@
 package Assert.Font;
 
+import Assert.Config.Role;
+
 public class FontDatabase {
     public static final char HEART_FULL = 0xe900;
     public static final char HEART_EMPTY = 0xe901;
@@ -35,12 +37,38 @@ public class FontDatabase {
     public static final char STATUS_RING_EMPTY_SHINBI = 0xea26;
     public static final char STATUS_RING_EMPTY_SOHEI = 0xea27;
 
+    public static final char STATUS_RING_DEFENSE = 0xea2e;
+    public static final char STATUS_RING_ATTACK = 0xea28;
+    public static final char STATUS_RING_STUN = 0xea33;
+    public static final char STATUS_RING_CHARGING_0 = 0xea29;
+    public static final char STATUS_RING_CHARGING_1 = 0xea2a;
+    public static final char STATUS_RING_CHARGING_2 = 0xea2b;
+    public static final char STATUS_RING_CHARGING_3 = 0xea2c;
+    public static final char STATUS_RING_CHARGED_WARNING = 0xea2d;
+    public static final char STATUS_RING_THRUST_ATTACK_WARNING = 0xea35;
+    public static final char STATUS_RING_THRUST_ATTACK = 0xea34;
+
     public static final char HINI_LEFT_CLICK = 0xea0e;
     public static final char HINI_RIGHT_CLICK = 0xea0f;
     public static final char HINI_LONG_RIGHT_CLICK = 0xea10;
     public static final char HINI_LONG_F_CLICK = 0xea11;
     public static final char HINI_Q_CLICK = 0xea12;
     public static final char HINI_SHIFT_CLICK = 0xea13;
+
+    public static char getRingFont(Role role) {
+        switch(role) {
+            case RONIN:
+                return STATUS_RING_EMPTY_RONIN;
+            case SHINBI:
+                return STATUS_RING_EMPTY_SHINBI;
+            case SOHEI:
+                return STATUS_RING_EMPTY_SOHEI;
+            case COMMON:
+            case SAMURAI:
+            default:
+                return STATUS_RING_EMPTY_SANURAI;
+        }
+    } 
 
     public static char getRingFont(char base, int value) {
         return (char) (base + value);

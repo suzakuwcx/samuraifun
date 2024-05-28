@@ -28,7 +28,7 @@ public class State {
     public int charging = 0;
 
     public State(Player player) {
-        state = new NormalStateTask(player);
+        state = new NormalStateTask(player, role);
     }
 
     public void refresh() {

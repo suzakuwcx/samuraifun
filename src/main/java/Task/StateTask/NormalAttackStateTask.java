@@ -3,6 +3,7 @@ package Task.StateTask;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
@@ -14,13 +15,16 @@ import Assert.Config.State;
 import Assert.Entity.HidariDoSwipeAnimation;
 import Assert.Entity.KesagiriSwipeAnimation;
 import Assert.Entity.RightKiriageSwipeAnimation;
+import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
+import DataBus.PlayerDataBus;
 import FunctionBus.EntityBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.AttackTask.TargetRingShowTask;
 import Task.ModelTask.ItemDisplayAnimationTask;
+import net.kyori.adventure.text.Component;
 
 public class NormalAttackStateTask extends BaseStateTask {
     private Player player;
@@ -33,6 +37,11 @@ public class NormalAttackStateTask extends BaseStateTask {
     public NormalAttackStateTask(Player player) {
         this.player = player;
         this.state = PlayerStateMachineSchedule.getPlayerState(player);
+
+        TextDisplay display = PlayerDataBus.getPlayerRingDisplay(player);
+        
+        if (display != null)
+            display.text(Component.text(FontDatabase.STATUS_RING_ATTACK));
     }
 
     private void check_end() {

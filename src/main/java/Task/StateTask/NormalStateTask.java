@@ -3,14 +3,19 @@ package Task.StateTask;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
 
+import Assert.Config.Role;
+import Assert.Config.State;
+import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
+import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
+import net.kyori.adventure.text.Component;
 
 public class NormalStateTask extends BaseStateTask {
     private Player player;
@@ -18,6 +23,23 @@ public class NormalStateTask extends BaseStateTask {
 
     public NormalStateTask(Player player) {
         this.player = player;
+
+        TextDisplay display = PlayerDataBus.getPlayerRingDisplay(player);
+        State state = PlayerStateMachineSchedule.getPlayerState(player);
+        
+        if (display != null)
+            display.text(Component.text(FontDatabase.getRingFont(state.role)));
+
+        player.setCooldown(Material.SHIELD, 500000);
+    }
+
+    public NormalStateTask(Player player, Role role) {
+        this.player = player;
+
+        TextDisplay display = PlayerDataBus.getPlayerHealthDisplay(player);
+        
+        if (display != null)
+            display.text(Component.text(FontDatabase.getRingFont(role)));
 
         player.setCooldown(Material.SHIELD, 500000);
     }

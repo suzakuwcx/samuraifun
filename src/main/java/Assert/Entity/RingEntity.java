@@ -8,19 +8,18 @@ import org.bukkit.entity.TextDisplay;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
 
+import Assert.Font.FontDatabase;
 import net.kyori.adventure.text.Component;
 
 public class RingEntity extends SpawnEntity<TextDisplay> {
-    private static final char base = 0xea24;
-
-    public RingEntity(Location location, int status) {
+    public RingEntity(Location location) {
         super(location, TextDisplay.class);
 
         TextDisplay display = super.getEntity();
         display.setBrightness(new Brightness(15, 15));
         display.setBillboard(Billboard.VERTICAL);
         display.setDefaultBackground(false);
-        display.text(Component.text((char)(base + status)));
+        display.text(Component.text(FontDatabase.STATUS_RING_EMPTY_SANURAI));
         display.setBackgroundColor(Color.fromRGB(0, 0, 0).setAlpha(0));
         display.setInterpolationDelay(0);
         display.setTeleportDuration(1);
