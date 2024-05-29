@@ -48,7 +48,8 @@ public class SmokingDartsTask implements Runnable {
             RayTraceResult result = location.getWorld().rayTraceBlocks(location, direction, direction.length(), FluidCollisionMode.NEVER, true);
             if (result == null) {
                 location.add(direction);
-                entity.getEntity().teleport(location);                
+                location.setDirection(direction);
+                entity.getEntity().teleport(location);
             } else {
                 is_ground = true;
                 Vector pos = result.getHitPosition();
