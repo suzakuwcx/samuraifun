@@ -18,6 +18,7 @@ import Assert.Item.Gun.Matchlock;
 import Assert.Item.Gun.Rifle;
 import DataBus.PlayerDataBus;
 import Task.DelayTask;
+import Task.MonitorTask;
 import Task.AttackTask.BattleFlagTask;
 import Task.AttackTask.SmokingDartsTask;
 import Task.GunTask.RecoilTask;
@@ -124,8 +125,28 @@ public class PlayerInteractEventBus {
 
 
     public static void onPlayerUsingBattleFlag(PlayerInteractEvent event) {
-        BattleFlagTask task = new BattleFlagTask(event.getPlayer().getLocation(), 400);
-        Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
+        Player player = event.getPlayer();
+
+        Vector direction = player.getEyeLocation().getDirection().setY(0).normalize();
+        direction.multiply(ServerBus.getDistanceVelocity(1));
+        direction.setY(1);
+
+        player.setVelocity(direction);
+
+        MonitorTask.execute("onPlayerUsingBattleFlag").setConditionFunction((args, tick) -> {
+            if (tick == 4)
+                player.setVelocity(new Vector(0, -1, 0));
+
+            if (Math.abs(event.getPlayer().getVelocity().getY() + 0.0784) > 0.00001)
+                return false;
+            else if (tick < 2)
+                return false;
+            return true;
+        }, player). setTargetFunction((args, tick) -> {
+            Player p = (Player) args[0];
+            BattleFlagTask task = new BattleFlagTask(p.getLocation(), 400);
+            Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
+        }, player).execute();
     }
 
     
