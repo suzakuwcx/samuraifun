@@ -5,6 +5,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import Assert.Config.Role;
 import Assert.Config.State;
@@ -31,6 +33,9 @@ public class NormalStateTask extends BaseStateTask {
             display.text(Component.text(FontDatabase.getRingFont(state.role)));
 
         player.setCooldown(Material.SHIELD, 500000);
+        /* Allow player sprint */
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 0, false, false, false));
+        player.setFoodLevel(20);
     }
 
     public NormalStateTask(Player player, Role role) {

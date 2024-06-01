@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.potion.PotionEffectType;
 
 import Assert.Config.PlayerConfig;
 import Assert.Config.State;
@@ -34,6 +35,9 @@ public class BattleStateTask extends BaseStateTask {
             display.text(Component.text(FontDatabase.getRingFont(state.role)));
 
         player.setCooldown(Material.SHIELD, 0);
+        /* Disable player sprint */
+        player.removePotionEffect(PotionEffectType.SPEED);
+        player.setFoodLevel(1);
     }
 
     public static void onPlayerAttack(PlayerInteractEvent event) {
