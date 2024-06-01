@@ -56,6 +56,9 @@ public class StateEventBus {
 
             if (!PlayerBus.isEntityInFrontOfPlayer(player, e, PlayerConfig.BASIC_ATTACK_RANGE, scope))
                 continue;
+
+            if (PlayerStateMachineSchedule.getPlayerState(e).is_invincible_frame)
+                continue;
             
             PlayerDataBus.downPlayerSlash(player);
             player.attack(e);
@@ -127,22 +130,48 @@ public class StateEventBus {
         DelayTask.execute((args) -> {
             Player player = (Player) args[0];
             Location location = player.getLocation();
-            Vector direction = location.getDirection();
+            Vector direction = location.getDirection().setY(0).normalize();
             State state = PlayerStateMachineSchedule.getPlayerState(p);
             Vector vec = (location.toVector().subtract((Vector) args[1])).setY(0);
-            if (vec.lengthSquared() == 0)
-                return;
 
-            float angle = vec.angle(direction);
+            /* Sound effect */
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 1f, 0.8f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 1f);
-            /* decrease forward dash value */
-            if (angle < Math.PI / 2)
-                player.setVelocity(vec.normalize().multiply(0.5 + Math.sin(angle)));
-            else
-                player.setVelocity(vec.normalize().multiply(1));
 
-            PlayerStateMachineSchedule.damagePosture(player, 1, false);
+            /* If player not move, default dash backward */
+            if (vec.lengthSquared() == 0)
+                vec = direction.clone().multiply(-1);
+            else
+                vec.normalize();
+
+            float angle = vec.angle(direction);
+            /* 
+             * decrease straight dash value to 2.5, increase level dash to 4, backend dash is 3.5
+             * due to that PI / 2 sometime judgement faile because of the accuracy
+             * use the 6/11 PI instead
+             */
+            double distance;
+            if (angle < 6 * Math.PI / 11)
+                distance = 2.5 + 1.5 * Math.sin(angle);
+            else
+                distance = 3.5;
+
+            if (state.posture == 0) {
+                distance /= 2;
+            } else {
+                state.posture = state.posture - 1;
+                /*
+                 * Add a 2 tick invincible frame
+                 */
+                state.is_invincible_frame = true;
+                DelayTask.execute((args1) -> {
+                    State s1 = (State) args1[0];
+                    s1.is_invincible_frame = false;
+                }, 2, state);
+            }
+
+            player.setVelocity(vec.clone().multiply(ServerBus.getDistanceVelocity(distance)));
+
             state.dash_cooldown = 5;
         }, 2, p, p.getLocation().toVector());
     }

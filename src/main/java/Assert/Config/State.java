@@ -24,6 +24,7 @@ public class State {
     public int skill_cooldown = PlayerConfig.SKILL_COOLDOWN;
     public int current_sword_frame = 1001;
     public int dash_cooldown = 4 * 20;
+    public boolean is_invincible_frame = false;
 
     public int charging = 0;
 
