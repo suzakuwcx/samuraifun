@@ -254,7 +254,15 @@ public class NormalAttackStateTask extends BaseStateTask {
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
 
-        knockback(damager, target, 0.5);
+        /* 50% percentage to knock away target */
+        if (stage == 4 || ServerBus.getRandom().nextInt(10) < 5) {
+            Vector direction = EntityBus.getTargetDirection(target, damager);
+            
+            damager.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE), 0, ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE))));
+            PlayerStateMachineSchedule.setStateTask(damager, new PlayerStunTask(damager));
+        } else {
+            knockback(damager, target, 0.5);
+        }
     }
 
     @Override
