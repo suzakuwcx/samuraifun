@@ -73,7 +73,6 @@ public class NormalAttackStateTask extends BaseStateTask {
             PlayerBus.setPlayerInventoryList(player, new Sword(1004), 0, 3, 6);
             state.current_sword_frame = 1004;
         } else if (tick <= 5) {
-            player.sendMessage("阶段 1: 准备");
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
@@ -86,16 +85,12 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 1);
             PlayerBus.setPlayerInventoryList(player, new Sword(1005), 0, 3, 6);
             state.current_sword_frame = 1005;
-            player.sendMessage("阶段 1: 砍");
         } else if (tick == 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1006), 0, 3, 6);
             state.current_sword_frame = 1006;
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-            player.sendMessage("阶段 1: 伤害判定");
         } else if (tick < 14) {
-            player.sendMessage("阶段 1: 结束动作");
         } else if (tick == 14) {
-            player.sendMessage("阶段 1: 结束");
             check_end();
             
             ++stage;
@@ -109,7 +104,6 @@ public class NormalAttackStateTask extends BaseStateTask {
             PlayerBus.setPlayerInventoryList(player, new Sword(1007), 0, 3, 6);
             state.current_sword_frame = 1007;
         } else if (tick <= 5) {
-            player.sendMessage("阶段 2: 准备");
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
@@ -122,16 +116,12 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 1);
             PlayerBus.setPlayerInventoryList(player, new Sword(1008), 0, 3, 6);
             state.current_sword_frame = 1008;
-            player.sendMessage("阶段 2: 砍");
         } else if (tick == 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
             state.current_sword_frame = 1009;
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-            player.sendMessage("阶段 2: 伤害判定");
         } else if (tick < 14) {
-            player.sendMessage("阶段 2: 结束动作");
         } else if (tick == 14) {
-            player.sendMessage("阶段 2: 结束");
             check_end();
             
             ++stage;
@@ -144,7 +134,6 @@ public class NormalAttackStateTask extends BaseStateTask {
             PlayerBus.setPlayerInventoryList(player, new Sword(1010), 0, 3, 6);
             state.current_sword_frame = 1010;
         } else if (tick <= 5) {
-            player.sendMessage("阶段 3: 准备");
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
@@ -157,16 +146,12 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 3);
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 2);
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 1);
-            player.sendMessage("阶段 3: 砍");
         } else if (tick == 9) {
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-            player.sendMessage("阶段 3: 伤害判定");
         } else if (tick < 14) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1012), 0, 3, 6);
             state.current_sword_frame = 1012;
-            player.sendMessage("阶段 3: 结束动作");
         } else if (tick == 14) {
-            player.sendMessage("阶段 3: 结束");
             check_end();
             
             ++stage;
@@ -179,7 +164,6 @@ public class NormalAttackStateTask extends BaseStateTask {
             PlayerBus.setPlayerInventoryList(player, new Sword(1007), 0, 3, 6);
             state.current_sword_frame = 1007;
         } else if (tick <= 5) {
-            player.sendMessage("阶段 4: 准备");
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
@@ -192,14 +176,11 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 3);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 2);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 1);
-            player.sendMessage("阶段 4: 砍");
         } else if (tick == 9) {
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-            player.sendMessage("阶段 4: 伤害判定");
         } else if (tick < 29) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
             state.current_sword_frame = 1009;
-            player.sendMessage("阶段 4: 结束动作");
         } else if (tick == 29) {
             check_end();
             
