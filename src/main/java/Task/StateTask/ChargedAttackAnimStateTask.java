@@ -35,6 +35,19 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
     }
 
+    private void knockback(Player damager, Player target) {
+        knockback(damager, target, 1);
+    }
+
+    private void knockback(Player damager, Player target, double percentage) {
+        double distance = EntityBus.getTargetDistance(damager, target);
+
+        if (distance < 1.5)
+            target.setVelocity(EntityBus.getTargetDirection(damager, target).setY(0).normalize().multiply(2.3));
+        else
+            target.setVelocity(EntityBus.getTargetDirection(damager, target).setY(0).normalize().multiply(1.4));
+    }
+
     private void level_0() {
         finish();
     }
@@ -129,10 +142,7 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         if (task instanceof ChargingAttackStateTask)
             return;
 
-        if (EntityBus.getTargetDistance(event.getDamager(), target) < 1)
-            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.6));
-        else
-            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.3));
+        knockback((Player) event.getDamager(), target);
             
         if (task instanceof PlayerPostureCrashTask)
             return;
@@ -142,18 +152,21 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
     }
 
     private void onPlayerDefense(EntityDamageByEntityEvent event) {
-        Player p = (Player) event.getEntity();
+        Player target = (Player) event.getEntity();
 
-        PlayerStateMachineSchedule.damagePosture(p, 1);
+        PlayerStateMachineSchedule.damagePosture(target, 1);
+        PlayerBus.disableShield(target, 15);
+        knockback((Player) event.getDamager(), target, 0.5);
+
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.5f, 0.8f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
 
-        PlayerBus.disableShield(p, 15);
-        return;
     }
 
     private void onPlayerDeflect(EntityDamageByEntityEvent event) {
+        knockback((Player) event.getDamager(), (Player) event.getEntity(), 0.5);
+
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);

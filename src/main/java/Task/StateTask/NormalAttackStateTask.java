@@ -54,6 +54,19 @@ public class NormalAttackStateTask extends BaseStateTask {
         }
     }
 
+    private void knockback(Player damager, Player target) {
+        knockback(damager, target, 1);
+    }
+
+    private void knockback(Player damager, Player target, double percentage) {
+        double distance = EntityBus.getTargetDistance(damager, target);
+
+        if (distance < 1.5)
+            target.setVelocity(EntityBus.getTargetDirection(damager, target).setY(0).normalize().multiply(1.7));
+        else
+            target.setVelocity(EntityBus.getTargetDirection(damager, target).setY(0).normalize().multiply(0.8));
+    }
+
     private void doStage1() {
         if (tick == 1) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
@@ -212,11 +225,8 @@ public class NormalAttackStateTask extends BaseStateTask {
         if (task instanceof ChargingAttackStateTask)
             return;
 
-        if (EntityBus.getTargetDistance(event.getDamager(), target) < 1)
-            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.6));
-        else
-            target.setVelocity(EntityBus.getTargetDirection(event.getDamager(), target).multiply(0.3));
-            
+        knockback((Player) event.getDamager(), target);
+        
         if (task instanceof PlayerPostureCrashTask)
             return;
             
@@ -225,24 +235,26 @@ public class NormalAttackStateTask extends BaseStateTask {
     }
 
     private void onPlayerDefense(EntityDamageByEntityEvent event) {
-        Player p = (Player) event.getEntity();
+        Player target =  (Player) event.getEntity();
 
-        PlayerStateMachineSchedule.damagePosture(p, 1);
+        PlayerStateMachineSchedule.damagePosture(target, 1);
+        knockback((Player) event.getDamager(), target, 0.5);
+        
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.5f, 0.8f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
     }
 
     private void onPlayerDeflect(EntityDamageByEntityEvent event) {
+        Player damager = (Player) event.getDamager();
+        Player target = (Player) event.getEntity();
+
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
         ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
 
-        Player p = (Player) event.getDamager();
-        Player target = (Player) event.getEntity();
-        Vector direction = EntityBus.getTargetDirection(target, p);
-        p.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE), 0, ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE))));
+        knockback(damager, target, 0.5);
     }
 
     @Override
