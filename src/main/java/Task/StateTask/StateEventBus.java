@@ -18,6 +18,7 @@ import Assert.Config.State;
 import Assert.Item.Sword;
 import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
+import FunctionBus.ScoreBoardBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
@@ -54,12 +55,15 @@ public class StateEventBus {
             if (e.equals(player))
                 continue;
 
+            if (PlayerStateMachineSchedule.getPlayerState(e).is_invincible_frame)
+                continue;
+
+            if (ScoreBoardBus.isPlayerSameTeam(player, e))
+                continue;
+
             if (!PlayerBus.isEntityInFrontOfPlayer(player, e, PlayerConfig.BASIC_ATTACK_RANGE, scope))
                 continue;
 
-            if (PlayerStateMachineSchedule.getPlayerState(e).is_invincible_frame)
-                continue;
-            
             PlayerDataBus.downPlayerSlash(player);
             player.attack(e);
         }
