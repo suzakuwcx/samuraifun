@@ -1,6 +1,7 @@
 package Task.StateTask;
 
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -221,25 +222,30 @@ public class NormalAttackStateTask extends BaseStateTask {
         PlayerStateMachineSchedule.damagePosture(target, 1);
         knockback((Player) event.getDamager(), target, 0.5);
         
-        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.5f, 0.8f);
-        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
-        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
+        ServerBus.playServerSound(target.getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.5f, 0.8f);
+        ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
+        ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
+        
+        Vector direction = EntityBus.getTargetDirection(target, event.getDamager());
+        direction.multiply(0.5);
+        ServerBus.spawnServerParticle(Particle.LAVA, target.getLocation().add(direction).add(0, 1.1, 0), 2, 0, 0., 0, 1000);
     }
 
     private void onPlayerDeflect(EntityDamageByEntityEvent event) {
         Player damager = (Player) event.getDamager();
         Player target = (Player) event.getEntity();
+        Vector direction = EntityBus.getTargetDirection(target, event.getDamager());
 
-        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
-        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
-        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
-        ServerBus.playServerSound(event.getEntity().getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
+        ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
+        ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
+        ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
+        ServerBus.playServerSound(target.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
+
+        ServerBus.spawnServerParticle(Particle.LAVA, target.getLocation().add(direction.clone().multiply(0.5)).add(0, 1.1, 0), 5, 0, 0., 0, 1000);
 
         /* 50% percentage to knock away target */
         if (stage == 4 || ServerBus.getRandom().nextInt(10) < 5) {
-            Vector direction = EntityBus.getTargetDirection(target, damager);
-            
-            damager.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE), 0, ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE))));
+            damager.setVelocity(direction.clone().multiply(new Vector(ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE), 0, ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE))));
             PlayerStateMachineSchedule.setStateTask(damager, new PlayerStunTask(damager));
         } else {
             knockback(damager, target, 0.5);
