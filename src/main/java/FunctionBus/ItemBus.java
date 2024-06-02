@@ -37,4 +37,10 @@ public class ItemBus {
 
         return meta.getPersistentDataContainer().has(namespaced_key, type);
     }
+
+    public static void setItemCustomModelData(ItemStack item, int id) {
+        ItemMeta meta = item.getItemMeta();
+        meta.setCustomModelData(id);
+        item.setItemMeta(meta);
+    }
 }

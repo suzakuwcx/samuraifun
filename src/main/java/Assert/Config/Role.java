@@ -5,5 +5,5 @@ public enum Role {
     SAMURAI,
     RONIN,
     SHINBI,
-    SOHEI,
+    SOHEI;
 }
