@@ -12,6 +12,7 @@ import Assert.Config.State;
 import Assert.Entity.HidariDoSwipeAnimation;
 import Assert.Entity.KesagiriSwipeAnimation;
 import Assert.Item.Sword;
+import DataBus.PlayerDataBus;
 import FunctionBus.EntityBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
@@ -128,12 +129,18 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
     }
 
     private void onDamageTarget(EntityDamageByEntityEvent event) {
-        Player target =  (Player) event.getEntity();
-        BaseStateTask task = PlayerStateMachineSchedule.getStateTask(target);
+        Player damager = (Player) event.getDamager();
+        Player target = (Player) event.getEntity();
+        BaseStateTask task = PlayerStateMachineSchedule.getStateTask(damager);
 
         event.setCancelled(false);
         event.setDamage(0);
         PlayerStateMachineSchedule.damageHealth(target, 1);
+        if (PlayerStateMachineSchedule.isPlayerNoHealth(target)) {
+            target.setHealth(0);
+            PlayerDataBus.downPlayerDeadByPlugin(target, player);
+        }
+
         ServerBus.playServerSound(target.getLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 0.8f);
         ServerBus.playServerSound(target.getLocation(), Sound.ITEM_TRIDENT_HIT, 1f, 0.5f);
 
@@ -143,7 +150,7 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         if (task instanceof ChargingAttackStateTask)
             return;
 
-        knockback((Player) event.getDamager(), target);
+        knockback(damager, target);
             
         if (task instanceof PlayerPostureCrashTask)
             return;

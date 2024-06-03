@@ -11,7 +11,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import Assert.Config.PlayerConfig;
 import Assert.Config.State;
 import Assert.Entity.HidariDoSwipeAnimation;
 import Assert.Entity.KesagiriSwipeAnimation;
@@ -192,12 +191,17 @@ public class NormalAttackStateTask extends BaseStateTask {
 
 
     private void onDamageTarget(EntityDamageByEntityEvent event) {
-        Player target =  (Player) event.getEntity();
+        Player damager = (Player) event.getDamager();
+        Player target = (Player) event.getEntity();
         BaseStateTask task = PlayerStateMachineSchedule.getStateTask(target);
 
-        event.setCancelled(false);
-        event.setDamage(0);
+        target.sendHurtAnimation(0);
         PlayerStateMachineSchedule.damageHealth(target, 1);
+        if (PlayerStateMachineSchedule.isPlayerNoHealth(target)) {
+            target.setHealth(0);
+            PlayerDataBus.downPlayerDeadByPlugin(target, player);
+        }
+
         ServerBus.playServerSound(target.getLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 0.8f);
         ServerBus.playServerSound(target.getLocation(), Sound.ITEM_TRIDENT_HIT, 1f, 0.5f);
 
@@ -207,7 +211,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         if (task instanceof ChargingAttackStateTask)
             return;
 
-        knockback((Player) event.getDamager(), target);
+        knockback(damager, target);
         
         if (task instanceof PlayerPostureCrashTask)
             return;

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -18,6 +19,7 @@ public class PlayerDataBus {
     private static Map<Player, List<TextDisplay>> item_display_mapper = new HashMap<>();
     private static Map<Player, Integer> player_slash_semaphore = new HashMap<>();
     private static Map<Player, Integer> player_drop_item_semaphore = new HashMap<>();
+    private static Map<UUID, Player> player_dead_by_plugin_mapper = new HashMap<>();
 
     public static void addPlayerItemDisplay(Player player) {
         SpawnEntity<TextDisplay> display = new RingEntity(player.getLocation());
@@ -108,5 +110,17 @@ public class PlayerDataBus {
         --sem;
         player_drop_item_semaphore.put(player, sem);
         return true;
+    }
+
+    public static void downPlayerDeadByPlugin(Player player, Player target) {
+        player_dead_by_plugin_mapper.put(player.getUniqueId(), target);
+    }
+
+    public static boolean isPlayerDeadByPlugin(Player player) {
+        return player_dead_by_plugin_mapper.containsKey(player.getUniqueId());
+    }
+
+    public static Player upPlayerDeadByPlugin(Player player) {
+        return player_dead_by_plugin_mapper.get(player.getUniqueId());
     }
 }

@@ -52,11 +52,14 @@ public class PlayerStateMachineSchedule implements Runnable {
         return ret;
     }
 
-    public static void damageHealth(Player player, int damage) {
-        State state = getPlayerState(player);
+    public static void damageHealth(Player target, int damage) {
+        State state = getPlayerState(target);
         state.health = noMinusDecrease(state.health, damage);
-        if (state.health == 0)
-            player.setHealth(0);
+    }
+
+    public static boolean isPlayerNoHealth(Player player) {
+        State state = getPlayerState(player);
+        return state.health == 0;
     }
 
     public static void damagePosture(Player player, int damage, boolean is_crash) {

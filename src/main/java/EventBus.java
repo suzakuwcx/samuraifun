@@ -29,7 +29,7 @@ import Schedule.PlayerStateMachineSchedule;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
 
-public class EventBus implements Listener {    
+public class EventBus implements Listener {
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         PlayerJoinEventBus.onBusTrigger(event);
@@ -147,6 +147,8 @@ public class EventBus implements Listener {
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         PlayerDeathEventBus.onBusTrigger(event);
+        if (PlayerDeathEventBus.isPlayerDeadByPlugin(event))
+            PlayerDeathEventBus.onPlayerDeadByPlugin(event);
     }
 
     @EventHandler
