@@ -75,6 +75,11 @@ public class PlayerStateMachineSchedule implements Runnable {
         damagePosture(player, damage, true);
     }
 
+    public static boolean isPlayerNoPosture(Player player) {
+        State state = getPlayerState(player);
+        return state.posture == 0;
+    }
+
     public static void recoverPosture(Player player, int value) {
         State state = getPlayerState(player);
         state.posture += value;

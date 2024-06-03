@@ -149,13 +149,21 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         if (task instanceof ChargingAttackStateTask)
             return;
 
-        knockback(damager, target);
-            
+        if (PlayerStateMachineSchedule.isPlayerNoPosture(target)) {
+            knockback(damager, target, 1.6);
+        } else {
+            knockback(damager, target);
+        }
+        
         if (task instanceof PlayerPostureCrashTask)
             return;
-            
-        PlayerBus.setPlayerInventoryList(target, new Sword(1023), 0, 3, 6);
-        PlayerStateMachineSchedule.setStateTask(target, new PlayerStunTask(target));
+
+        if (PlayerStateMachineSchedule.isPlayerNoPosture(target)) {
+            PlayerStateMachineSchedule.setStateTask(target, new PlayerPostureCrashTask(target));
+        } else {
+            PlayerBus.setPlayerInventoryList(target, new Sword(1023), 0, 3, 6);
+            PlayerStateMachineSchedule.setStateTask(target, new PlayerStunTask(target));
+        }
     }
 
     private void onPlayerDefense(EntityDamageByEntityEvent event) {
