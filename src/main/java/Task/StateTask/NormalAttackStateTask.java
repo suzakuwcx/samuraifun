@@ -235,6 +235,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         Player damager = (Player) event.getDamager();
         Player target = (Player) event.getEntity();
         Vector direction = EntityBus.getTargetDirection(target, event.getDamager());
+        double distance = 0;
 
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
@@ -243,13 +244,14 @@ public class NormalAttackStateTask extends BaseStateTask {
 
         ServerBus.spawnServerParticle(Particle.LAVA, target.getLocation().add(direction.clone().multiply(0.5)).add(0, 1.1, 0), 5, 0, 0., 0, 1000);
 
-        /* 50% percentage to knock away target */
-        if (stage == 4 || ServerBus.getRandom().nextInt(10) < 5) {
-            damager.setVelocity(direction.clone().multiply(new Vector(ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE), 0, ServerBus.getDistanceVelocity(PlayerConfig.BASIC_ATTACK_RANGE))));
-            PlayerStateMachineSchedule.setStateTask(damager, new PlayerStunTask(damager));
-        } else {
-            knockback(damager, target, 0.5);
-        }
+        direction.setY(0).normalize();
+        distance = 3.0 - EntityBus.getTargetDistance(damager, target);
+        if (distance < 0)
+            distance = 0.6;
+
+        PlayerStateMachineSchedule.damagePosture(damager, 1, false);
+        damager.setVelocity(direction.multiply(distance));
+        PlayerStateMachineSchedule.setStateTask(damager, new PlayerStunTask(damager));
     }
 
     @Override
