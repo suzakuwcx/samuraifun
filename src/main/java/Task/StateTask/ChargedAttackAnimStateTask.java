@@ -137,6 +137,7 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         PlayerStateMachineSchedule.damageHealth(target, 1);
         if (PlayerStateMachineSchedule.isPlayerNoHealth(target)) {
             target.setHealth(0);
+            PlayerStateMachineSchedule.recoverHealth(player, 3);
             PlayerDataBus.downPlayerDeadByPlugin(target, player);
         }
 

@@ -87,6 +87,13 @@ public class PlayerStateMachineSchedule implements Runnable {
             state.posture = PlayerConfig.MAX_POSTURE;
     }
 
+    public static void recoverHealth(Player player, int value) {
+        State state = getPlayerState(player);
+        state.health += value;
+        if (state.health > PlayerConfig.MAX_HEALTH)
+            state.health = PlayerConfig.MAX_HEALTH;
+    }
+
     public static void resetSwordCooldown(Player player) {
         State state = player_state_map.get(player.getUniqueId());
         state.sword_cooldown = PlayerConfig.SWORD_COOLDOWN;
