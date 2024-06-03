@@ -1,6 +1,6 @@
 package PacketBus;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
@@ -39,13 +39,15 @@ public class ServerEntityEquipmentPacketBus extends PacketAdapter {
         if (!(state.state instanceof NormalAttackStateTask) && !(state.state instanceof ChargedAttackAnimStateTask))
             return;
 
-        Pair<EnumWrappers.ItemSlot, ItemStack> pair = container.getSlotStackPairLists().read(0).get(0);
+        List<Pair<EnumWrappers.ItemSlot, ItemStack>> modifier = container.getSlotStackPairLists().read(0);
+        Pair<EnumWrappers.ItemSlot, ItemStack> pair = modifier.get(0);
 
         if (!pair.getFirst().equals(ItemSlot.MAINHAND))
             return;
 
         pair.setSecond(FakeSword.getItem(state.current_sword_frame));
-        container.getSlotStackPairLists().write(0, Arrays.asList(pair));
+        modifier.set(0, pair);
+        container.getSlotStackPairLists().write(0, modifier);
         event.setPacket(container);
     }
 }
