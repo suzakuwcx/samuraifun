@@ -22,7 +22,6 @@ import FunctionBus.EntityBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
-import Task.AttackTask.TargetRingShowTask;
 import Task.ModelTask.ItemDisplayAnimationTask;
 import net.kyori.adventure.text.Component;
 
@@ -266,9 +265,6 @@ public class NormalAttackStateTask extends BaseStateTask {
             is_continue = true;
             return;
         }
-
-        TargetRingShowTask.execute(player, target);
-        TargetRingShowTask.execute(target, player);
         
         if (stage > 1) {
             PlayerStateMachineSchedule.recoverPosture(player, 1);

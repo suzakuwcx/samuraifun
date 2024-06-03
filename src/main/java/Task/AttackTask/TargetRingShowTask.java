@@ -11,6 +11,7 @@ import org.bukkit.entity.TextDisplay;
 import DataBus.PlayerDataBus;
 import FunctionBus.ServerBus;
 
+@Deprecated
 public class TargetRingShowTask implements Runnable {
     private static Map<UUID, TargetRingShowTask> task_mapper;
     private Player host;
