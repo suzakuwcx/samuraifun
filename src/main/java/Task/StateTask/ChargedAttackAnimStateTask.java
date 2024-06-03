@@ -131,10 +131,9 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
     private void onDamageTarget(EntityDamageByEntityEvent event) {
         Player damager = (Player) event.getDamager();
         Player target = (Player) event.getEntity();
-        BaseStateTask task = PlayerStateMachineSchedule.getStateTask(damager);
+        BaseStateTask task = PlayerStateMachineSchedule.getStateTask(target);
 
-        event.setCancelled(false);
-        event.setDamage(0);
+        target.sendHurtAnimation(0);
         PlayerStateMachineSchedule.damageHealth(target, 1);
         if (PlayerStateMachineSchedule.isPlayerNoHealth(target)) {
             target.setHealth(0);
