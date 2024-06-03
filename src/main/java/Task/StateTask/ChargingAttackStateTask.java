@@ -117,5 +117,6 @@ public class ChargingAttackStateTask extends BaseStateTask {
     public void run() {
         PlayerBus.banPlayerJump(player, 3);
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3, 1));
+        PlayerStateMachineSchedule.resetSwordCooldown(player);
     }
 }

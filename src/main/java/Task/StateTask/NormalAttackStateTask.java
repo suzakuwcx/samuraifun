@@ -37,6 +37,8 @@ public class NormalAttackStateTask extends BaseStateTask {
         this.player = player;
         this.state = PlayerStateMachineSchedule.getPlayerState(player);
 
+        PlayerStateMachineSchedule.resetSwordCooldown(player);
+
         TextDisplay display = PlayerDataBus.getPlayerRingDisplay(player);
         
         if (display != null)
@@ -77,6 +79,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
+            PlayerStateMachineSchedule.resetSwordCooldown(player);
         } else if (tick <= 8) {
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 4);
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 3);
@@ -108,6 +111,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
+            PlayerStateMachineSchedule.resetSwordCooldown(player);
         } else if (tick < 9) {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 4);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 3);
@@ -138,6 +142,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
+            PlayerStateMachineSchedule.resetSwordCooldown(player);
         } else if (tick < 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1011), 0, 3, 6);
             state.current_sword_frame = 1011;
@@ -168,6 +173,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
+            PlayerStateMachineSchedule.resetSwordCooldown(player);
         } else if (tick < 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1008), 0, 3, 6);
             state.current_sword_frame = 1008;
@@ -277,6 +283,8 @@ public class NormalAttackStateTask extends BaseStateTask {
         if (stage > 1) {
             PlayerStateMachineSchedule.recoverPosture(player, 1);
         }
+
+        PlayerStateMachineSchedule.resetSwordCooldown(target);
 
         if (StateEventBus.isPlayerDefense(event) || StateEventBus.isPlayerFakeDeflect(event)) { /* Defense handler */
             onPlayerDefense(event);

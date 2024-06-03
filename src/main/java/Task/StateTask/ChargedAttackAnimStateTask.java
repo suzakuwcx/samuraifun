@@ -201,11 +201,14 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
 
     @Override
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        Player p = (Player) event.getEntity();
+        Player target = (Player) event.getEntity();
 
-        if (!StateEventBus.isPlayerSlash(player)) {
-            
-        } else if (StateEventBus.isPlayerDefense(event) || StateEventBus.isPlayerFakeDeflect(event)) { /* Defense handler */
+        if (!StateEventBus.isPlayerSlash(player))
+            return;
+        
+        PlayerStateMachineSchedule.resetSwordCooldown(target);
+
+        if (StateEventBus.isPlayerDefense(event) || StateEventBus.isPlayerFakeDeflect(event)) { /* Defense handler */
             onPlayerDefense(event);
         } else if (StateEventBus.isPlayerDeflect(event)) { /* Deflect handler */
             onPlayerDeflect(event);

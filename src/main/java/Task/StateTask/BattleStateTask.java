@@ -99,7 +99,7 @@ public class BattleStateTask extends BaseStateTask {
         if (state.sword_cooldown != 0)
             return;
 
-        state.sword_cooldown = PlayerConfig.SWORD_COOLDOWN;
+        PlayerStateMachineSchedule.resetSwordCooldown(player);
         ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_AXE_SCRAPE, 0.5f, 1f);
         ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_IRON, 1f, 0.8f);
         
