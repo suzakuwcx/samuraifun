@@ -45,9 +45,9 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         double distance = EntityBus.getTargetDistance(damager, target);
 
         if (distance < 1.5)
-            target.setVelocity(EntityBus.getTargetDirection(damager, target).setY(0).normalize().multiply(2.3));
+            target.setVelocity(EntityBus.getTargetDirection(damager, target).setY(0).normalize().multiply(2.3).multiply(percentage));
         else
-            target.setVelocity(EntityBus.getTargetDirection(damager, target).setY(0).normalize().multiply(1.4));
+            target.setVelocity(EntityBus.getTargetDirection(damager, target).setY(0).normalize().multiply(1.4).multiply(percentage));
     }
 
     private void level_0() {
@@ -152,6 +152,8 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
 
         if (PlayerStateMachineSchedule.isPlayerNoPosture(target)) {
             knockback(damager, target, 1.6);
+        } else if (level == 2) {
+            knockback(damager, target, 0.3);
         } else {
             knockback(damager, target);
         }
