@@ -39,11 +39,11 @@ public class Boot {
         }
 
         meta = item.getItemMeta();
-
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
+        meta.addEnchant(Enchantment.BINDING_CURSE, 1, true);
         meta.displayName(display_name);
         item.setItemMeta(meta);
-        item.addEnchantment(Enchantment.BINDING_CURSE, 1);
-        item.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         return item;
     }
 }

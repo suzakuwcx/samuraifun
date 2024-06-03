@@ -1,6 +1,8 @@
 package Assert.Item;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFactory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
