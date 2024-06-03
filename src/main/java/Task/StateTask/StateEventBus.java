@@ -162,6 +162,11 @@ public class StateEventBus {
 
             if (state.posture == 0) {
                 distance /= 2;
+                /*
+                 * Prevent player dash backward
+                 */
+                if (angle > 6 * Math.PI / 11)
+                    distance = 0.1;
             } else {
                 state.posture = state.posture - 1;
                 /*
@@ -176,7 +181,7 @@ public class StateEventBus {
 
             player.setVelocity(vec.clone().multiply(ServerBus.getDistanceVelocity(distance)));
 
-            state.dash_cooldown = 5;
+            state.dash_cooldown = 7;
         }, 2, p, p.getLocation().toVector());
     }
 
