@@ -13,6 +13,7 @@ public class MonitorTask implements Runnable {
     private static Map<String, MonitorTask> task_mapper;
 
     private int tick;
+    private int max_tick;
     private String key;
 
     private Object[] condition_stacks;
@@ -27,6 +28,7 @@ public class MonitorTask implements Runnable {
 
     {
         tick = 0;
+        max_tick = -1;
     }
 
     public static class Builder {
@@ -67,6 +69,11 @@ public class MonitorTask implements Runnable {
             return this;
         }
 
+        public Builder setMaxTick(int tick) {
+            task.max_tick = tick;
+            return this;
+        }
+
         public void execute() {
             Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
         }
@@ -86,6 +93,11 @@ public class MonitorTask implements Runnable {
             target_function.accept(target_stacks, tick);
             task_mapper.remove(key);
             return;
+        }
+
+        if (max_tick > 0 && tick >= max_tick) {
+            task_mapper.remove(key);
+            return;            
         }
 
         ++tick;

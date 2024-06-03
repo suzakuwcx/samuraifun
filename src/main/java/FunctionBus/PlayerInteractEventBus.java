@@ -133,7 +133,9 @@ public class PlayerInteractEventBus {
 
         player.setVelocity(direction);
 
-        MonitorTask.execute("onPlayerUsingBattleFlag").setConditionFunction((args, tick) -> {
+        MonitorTask.execute("onPlayerUsingBattleFlag")
+        .setMaxTick(120)
+        .setConditionFunction((args, tick) -> {
             if (tick == 4)
                 player.setVelocity(new Vector(0, -1, 0));
 
@@ -142,11 +144,13 @@ public class PlayerInteractEventBus {
             else if (tick < 2)
                 return false;
             return true;
-        }, player). setTargetFunction((args, tick) -> {
+        }, player)
+        .setTargetFunction((args, tick) -> {
             Player p = (Player) args[0];
             BattleFlagTask task = new BattleFlagTask(p.getLocation(), 400);
             Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
-        }, player).execute();
+        }, player)
+        .execute();
     }
 
     
