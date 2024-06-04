@@ -26,7 +26,7 @@ public class DeflectTask implements Runnable{
             return false;
 
         DeflectTask task = task_mapper.get(player);
-        if (task.failure > 4)
+        if (task.failure > 3)
             return false;
 
         return true;
@@ -37,7 +37,7 @@ public class DeflectTask implements Runnable{
             return false;
 
         DeflectTask task = task_mapper.get(player);
-        if (task.failure >= 2)
+        if (task.failure >= 1)
             return false;
 
         return true;
@@ -49,10 +49,7 @@ public class DeflectTask implements Runnable{
             return false;
 
         DeflectTask task = task_mapper.get(player);
-        if (task.failure > 4)
-            return false;
-
-        if (task.failure < 2)
+        if (task.failure > 3 || task.failure < 1)
             return false;
 
         return true;
