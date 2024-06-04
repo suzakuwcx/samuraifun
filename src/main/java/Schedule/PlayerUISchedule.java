@@ -25,13 +25,14 @@ public class PlayerUISchedule implements Runnable {
         timebar = BossBar.bossBar(Component.text(""), 1f, Color.RED, Overlay.PROGRESS);
 
         hinibar = BossBar.bossBar(Component.text(
-            String.format("%c 攻击 %c 振刀 %c 防御 %c 重击 %c 收/拔刀 %c 垫步",
+            String.format("%c 攻击 %c 振刀 %c 防御 %c 重击 %c 收/拔刀 %c 垫步 %c + %c 肩撞",
                 FontDatabase.HINI_LEFT_CLICK,
                 FontDatabase.HINI_RIGHT_CLICK,
                 FontDatabase.HINI_LONG_RIGHT_CLICK,
                 FontDatabase.HINI_LONG_F_CLICK,
                 FontDatabase.HINI_Q_CLICK,
-                FontDatabase.HINI_SHIFT_CLICK
+                FontDatabase.HINI_SHIFT_CLICK,
+                FontDatabase.HINI_LONG_RIGHT_CLICK, FontDatabase.HINI_SHIFT_CLICK
             )
         ), 1f, Color.WHITE, Overlay.PROGRESS);
     }
