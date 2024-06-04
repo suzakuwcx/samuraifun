@@ -46,7 +46,6 @@ public class FontDatabase {
     public static final char STATUS_RING_CHARGING_3 = 0xea2c;
     public static final char STATUS_RING_CHARGED_WARNING = 0xea2d;
     public static final char STATUS_RING_THRUST_ATTACK_WARNING = 0xea35;
-    public static final char STATUS_RING_THRUST_ATTACK = 0xea34;
 
     public static final char HINI_LEFT_CLICK = 0xea0e;
     public static final char HINI_RIGHT_CLICK = 0xea0f;
@@ -54,6 +53,13 @@ public class FontDatabase {
     public static final char HINI_LONG_F_CLICK = 0xea11;
     public static final char HINI_Q_CLICK = 0xea12;
     public static final char HINI_SHIFT_CLICK = 0xea13;
+
+    public static final char STATUS_RING_POSTURE_CRASH = 0xea32;
+    public static final char STATUS_RING_DASH_IFRAM = 0xea34;
+    public static final char STATUS_RING_STOP_DEFENSE = 0xea37;
+    public static final char STATUS_RING_SUCCESS_DEFENSE = 0xea2f;
+    public static final char STATUS_RING_SUCCESS_DEFLECT = 0xea31;
+    public static final char STATUS_RING_CAN_DEFLECT = 0xea30;
 
     public static char getRingFont(Role role) {
         switch(role) {

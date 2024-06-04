@@ -10,6 +10,7 @@ import Assert.Config.PlayerConfig;
 import Assert.Config.State;
 import Assert.Font.FontDatabase;
 import DataBus.PlayerDataBus;
+import Task.AttackTask.RingShowTask;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
@@ -74,6 +75,30 @@ public class PlayerUISchedule implements Runnable {
             builder.append(FontDatabase.HEART_EMPTY);
 
         player.sendActionBar(Component.text(builder.toString()));
+    }
+
+
+    public static void setPlayerMainRing(Player player, String text) {
+        State state = PlayerStateMachineSchedule.getPlayerState(player);
+        state.status_ring = text;
+        
+        if (RingShowTask.isPlayerShowingSideRing(player))
+            return;
+        
+        TextDisplay display = PlayerDataBus.getPlayerRingDisplay(player);
+        display.text(Component.text(text));
+    }
+
+    public static void setPlayerMainRing(Player player, char text) {
+        setPlayerMainRing(player, String.valueOf(text));
+    }
+
+    public static void setPlayerSideRing(Player player, String text, int tick) {
+        RingShowTask.execute(player, text, tick);
+    }
+
+    public static void setPlayerSideRing(Player player, char text, int tick) {
+        setPlayerSideRing(player, String.valueOf(text), tick);
     }
 
     private void updateRing(Player player, State state) {

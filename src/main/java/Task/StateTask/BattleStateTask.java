@@ -3,7 +3,6 @@ package Task.StateTask;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -11,16 +10,13 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.potion.PotionEffectType;
 
-import Assert.Config.PlayerConfig;
 import Assert.Config.State;
-import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
-import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
+import Schedule.PlayerUISchedule;
 import Task.DelayTask;
-import net.kyori.adventure.text.Component;
 
 public class BattleStateTask extends BaseStateTask {
     private Player player;
@@ -28,12 +24,7 @@ public class BattleStateTask extends BaseStateTask {
     public BattleStateTask(Player player) {
         this.player = player;
 
-        TextDisplay display = PlayerDataBus.getPlayerRingDisplay(player);
-        State state = PlayerStateMachineSchedule.getPlayerState(player);
-        
-        if (display != null)
-            display.text(Component.text(FontDatabase.getRingFont(state.role)));
-
+        PlayerUISchedule.setPlayerMainRing(player, ' ');
         player.setCooldown(Material.SHIELD, 0);
         /* Disable player sprint */
         player.removePotionEffect(PotionEffectType.SPEED);

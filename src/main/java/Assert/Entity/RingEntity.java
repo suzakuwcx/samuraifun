@@ -27,9 +27,9 @@ public class RingEntity extends SpawnEntity<TextDisplay> {
         Transformation mation = display.getTransformation();
         display.setTransformation(
             new Transformation(
-                mation.getTranslation().add(0, 1.4f, 0.3f),
+                mation.getTranslation().add(0, 1.1f, 0.3f),
                 mation.getLeftRotation(),
-                new Vector3f(1.7f, 1.7f, 1.7f),
+                new Vector3f(1f, 1f, 1f),
                 mation.getRightRotation()
             )
         );

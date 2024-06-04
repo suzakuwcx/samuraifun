@@ -10,10 +10,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import Assert.Config.PlayerConfig;
+import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
+import Schedule.PlayerUISchedule;
 
 
 public class PlayerPostureCrashTask extends BaseStateTask {
@@ -25,6 +27,8 @@ public class PlayerPostureCrashTask extends BaseStateTask {
 
         player.setCooldown(Material.SHIELD, 500000);
         player.completeUsingActiveItem();
+
+        PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_POSTURE_CRASH);
     }
 
     @Override

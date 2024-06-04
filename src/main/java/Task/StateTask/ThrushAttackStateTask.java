@@ -7,15 +7,13 @@ import org.bukkit.entity.TextDisplay;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import Assert.Config.State;
 import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
-import DataBus.PlayerDataBus;
 import FunctionBus.EntityBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
-import net.kyori.adventure.text.Component;
+import Schedule.PlayerUISchedule;
 
 public class ThrushAttackStateTask extends BaseStateTask {
     private Player player;
@@ -25,9 +23,6 @@ public class ThrushAttackStateTask extends BaseStateTask {
 
     private int tick = 0;
 
-    private TextDisplay display;
-    
-
     public ThrushAttackStateTask(Player player) {
         this.player = player;
 
@@ -35,8 +30,7 @@ public class ThrushAttackStateTask extends BaseStateTask {
         /* Disable using shield */
         player.completeUsingActiveItem();
 
-        display = PlayerDataBus.getPlayerRingDisplay(player);
-        display.text(Component.text(FontDatabase.STATUS_RING_THRUST_ATTACK_WARNING));
+        PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_THRUST_ATTACK_WARNING);
     }
 
     @Override
@@ -48,7 +42,6 @@ public class ThrushAttackStateTask extends BaseStateTask {
             if (result != null)
                 target = (Player) result.getHitEntity();
         } else if (tick == 4) {
-            display.text(Component.text(FontDatabase.STATUS_RING_THRUST_ATTACK));
             if (target != null) {
                 double distance = EntityBus.getTargetDistance(player, target) - 0.3;
                 player.setVelocity(direction.multiply(new Vector(ServerBus.getDistanceVelocity(distance), 0, ServerBus.getDistanceVelocity(distance))));

@@ -11,12 +11,14 @@ import org.bukkit.util.Vector;
 import Assert.Config.State;
 import Assert.Entity.HidariDoSwipeAnimation;
 import Assert.Entity.KesagiriSwipeAnimation;
+import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
 import DataBus.PlayerDataBus;
 import FunctionBus.EntityBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
+import Schedule.PlayerUISchedule;
 import Task.ModelTask.ItemDisplayAnimationTask;
 
 public class ChargedAttackAnimStateTask extends BaseStateTask {
@@ -30,6 +32,7 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         this.level = level;
 
         this.state = PlayerStateMachineSchedule.getPlayerState(player);
+        PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_CHARGED_WARNING);
     }
 
     private void finish() {

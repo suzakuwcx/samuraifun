@@ -1,15 +1,13 @@
 package Task.StateTask;
 
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import Assert.Font.FontDatabase;
-import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
+import Schedule.PlayerUISchedule;
 import Task.AttackTask.DeflectTask;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
-import net.kyori.adventure.text.Component;
 
 public class DefenseStateTask extends BaseStateTask {
     private Player player;
@@ -20,10 +18,8 @@ public class DefenseStateTask extends BaseStateTask {
         this.player = player;
 
         DeflectTask.execute(player);
-        TextDisplay display = PlayerDataBus.getPlayerRingDisplay(player);
         
-        if (display != null)
-            display.text(Component.text(FontDatabase.STATUS_RING_DEFENSE));
+        PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_DEFENSE);
     }
 
     @Override

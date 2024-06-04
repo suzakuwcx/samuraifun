@@ -1,14 +1,11 @@
 package Task.StateTask;
 
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import Assert.Config.State;
 import Assert.Font.FontDatabase;
-import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
-import net.kyori.adventure.text.Component;
+import Schedule.PlayerUISchedule;
 
 public class StopDefenseStunTask extends BaseStateTask {
     private Player player;
@@ -17,10 +14,7 @@ public class StopDefenseStunTask extends BaseStateTask {
     public StopDefenseStunTask(Player player) {
         this.player = player;
 
-        TextDisplay display = PlayerDataBus.getPlayerRingDisplay(player);
-        
-        if (display != null)
-            display.text(Component.text(FontDatabase.STATUS_RING_STUN));
+        PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_STOP_DEFENSE);
     }
 
     @Override

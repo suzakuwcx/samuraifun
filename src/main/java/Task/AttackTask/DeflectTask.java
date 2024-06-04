@@ -7,7 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import Assert.Config.PlayerConfig;
+import Assert.Font.FontDatabase;
 import FunctionBus.ServerBus;
+import Schedule.PlayerUISchedule;
 
 public class DeflectTask implements Runnable{
     private static Map<Player, DeflectTask> task_mapper;
@@ -69,6 +71,7 @@ public class DeflectTask implements Runnable{
         task_mapper.put(player, task);
         task.player = player;
 
+        PlayerUISchedule.setPlayerSideRing(player, FontDatabase.STATUS_RING_CAN_DEFLECT, DEFLECT_TICK);
         Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
     }
 

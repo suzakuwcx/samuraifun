@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
@@ -22,8 +21,8 @@ import FunctionBus.EntityBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
+import Schedule.PlayerUISchedule;
 import Task.ModelTask.ItemDisplayAnimationTask;
-import net.kyori.adventure.text.Component;
 
 public class NormalAttackStateTask extends BaseStateTask {
     private Player player;
@@ -38,11 +37,8 @@ public class NormalAttackStateTask extends BaseStateTask {
         this.state = PlayerStateMachineSchedule.getPlayerState(player);
 
         PlayerStateMachineSchedule.resetSwordCooldown(player);
-
-        TextDisplay display = PlayerDataBus.getPlayerRingDisplay(player);
         
-        if (display != null)
-            display.text(Component.text(FontDatabase.STATUS_RING_ATTACK));
+        PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_ATTACK);
     }
 
     private void check_end() {
@@ -239,7 +235,8 @@ public class NormalAttackStateTask extends BaseStateTask {
 
         PlayerStateMachineSchedule.damagePosture(target, 1);
         knockback((Player) event.getDamager(), target, 0.5);
-        
+
+        PlayerUISchedule.setPlayerSideRing(target, FontDatabase.STATUS_RING_SUCCESS_DEFENSE, 4);
         ServerBus.playServerSound(target.getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.5f, 0.8f);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
@@ -255,6 +252,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         Vector direction = EntityBus.getTargetDirection(target, event.getDamager());
         double distance = 0;
 
+        PlayerUISchedule.setPlayerSideRing(target, FontDatabase.STATUS_RING_SUCCESS_DEFLECT, 4);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);

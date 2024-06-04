@@ -15,6 +15,7 @@ public class State {
     public boolean shift = false;
     
     public BaseStateTask state;
+    public String status_ring;
 
     public int health = 7;
     public int posture = 7;
