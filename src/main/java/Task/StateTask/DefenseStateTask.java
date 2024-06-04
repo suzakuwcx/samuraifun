@@ -28,7 +28,8 @@ public class DefenseStateTask extends BaseStateTask {
 
     @Override
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
-        if (StateEventBus.isPlayerDash(event)) {
+        if (StateEventBus.isPlayerDash(event) && !PlayerStateMachineSchedule.isPlayerNoPosture(event.getPlayer())) {
+            PlayerStateMachineSchedule.damagePosture(player, 1, false);
             PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new ThrushAttackStateTask(event.getPlayer()));
         }
     }
