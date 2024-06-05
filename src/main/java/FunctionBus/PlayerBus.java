@@ -138,4 +138,10 @@ public class PlayerBus {
         for (int i : slots)
             inventory.setItem(i, item);
     }
+
+    public static void disableShield(Player player, int tick) {
+        player.setCooldown(Material.SHIELD, tick);
+        if (player.getActiveItem().getType() == Material.SHIELD)
+            player.completeUsingActiveItem();
+    }
 }
