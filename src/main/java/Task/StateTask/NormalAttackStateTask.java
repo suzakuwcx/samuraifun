@@ -69,14 +69,13 @@ public class NormalAttackStateTask extends BaseStateTask {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
             PlayerBus.setPlayerInventoryList(player, new Sword(1004), 0, 3, 6);
             state.current_sword_frame = 1004;
-        } else if (tick <= 5) {
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
             PlayerStateMachineSchedule.resetSwordCooldown(player);
-        } else if (tick <= 8) {
+        } else if (tick == 8) {
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 4);
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 3);
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 2);
@@ -87,7 +86,6 @@ public class NormalAttackStateTask extends BaseStateTask {
             PlayerBus.setPlayerInventoryList(player, new Sword(1006), 0, 3, 6);
             state.current_sword_frame = 1006;
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-        } else if (tick < 14) {
         } else if (tick == 14) {
             check_end();
             
@@ -101,14 +99,13 @@ public class NormalAttackStateTask extends BaseStateTask {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
             PlayerBus.setPlayerInventoryList(player, new Sword(1007), 0, 3, 6);
             state.current_sword_frame = 1007;
-        } else if (tick <= 5) {
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
             PlayerStateMachineSchedule.resetSwordCooldown(player);
-        } else if (tick < 9) {
+        } else if (tick == 8) {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 4);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 3);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 2);
@@ -119,7 +116,6 @@ public class NormalAttackStateTask extends BaseStateTask {
             PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
             state.current_sword_frame = 1009;
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-        } else if (tick < 14) {
         } else if (tick == 14) {
             check_end();
             
@@ -132,14 +128,13 @@ public class NormalAttackStateTask extends BaseStateTask {
         if (tick == 1) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1010), 0, 3, 6);
             state.current_sword_frame = 1010;
-        } else if (tick <= 5) {
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
             PlayerStateMachineSchedule.resetSwordCooldown(player);
-        } else if (tick < 9) {
+        } else if (tick == 8) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1011), 0, 3, 6);
             state.current_sword_frame = 1011;
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 4);
@@ -148,7 +143,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 1);
         } else if (tick == 9) {
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-        } else if (tick < 14) {
+        } else if (tick == 13) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1012), 0, 3, 6);
             state.current_sword_frame = 1012;
         } else if (tick == 14) {
@@ -163,14 +158,13 @@ public class NormalAttackStateTask extends BaseStateTask {
         if (tick == 1) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1007), 0, 3, 6);
             state.current_sword_frame = 1007;
-        } else if (tick <= 5) {
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 1f);
             player.setCooldown(Material.SHIELD, 6);
             PlayerStateMachineSchedule.resetSwordCooldown(player);
-        } else if (tick < 9) {
+        } else if (tick == 8) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1008), 0, 3, 6);
             state.current_sword_frame = 1008;
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 4);
@@ -179,7 +173,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 1);
         } else if (tick == 9) {
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-        } else if (tick < 29) {
+        } else if (tick == 28) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
             state.current_sword_frame = 1009;
         } else if (tick == 29) {
