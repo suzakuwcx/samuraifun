@@ -11,6 +11,7 @@ import Assert.Config.State;
 import Assert.Font.FontDatabase;
 import DataBus.PlayerDataBus;
 import Task.AttackTask.RingShowTask;
+import Task.AttackTask.SubTitleShowTask;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
@@ -101,6 +102,22 @@ public class PlayerUISchedule implements Runnable {
         setPlayerSideRing(player, String.valueOf(text), tick);
     }
 
+    public static void setPlayerMainSubtitle(Player player, String text) {
+        SubTitleShowTask.setMainSubtitle(player, text);
+    }
+
+    public static void setPlayerMainSubtitle(Player player, char text) {
+        setPlayerMainSubtitle(player, String.valueOf(text));
+    }
+
+    public static void setPlayerSideSubtitle(Player player, String text, int tick) {
+        SubTitleShowTask.execute(player, text, tick);
+    }
+
+    public static void setPlayerSideSubtitle(Player player, char text, int tick) {
+        setPlayerSideSubtitle(player, String.valueOf(text), tick);
+    }
+
     private void updateRing(Player player, State state) {
         TextDisplay display;
 
@@ -115,11 +132,7 @@ public class PlayerUISchedule implements Runnable {
 
     private void updateTitle(Player player, State state) {
         Component title = Component.text("");
-        Component subtitle;
-        if (state.charging <= 0)
-            subtitle = Component.text("");
-        else
-            subtitle = Component.text(FontDatabase.getChargingAttackFont(state.charging));
+        Component subtitle = Component.text(state.sub_title);
 
         player.showTitle(Title.title(title, subtitle, Times.times(Duration.ofSeconds(0), Duration.ofSeconds(40), Duration.ofSeconds(10))));
     }

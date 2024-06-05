@@ -237,6 +237,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         knockback((Player) event.getDamager(), target, 0.5);
 
         PlayerUISchedule.setPlayerSideRing(target, FontDatabase.STATUS_RING_SUCCESS_DEFENSE, 4);
+        PlayerUISchedule.setPlayerSideSubtitle(target, FontDatabase.STATUS_SUBTITLE_SUCCESS_DEFENSE, 4);
         ServerBus.playServerSound(target.getLocation(), Sound.ITEM_SHIELD_BLOCK, 0.5f, 0.8f);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.2f, 2f);
@@ -253,6 +254,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         double distance = 0;
 
         PlayerUISchedule.setPlayerSideRing(target, FontDatabase.STATUS_RING_SUCCESS_DEFLECT, 4);
+        PlayerUISchedule.setPlayerSideSubtitle(target, FontDatabase.STATUS_SUBTITLE_SUCCESS_DEFLECT, 4);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 1f, 2f);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 0.5f);
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);

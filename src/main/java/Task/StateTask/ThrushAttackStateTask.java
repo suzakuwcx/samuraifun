@@ -31,6 +31,7 @@ public class ThrushAttackStateTask extends BaseStateTask {
         player.completeUsingActiveItem();
 
         PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_THRUST_ATTACK_WARNING);
+        PlayerUISchedule.setPlayerMainSubtitle(player, FontDatabase.STATUS_SUBTITLE_THRUST_ATTACK_WARNING);
     }
 
     @Override

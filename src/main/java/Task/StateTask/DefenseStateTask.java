@@ -20,6 +20,7 @@ public class DefenseStateTask extends BaseStateTask {
         DeflectTask.execute(player);
         
         PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_DEFENSE);
+        PlayerUISchedule.setPlayerMainSubtitle(player, FontDatabase.STATUS_SUBTITLE_DEFENSE);        
     }
 
     @Override

@@ -15,12 +15,14 @@ import org.bukkit.util.Vector;
 
 import Assert.Config.PlayerConfig;
 import Assert.Config.State;
+import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
 import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ScoreBoardBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
+import Schedule.PlayerUISchedule;
 import Task.DelayTask;
 import Task.AttackTask.DeflectTask;
 
@@ -128,8 +130,10 @@ public class StateEventBus {
         Player p = event.getPlayer();
 
         State s = PlayerStateMachineSchedule.getPlayerState(p);
-        if (s.dash_cooldown != 0)
+        if (s.dash_cooldown != 0) {
+            PlayerUISchedule.setPlayerSideSubtitle(p, FontDatabase.STATUS_SUBTITLE_IN_CD, 4);
             return;
+        }
 
         DelayTask.execute((args) -> {
             Player player = (Player) args[0];
@@ -161,6 +165,7 @@ public class StateEventBus {
                 distance = 3.5;
 
             if (state.posture == 0) {
+                PlayerUISchedule.setPlayerSideSubtitle(player, FontDatabase.STATUS_SUBTITLE_NO_POSTURE, 4);
                 distance /= 2;
                 /*
                  * Prevent player dash backward

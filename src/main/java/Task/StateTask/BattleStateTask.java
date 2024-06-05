@@ -25,6 +25,8 @@ public class BattleStateTask extends BaseStateTask {
         this.player = player;
 
         PlayerUISchedule.setPlayerMainRing(player, ' ');
+        PlayerUISchedule.setPlayerMainSubtitle(player, ' ');
+
         player.setCooldown(Material.SHIELD, 0);
         /* Disable player sprint */
         player.removePotionEffect(PotionEffectType.SPEED);

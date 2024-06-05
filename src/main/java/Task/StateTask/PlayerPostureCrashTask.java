@@ -29,6 +29,7 @@ public class PlayerPostureCrashTask extends BaseStateTask {
         player.completeUsingActiveItem();
 
         PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_POSTURE_CRASH);
+        PlayerUISchedule.setPlayerMainSubtitle(player, FontDatabase.STATUS_SUBTITLE_POSTURE_CRASH);
     }
 
     @Override

@@ -177,6 +177,9 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         Player target = (Player) event.getEntity();
 
         PlayerStateMachineSchedule.damagePosture(target, 1);
+
+        PlayerUISchedule.setPlayerSideSubtitle(target, FontDatabase.STATUS_SUBTITLE_POSTURE_CRASH, 4);
+
         PlayerBus.disableShield(target, 15);
         knockback(damager, target, 0.5);
 

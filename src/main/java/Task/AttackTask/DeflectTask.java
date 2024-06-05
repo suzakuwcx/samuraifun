@@ -72,6 +72,7 @@ public class DeflectTask implements Runnable{
         task.player = player;
 
         PlayerUISchedule.setPlayerSideRing(player, FontDatabase.STATUS_RING_CAN_DEFLECT, DEFLECT_TICK);
+        PlayerUISchedule.setPlayerSideSubtitle(player, FontDatabase.STATUS_SUBTITLE_CAN_DEFLECT, DEFLECT_TICK);
         Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
     }
 

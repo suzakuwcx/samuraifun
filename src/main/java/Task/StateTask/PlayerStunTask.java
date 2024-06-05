@@ -21,6 +21,7 @@ public class PlayerStunTask extends BaseStateTask {
         this.player = player;
 
         PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_STUN);
+        PlayerUISchedule.setPlayerMainSubtitle(player, FontDatabase.STATUS_SUBTITLE_STUN);
     }
 
     @Override

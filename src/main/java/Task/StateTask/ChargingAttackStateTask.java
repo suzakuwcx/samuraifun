@@ -28,7 +28,8 @@ public class ChargingAttackStateTask extends BaseStateTask {
     }
 
     private static void charging(Player player) {
-        PlayerLongFClickTask.execute(player).setTick(42).setShortPressFunction((args, t) -> {
+        PlayerLongFClickTask.execute(player).setTick(42)
+        .setShortPressFunction((args, t) -> {
             Player p = (Player) args[0];
             State state = PlayerStateMachineSchedule.getPlayerState(player);
 
@@ -45,12 +46,16 @@ public class ChargingAttackStateTask extends BaseStateTask {
                 PlayerStateMachineSchedule.setStateTask(p, new ChargedAttackAnimStateTask(player, 3));
 
             state.charging = 0;
-        }, player).setCastingFunction((args, t2) -> {
+            state.sub_title = "";
+        }, player)
+        .setCastingFunction((args, t2) -> {
             Player p2 = (Player) args[0];
             State state = PlayerStateMachineSchedule.getPlayerState(player);
 
             if (t2 <= 40)
                 state.charging = t2;
+
+            state.sub_title = String.valueOf(FontDatabase.getChargingAttackFont(state.charging));
 
             if (t2 == 0) {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_ARMOR_EQUIP_DIAMOND, 1f, 0f);
@@ -81,7 +86,8 @@ public class ChargingAttackStateTask extends BaseStateTask {
                 PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_CHARGING_3);
             }
 
-        }, player).setLongPressFunction((args) -> {
+        }, player)
+        .setLongPressFunction((args) -> {
             Player p3 = (Player) args[0];
             State state = PlayerStateMachineSchedule.getPlayerState(player);
 
@@ -91,6 +97,7 @@ public class ChargingAttackStateTask extends BaseStateTask {
             PlayerStateMachineSchedule.setStateTask(p3, new ChargedAttackAnimStateTask(player, 3));
 
             state.charging = 0;
+            state.sub_title = "";
         }, player).execute();
     }
 

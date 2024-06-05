@@ -61,6 +61,17 @@ public class FontDatabase {
     public static final char STATUS_RING_SUCCESS_DEFLECT = 0xea31;
     public static final char STATUS_RING_CAN_DEFLECT = 0xea30;
 
+    public static final char STATUS_SUBTITLE_DEFENSE = 0xe980;
+    public static final char STATUS_SUBTITLE_SUCCESS_DEFENSE = 0xe981;
+    public static final char STATUS_SUBTITLE_CAN_DEFLECT = 0xe982;
+    public static final char STATUS_SUBTITLE_SUCCESS_DEFLECT = 0xe983;
+    public static final char STATUS_SUBTITLE_POSTURE_CRASH = 0xe984;
+    public static final char STATUS_SUBTITLE_STUN = 0xe985;
+    public static final char STATUS_SUBTITLE_THRUST_ATTACK_WARNING = 0xe986;
+    public static final char STATUS_SUBTITLE_DASH = 0xe986;
+    public static final char STATUS_SUBTITLE_NO_POSTURE = 0xe988;
+    public static final char STATUS_SUBTITLE_IN_CD = 0xe989;
+
     public static char getRingFont(Role role) {
         switch(role) {
             case RONIN:
@@ -85,6 +96,9 @@ public class FontDatabase {
     }
 
     public static char getChargingAttackFont(int value) {
-        return (char) (CHARGED_ATTACK_CHARGING_BASE + value);
+        if (value <= 0)
+            return ' ';
+        else
+            return (char) (CHARGED_ATTACK_CHARGING_BASE + value);
     }
 }
