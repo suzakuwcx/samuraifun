@@ -193,9 +193,8 @@ public class NormalAttackStateTask extends BaseStateTask {
         target.sendHurtAnimation(0);
         PlayerStateMachineSchedule.damageHealth(target, 1);
         if (PlayerStateMachineSchedule.isPlayerNoHealth(target)) {
-            target.setHealth(0);
-            PlayerStateMachineSchedule.recoverHealth(player, 3);
             PlayerDataBus.downPlayerDeadByPlugin(target, player);
+            target.setHealth(0);
         }
 
         ServerBus.playServerSound(target.getLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 0.8f);
