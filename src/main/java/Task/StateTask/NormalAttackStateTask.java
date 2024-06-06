@@ -143,7 +143,7 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 1);
         } else if (tick == 9) {
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-        } else if (tick == 13) {
+        } else if (tick == 10) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1012), 0, 3, 6);
             state.current_sword_frame = 1012;
         } else if (tick == 14) {
@@ -173,10 +173,10 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 1);
         } else if (tick == 9) {
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
-        } else if (tick == 28) {
+        } else if (tick == 10) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
             state.current_sword_frame = 1009;
-        } else if (tick == 29) {
+        } else if (tick == 18) {
             check_end();
             
             ++stage;
