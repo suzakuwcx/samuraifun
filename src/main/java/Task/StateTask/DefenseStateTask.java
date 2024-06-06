@@ -18,9 +18,11 @@ public class DefenseStateTask extends BaseStateTask {
         this.player = player;
 
         DeflectTask.execute(player);
-        
+        if (DeflectTask.isPlayerDefense(player) || DeflectTask.isPlayerFakeDeflect(player))
+            PlayerUISchedule.setPlayerMainSubtitle(player, FontDatabase.STATUS_SUBTITLE_DEFENSE);
+        else
+            PlayerUISchedule.setPlayerMainSubtitle(player, "");
         PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_DEFENSE);
-        PlayerUISchedule.setPlayerMainSubtitle(player, FontDatabase.STATUS_SUBTITLE_DEFENSE);        
     }
 
     @Override
