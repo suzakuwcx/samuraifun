@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 import org.bukkit.Bukkit;
 
@@ -22,6 +23,9 @@ public class MonitorTask implements Runnable {
     private Object[] target_stacks;
     private BiConsumer<Object[], Integer> target_function;
 
+    private Object[] timeout_stacks;
+    private Consumer<Object[]> timeout_function;
+
     static {
         task_mapper = new HashMap<>();
     }
@@ -29,6 +33,7 @@ public class MonitorTask implements Runnable {
     {
         tick = 0;
         max_tick = -1;
+        timeout_function = null;
     }
 
     public static class Builder {
@@ -74,6 +79,15 @@ public class MonitorTask implements Runnable {
             return this;
         }
 
+        public Builder setTimeoutFunction(Consumer<Object[]> function, Object... stacks) {
+            if (is_execute)
+                return this;
+            
+            task.timeout_stacks = stacks;
+            task.timeout_function = function;
+            return this;
+        }
+
         public void execute() {
             Bukkit.getScheduler().runTask(ServerBus.getPlugin(), task);
         }
@@ -97,6 +111,8 @@ public class MonitorTask implements Runnable {
 
         if (max_tick > 0 && tick >= max_tick) {
             task_mapper.remove(key);
+            if (timeout_function != null)
+                timeout_function.accept(timeout_stacks);
             return;            
         }
 

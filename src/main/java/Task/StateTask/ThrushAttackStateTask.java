@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import Assert.Config.State;
 import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
 import FunctionBus.EntityBus;
@@ -51,10 +52,13 @@ public class ThrushAttackStateTask extends BaseStateTask {
                 player.setVelocity(direction.clone().multiply(new Vector(ServerBus.getDistanceVelocity(6), 0, ServerBus.getDistanceVelocity(6))));
 
             MonitorTask.execute("ThrushAttackStateTask")
-            .setMaxTick(40)
+            .setMaxTick(10)
             .setConditionFunction((args, tick) -> {
                 Player p1 = (Player) args[0];
                 Player t1 = (Player) args[1];
+
+                State state = PlayerStateMachineSchedule.getPlayerState(p1);
+                state.is_invincible_frame = true;
                 if (EntityBus.getTargetDistance(p1, t1) < 1.5) {
                     return true;
                 } else {
@@ -66,21 +70,26 @@ public class ThrushAttackStateTask extends BaseStateTask {
                 Player t2 = (Player) args[1];
 
                 p2.setVelocity(new Vector(0, 0, 0));
-                t2.setVelocity(direction.clone().multiply(new Vector(ServerBus.getDistanceVelocity(3), 0, ServerBus.getDistanceVelocity(3))));
+                t2.setVelocity(direction.clone().multiply(new Vector(ServerBus.getDistanceVelocity(6), 0, ServerBus.getDistanceVelocity(6))));
+
+                State state = PlayerStateMachineSchedule.getPlayerState(p2);
+                state.is_invincible_frame = false;
                 
-                PlayerBus.setPlayerInventoryList(target, new Sword(1023), 0, 3, 6);
-                PlayerStateMachineSchedule.setStateTask(target, new PlayerStunTask(target));
+                PlayerBus.setPlayerInventoryList(t2, new Sword(1023), 0, 3, 6);
+                PlayerStateMachineSchedule.setStateTask(t2, new PlayerStunTask(t2));
 
-                PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
-                PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
+                PlayerBus.setPlayerInventoryList(p2, new Sword(1003), 0, 3, 6);
+                PlayerStateMachineSchedule.setStateTask(p2, new BattleStateTask(p2));
             }, player, target)
-            .execute();
-        }
+            .setTimeoutFunction((args) -> {
+                Player p3 = (Player) args[0];
+                PlayerBus.setPlayerInventoryList(p3, new Sword(1003), 0, 3, 6);
+                PlayerStateMachineSchedule.setStateTask(p3, new BattleStateTask(p3));
 
-        /* For safety */
-        if (tick == 40) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
-            PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
+                State state = PlayerStateMachineSchedule.getPlayerState(p3);
+                state.is_invincible_frame = false;
+            }, player)
+            .execute();
         }
     }
 
@@ -89,7 +98,7 @@ public class ThrushAttackStateTask extends BaseStateTask {
         if (tick == 0) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1024), 0, 3, 6);
             direction = player.getEyeLocation().getDirection().setY(0).normalize();
-            RayTraceResult result = ServerBus.rayTraceEntities(player.getEyeLocation(), player.getEyeLocation().getDirection(), 6, 0.3, EntityType.PLAYER, player.getUniqueId());
+            RayTraceResult result = ServerBus.rayTraceEntities(player.getEyeLocation(), player.getEyeLocation().getDirection(), 6, 0.6, EntityType.PLAYER, player.getUniqueId());
             if (result != null)
                 target = (Player) result.getHitEntity();
         }
