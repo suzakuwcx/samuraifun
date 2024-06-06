@@ -16,6 +16,7 @@ public class State {
     
     public BaseStateTask state;
     public String status_ring = "";
+    public String main_title = "";
     public String sub_title = "";
 
     public int health = 7;

@@ -131,7 +131,7 @@ public class PlayerUISchedule implements Runnable {
     }
 
     private void updateTitle(Player player, State state) {
-        Component title = Component.text("");
+        Component title = Component.text(state.main_title);
         Component subtitle = Component.text(state.sub_title);
 
         player.showTitle(Title.title(title, subtitle, Times.times(Duration.ofSeconds(0), Duration.ofSeconds(40), Duration.ofSeconds(10))));
