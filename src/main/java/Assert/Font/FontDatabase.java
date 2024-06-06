@@ -72,6 +72,9 @@ public class FontDatabase {
     public static final char STATUS_SUBTITLE_NO_POSTURE = 0xe988;
     public static final char STATUS_SUBTITLE_IN_CD = 0xe989;
 
+    public static final char ANIMATION_DEAD = 0xea36;
+    public static final char STATUS_MAINTITLE_KILL = 0xe98a;
+
     public static char getRingFont(Role role) {
         switch(role) {
             case RONIN:

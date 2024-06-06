@@ -115,6 +115,6 @@ public class PlayerDataBus {
     }
 
     public static Player upPlayerDeadByPlugin(Player player) {
-        return player_dead_by_plugin_mapper.get(player.getUniqueId());
+        return player_dead_by_plugin_mapper.remove(player.getUniqueId());
     }
 }
