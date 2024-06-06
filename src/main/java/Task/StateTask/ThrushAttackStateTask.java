@@ -1,5 +1,6 @@
 package Task.StateTask;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.RayTraceResult;
@@ -33,8 +34,14 @@ public class ThrushAttackStateTask extends BaseStateTask {
         PlayerUISchedule.setPlayerMainSubtitle(player, FontDatabase.STATUS_SUBTITLE_THRUST_ATTACK_WARNING);
     }
 
+    private void playDashSound() {
+        ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 1f, 0.8f);
+        ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 1f);
+    }
+
     private void onNoTarget() {
         if (tick == 4) {
+            playDashSound();
             player.setVelocity(direction.clone().multiply(new Vector(ServerBus.getDistanceVelocity(2), 0, ServerBus.getDistanceVelocity(2))));
         } else if (tick == 9) {
             PlayerBus.setPlayerInventoryList(player, new Sword(1025), 0, 3, 6);
@@ -50,6 +57,8 @@ public class ThrushAttackStateTask extends BaseStateTask {
                 player.setVelocity(direction.clone().multiply(new Vector(ServerBus.getDistanceVelocity(2), 0, ServerBus.getDistanceVelocity(2))));
             else
                 player.setVelocity(direction.clone().multiply(new Vector(ServerBus.getDistanceVelocity(6), 0, ServerBus.getDistanceVelocity(6))));
+
+            playDashSound();
 
             MonitorTask.execute("ThrushAttackStateTask")
             .setMaxTick(10)
@@ -74,6 +83,10 @@ public class ThrushAttackStateTask extends BaseStateTask {
 
                 State state = PlayerStateMachineSchedule.getPlayerState(p2);
                 state.is_invincible_frame = false;
+
+                ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_SHIELD_BREAK, 1f, 1f);
+                ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
+                ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_SHIELD_BREAK, 1f, 0.5f);
                 
                 PlayerBus.setPlayerInventoryList(t2, new Sword(1023), 0, 3, 6);
                 PlayerStateMachineSchedule.setStateTask(t2, new PlayerStunTask(t2));

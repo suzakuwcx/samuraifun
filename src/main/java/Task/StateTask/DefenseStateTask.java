@@ -1,9 +1,11 @@
 package Task.StateTask;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import Assert.Font.FontDatabase;
+import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Schedule.PlayerUISchedule;
 import Task.AttackTask.DeflectTask;
@@ -22,6 +24,8 @@ public class DefenseStateTask extends BaseStateTask {
             PlayerUISchedule.setPlayerMainSubtitle(player, FontDatabase.STATUS_SUBTITLE_DEFENSE);
         else
             PlayerUISchedule.setPlayerMainSubtitle(player, "");
+
+        ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_DIAMOND, 1f, 0.8f);
         PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_DEFENSE);
     }
 
