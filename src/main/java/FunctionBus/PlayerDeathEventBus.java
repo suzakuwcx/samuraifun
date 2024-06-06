@@ -1,5 +1,6 @@
 package FunctionBus;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -32,6 +33,8 @@ public class PlayerDeathEventBus {
         event.deathMessage(Component.text(String.format("%s 击杀了 %s", killer.getName(), player.getName())));
 
         PlayerStateMachineSchedule.getPlayerState(killer).main_title = String.valueOf(FontDatabase.STATUS_MAINTITLE_KILL);
+
+        ServerBus.playServerSound(player.getLocation(), Sound.BLOCK_AMETHYST_CLUSTER_BREAK, 1f, 0.1f);
 
         entity.spwan();
         DelayTask.execute((args) -> {
