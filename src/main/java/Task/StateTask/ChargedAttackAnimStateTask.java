@@ -204,7 +204,7 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
 
         Vector direction = EntityBus.getTargetDirection(target, damager);
         direction.multiply(0.5);
-        ServerBus.spawnServerParticle(Particle.LAVA, target.getLocation().add(direction).add(0, 1.1, 0), 5, 0, 0., 0, 1000);
+        ServerBus.spawnServerParticle(Particle.LAVA, target.getLocation().add(direction).add(0, 1.1, 0), 10, 0, 0., 0, 1000);
     }
 
     @Override

@@ -251,7 +251,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         ServerBus.playServerSound(target.getLocation(), Sound.BLOCK_BELL_USE, 0.5f, 0.1f);
         ServerBus.playServerSound(target.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 0.5f);
 
-        ServerBus.spawnServerParticle(Particle.LAVA, target.getLocation().add(direction.clone().multiply(0.5)).add(0, 1.1, 0), 5, 0, 0., 0, 1000);
+        ServerBus.spawnServerParticle(Particle.LAVA, target.getLocation().add(direction.clone().multiply(0.5)).add(0, 1.1, 0), 10, 0, 0., 0, 1000);
 
         direction.setY(0).normalize();
         distance = 3.0 - EntityBus.getTargetDistance(damager, target);
