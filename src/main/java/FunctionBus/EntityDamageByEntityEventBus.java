@@ -1,6 +1,7 @@
 package FunctionBus;
 
 import org.bukkit.Sound;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -20,6 +21,24 @@ public class EntityDamageByEntityEventBus {
     public static void onBusComplete(EntityDamageByEntityEvent event) {
         if (isPlayerAttackNoInvincibleFrameEntity(event))
             onPlayerAttackNoInvincibleFrameEntity(event);
+    }
+
+    public static boolean isPlayerArrowAttack(EntityDamageByEntityEvent event) {
+        if (event.getDamager().getType() != EntityType.ARROW)
+            return false;
+
+        if (event.getEntity().getType() != EntityType.PLAYER)
+            return false;
+
+        Arrow arrow = (Arrow) event.getDamager();
+        if (!(arrow.getShooter() instanceof Player))
+            return false;
+
+        return true;
+    }
+
+    public static void onPlayerArrowAttack(EntityDamageByEntityEvent event) {
+        return;
     }
 
     public static boolean isPlayerAttack(EntityDamageByEntityEvent event) {

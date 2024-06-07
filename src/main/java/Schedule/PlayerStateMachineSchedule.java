@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import Assert.Config.PlayerConfig;
 import Assert.Config.Role;
@@ -104,12 +106,20 @@ public class PlayerStateMachineSchedule implements Runnable {
         state.sword_cooldown = PlayerConfig.SWORD_COOLDOWN;
     }
 
+    public static void resetBowCooldown(Player player) {
+        State state = player_state_map.get(player.getUniqueId());
+        state.bow_cooldown = PlayerConfig.BOW_COOLDOWN;
+    }
+
     private static void updateCooldown(Player player) {
         State state = player_state_map.get(player.getUniqueId());
         state.dash_cooldown = noMinusDecrease(state.dash_cooldown, 1);
         state.sword_cooldown = noMinusDecrease(state.sword_cooldown, 1);
         state.skill_cooldown = noMinusDecrease(state.skill_cooldown, 1);
         state.bow_cooldown = noMinusDecrease(state.bow_cooldown, 1);
+
+        if (state.bow_cooldown == 1)
+            player.getInventory().setItem(9, new ItemStack(Material.ARROW));
     }
 
     private static void updatePlayerEffect(Player player) {

@@ -3,6 +3,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -25,6 +26,7 @@ import FunctionBus.PlayerQuitEventBus;
 import FunctionBus.PlayerRespawnEventBus;
 import FunctionBus.PlayerStopUsingItemEventBus;
 import FunctionBus.PlayerSwapHandItemsEventBus;
+import FunctionBus.ProjectileHitEventBus;
 import Schedule.PlayerStateMachineSchedule;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import io.papermc.paper.event.player.PlayerStopUsingItemEvent;
@@ -89,6 +91,8 @@ public class EventBus implements Listener {
 
         if (EntityDamageByEntityEventBus.isPlayerAttack(event)) {
             EntityDamageByEntityEventBus.onPlayerAttack(event);
+        } else if (EntityDamageByEntityEventBus.isPlayerArrowAttack(event)) {
+            EntityDamageByEntityEventBus.onPlayerArrowAttack(event);
         }
 
         EntityDamageByEntityEventBus.onBusComplete(event);
@@ -154,5 +158,14 @@ public class EventBus implements Listener {
     @EventHandler
     public void onPlayerRespawnEvent(PlayerRespawnEvent event) {
         PlayerRespawnEventBus.onBusTrigger(event);
+    }
+
+    @EventHandler
+    public void onProjectileHitEvent(ProjectileHitEvent event) {
+        if (ProjectileHitEventBus.isArrowHittingPlayer(event)) {
+            ProjectileHitEventBus.onArrowHittingPlayer(event);
+        }
+
+        ProjectileHitEventBus.onBusComplete(event);
     }
 }
