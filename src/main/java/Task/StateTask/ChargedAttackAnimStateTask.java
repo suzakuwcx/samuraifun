@@ -257,7 +257,7 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 0.5f);
             PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(18)), 0, 3, 6);
             state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(18);
-        } else if (tick == 10) {
+        } else if (tick == 7) {
             PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9)), 0, 3, 6);
             state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9);
         } else if (tick == 11) {
