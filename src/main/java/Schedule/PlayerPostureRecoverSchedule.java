@@ -10,7 +10,7 @@ public class PlayerPostureRecoverSchedule implements Runnable {
 
     private static void periodRecoverPosture(Player player) {
         State state = PlayerStateMachineSchedule.getPlayerState(player);
-        if (state.sword_cooldown <= PlayerConfig.SWORD_COOLDOWN / 2)
+        if (state.sword_cooldown < 3 * PlayerConfig.SWORD_COOLDOWN / 4)
             PlayerStateMachineSchedule.recoverPosture(player, 1);
     }
 
