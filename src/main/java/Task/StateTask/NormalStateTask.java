@@ -47,12 +47,12 @@ public class NormalStateTask extends BaseStateTask {
         ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_IRON, 1f, 1f);
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
-            PlayerBus.setPlayerInventoryList(p, new Sword(1002), 0, 3, 6);
+            PlayerBus.setPlayerInventoryList(p, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(2)), 0, 3, 6);
         }, 2, event.getPlayer());
 
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
-            PlayerBus.setPlayerInventoryList(p, new Sword(1003), 0, 3, 6);
+            PlayerBus.setPlayerInventoryList(p, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
         }, 4, event.getPlayer());
         PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new BattleStateTask(event.getPlayer()));
     }

@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import Assert.Config.PlayerConfig;
+import Assert.Config.Role;
 import Assert.Config.State;
 import Assert.Item.Sword;
 import FunctionBus.PlayerBus;
@@ -34,6 +35,10 @@ public class PlayerStateMachineSchedule implements Runnable {
 
     public static State getPlayerState(Player player) {
         return player_state_map.get(player.getUniqueId());
+    }
+
+    public static Role getPlayerRole(Player player) {
+        return getPlayerState(player).role;
     }
 
     public static BaseStateTask getStateTask(Player player) {
@@ -66,7 +71,7 @@ public class PlayerStateMachineSchedule implements Runnable {
         State state = getPlayerState(player);
         state.posture = noMinusDecrease(state.posture, damage);
         if (is_crash && state.posture == 0) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1023), 0, 3, 6);
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(23)), 0, 3, 6);
             state.state = new PlayerPostureCrashTask(player);
         }
     }

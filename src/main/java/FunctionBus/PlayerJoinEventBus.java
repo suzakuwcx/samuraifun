@@ -16,6 +16,9 @@ public class PlayerJoinEventBus {
     public static void onBusTrigger(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         PlayerDataBus.addPlayerItemDisplay(player);
+        PlayerStateMachineSchedule.init(event.getPlayer());
+        PlayerUISchedule.init(player);
+
         player.setShieldBlockingDelay(PlayerConfig.DEFLECT_TICK);
         player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
@@ -25,10 +28,7 @@ public class PlayerJoinEventBus {
         player.setWalkSpeed(0.2f);
         player.getInventory().setHeldItemSlot(0);
 
-        PlayerBus.setPlayerInventoryList(player, new Sword(1001), 0, 3, 6);
-
-        PlayerStateMachineSchedule.init(event.getPlayer());
-        PlayerUISchedule.init(player);
+        PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)), 0, 3, 6);
     }
 
     public static void onBusComplete(PlayerJoinEvent event) {

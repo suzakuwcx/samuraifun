@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import Assert.Config.Role;
 import Assert.Font.FontDatabase;
 import net.kyori.adventure.text.Component;
 
@@ -21,6 +22,10 @@ public class Sword extends ItemStack {
     }
 
     public Sword(int date) {
+        this(Role.COMMON, date);
+    }
+
+    public Sword(Role role, int date) {
         super(material);
 
         ItemMeta meta = this.getItemMeta();

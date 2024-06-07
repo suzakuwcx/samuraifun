@@ -59,7 +59,7 @@ public class ChargingAttackStateTask extends BaseStateTask {
 
             if (t2 == 0) {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_ARMOR_EQUIP_DIAMOND, 1f, 0f);
-                PlayerBus.setPlayerInventoryList(player, new Sword(1013), 0, 3, 6);
+                PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(13)), 0, 3, 6);
                 PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_CHARGING_0);
             }
 
@@ -67,21 +67,21 @@ public class ChargingAttackStateTask extends BaseStateTask {
 
             } else if (t2 == 10) {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 1f);
-                PlayerBus.setPlayerInventoryList(player, new Sword(1014), 0, 3, 6);
+                PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(14)), 0, 3, 6);
             } else if (t2 == 12) {
                 PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_CHARGING_1);
             } else if (t2 == 17) {
 
             } else if (t2 == 20) {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 1.5f);
-                PlayerBus.setPlayerInventoryList(player, new Sword(1015), 0, 3, 6);
+                PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(15)), 0, 3, 6);
             } else if (t2 == 22) {
                 PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_CHARGING_2);
             } else if (t2 == 27) {
 
             } else if (t2 == 30) {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1f, 2f);
-                PlayerBus.setPlayerInventoryList(player, new Sword(1016), 0, 3, 6);
+                PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(16)), 0, 3, 6);
             } else if (t2 == 32) {
                 PlayerUISchedule.setPlayerMainRing(player, FontDatabase.STATUS_RING_CHARGING_3);
             }
@@ -110,7 +110,7 @@ public class ChargingAttackStateTask extends BaseStateTask {
     @Override
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
         if (StateEventBus.isPlayerDefense(event)) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
             PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new DefenseStateTask(event.getPlayer()));
         }
     }

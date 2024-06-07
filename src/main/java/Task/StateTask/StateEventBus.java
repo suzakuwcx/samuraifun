@@ -191,7 +191,8 @@ public class StateEventBus {
     }
 
     public static void onPlayerDefense(PlayerInteractEvent event) {
-        PlayerBus.setPlayerInventoryList(event.getPlayer(), new Sword(1003), 0, 3, 6);
+        Player player = event.getPlayer();
+        PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
         PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new DefenseStateTask(event.getPlayer()));
     }
 }

@@ -43,8 +43,8 @@ public class NormalAttackStateTask extends BaseStateTask {
 
     private void check_end() {
         if (is_continue == false) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
-            state.current_sword_frame = 1003;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3);
             PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
         } else {
             is_continue = false;
@@ -67,8 +67,8 @@ public class NormalAttackStateTask extends BaseStateTask {
     private void doStage1() {
         if (tick == 1) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1004), 0, 3, 6);
-            state.current_sword_frame = 1004;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(4)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(4);
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
@@ -80,11 +80,11 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 3);
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 2);
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation()), 1);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1005), 0, 3, 6);
-            state.current_sword_frame = 1005;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(5)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(5);
         } else if (tick == 9) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1006), 0, 3, 6);
-            state.current_sword_frame = 1006;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(6)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(6);
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
         } else if (tick == 14) {
             check_end();
@@ -97,8 +97,8 @@ public class NormalAttackStateTask extends BaseStateTask {
     private void doStage2() {
         if (tick == 1) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1007), 0, 3, 6);
-            state.current_sword_frame = 1007;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(7)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(7);
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
@@ -110,11 +110,11 @@ public class NormalAttackStateTask extends BaseStateTask {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 3);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 2);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 1);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1008), 0, 3, 6);
-            state.current_sword_frame = 1008;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(8)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(8);
         } else if (tick == 9) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
-            state.current_sword_frame = 1009;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9);
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
         } else if (tick == 14) {
             check_end();
@@ -126,8 +126,8 @@ public class NormalAttackStateTask extends BaseStateTask {
 
     private void doStage3() {
         if (tick == 1) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1010), 0, 3, 6);
-            state.current_sword_frame = 1010;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(10)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(10);
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
@@ -135,8 +135,8 @@ public class NormalAttackStateTask extends BaseStateTask {
             player.setCooldown(Material.SHIELD, 6);
             PlayerStateMachineSchedule.resetSwordCooldown(player);
         } else if (tick == 8) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1011), 0, 3, 6);
-            state.current_sword_frame = 1011;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(11)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(11);
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 4);
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 3);
             ItemDisplayAnimationTask.execute(new RightKiriageSwipeAnimation(player.getEyeLocation()), 2);
@@ -144,8 +144,8 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 9) {
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
         } else if (tick == 10) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1012), 0, 3, 6);
-            state.current_sword_frame = 1012;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(12)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(12);
         } else if (tick == 14) {
             check_end();
             
@@ -156,8 +156,8 @@ public class NormalAttackStateTask extends BaseStateTask {
 
     private void doStage4() {
         if (tick == 1) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1007), 0, 3, 6);
-            state.current_sword_frame = 1007;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(7)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(7);
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 1.2f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1.5f);
@@ -165,8 +165,8 @@ public class NormalAttackStateTask extends BaseStateTask {
             player.setCooldown(Material.SHIELD, 6);
             PlayerStateMachineSchedule.resetSwordCooldown(player);
         } else if (tick == 8) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1008), 0, 3, 6);
-            state.current_sword_frame = 1008;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(8)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(8);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 4);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 3);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation()), 2);
@@ -174,8 +174,8 @@ public class NormalAttackStateTask extends BaseStateTask {
         } else if (tick == 9) {
             StateEventBus.playerSectorSlash(player, Math.PI / 2);
         } else if (tick == 10) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
-            state.current_sword_frame = 1009;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9);
         } else if (tick == 18) {
             check_end();
             
@@ -218,7 +218,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         if (PlayerStateMachineSchedule.isPlayerNoPosture(target)) {
             PlayerStateMachineSchedule.setStateTask(target, new PlayerPostureCrashTask(target));
         } else {
-            PlayerBus.setPlayerInventoryList(target, new Sword(1023), 0, 3, 6);
+            PlayerBus.setPlayerInventoryList(target, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(23)), 0, 3, 6);
             PlayerStateMachineSchedule.setStateTask(target, new PlayerStunTask(target));
         }
     }
@@ -295,7 +295,7 @@ public class NormalAttackStateTask extends BaseStateTask {
         if (StateEventBus.isPlayerAttack(event)) {
             is_continue = true;
         } else if (StateEventBus.isPlayerDefense(event)) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
             PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new DefenseStateTask(event.getPlayer()));
         }
     }
@@ -321,8 +321,8 @@ public class NormalAttackStateTask extends BaseStateTask {
                 doStage4();
                 break;
             default:
-                PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
-                state.current_sword_frame = 1003;
+                PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
+                state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3);
                 PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
                 break;
         }

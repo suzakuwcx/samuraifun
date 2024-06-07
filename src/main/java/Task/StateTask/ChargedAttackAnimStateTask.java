@@ -36,7 +36,7 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
     }
 
     private void finish() {
-        PlayerBus.setPlayerInventoryList(player, new Sword(1003), 0, 3, 6);
+        PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
         PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
     }
 
@@ -61,8 +61,8 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         if (tick == 0) {
             ServerBus.playServerSound(player.getLocation(), Sound.UI_TOAST_OUT, 3f, 0.1f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_DIAMOND, 1f, 0.5f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1017), 0, 3, 6);
-            state.current_sword_frame = 1017;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(17)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(17);
         } else if (tick == 6) {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 4);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 3);
@@ -72,13 +72,13 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 0.1f, 0.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 0.5f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1018), 0, 3, 6);
-            state.current_sword_frame = 1018;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(18)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(18);
         } else if (tick == 7) {
             StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
         } else if (tick == 8) {            
-            PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
-            state.current_sword_frame = 1009;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9);
         } else if (tick == 12) {
             finish();
         }
@@ -88,8 +88,8 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         if (tick == 0) {
             ServerBus.playServerSound(player.getLocation(), Sound.UI_TOAST_OUT, 3f, 0.1f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_DIAMOND, 1f, 0.5f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1017), 0, 3, 6);
-            state.current_sword_frame = 1017;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(17)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(17);
         } else if (tick == 4) {
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 4);
             ItemDisplayAnimationTask.execute(new HidariDoSwipeAnimation(player.getEyeLocation(), 2), 3);
@@ -99,33 +99,33 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 0.1f, 0.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 0.5f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1018), 0, 3, 6);
-            state.current_sword_frame = 1018;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(18)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(18);
         } else if (tick == 5) {
             StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.UI_TOAST_OUT, 3f, 0.1f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_DIAMOND, 1f, 0.5f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
-            state.current_sword_frame = 1009;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9);
         } else if (tick == 9) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 0.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 0.1f, 0.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 0.5f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1019), 0, 3, 6);
-            state.current_sword_frame = 1019;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(19)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(19);
         } else if (tick == 10) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1005), 0, 3, 6);
-            state.current_sword_frame = 1005;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(5)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(5);
         } else if (tick == 11) {
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation(), 2), 4);
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation(), 2), 3);
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation(), 2), 2);
             ItemDisplayAnimationTask.execute(new KesagiriSwipeAnimation(player.getEyeLocation(), 2), 1);
             StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1006), 0, 3, 6);
-            state.current_sword_frame = 1006;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(6)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(6);
         } else if (tick == 15) {
             finish();
         }
@@ -166,7 +166,7 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
         if (PlayerStateMachineSchedule.isPlayerNoPosture(target)) {
             PlayerStateMachineSchedule.setStateTask(target, new PlayerPostureCrashTask(target));
         } else {
-            PlayerBus.setPlayerInventoryList(target, new Sword(1023), 0, 3, 6);
+            PlayerBus.setPlayerInventoryList(target, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(23)), 0, 3, 6);
             PlayerStateMachineSchedule.setStateTask(target, new PlayerStunTask(target));
         }
     }
@@ -248,18 +248,18 @@ public class ChargedAttackAnimStateTask extends BaseStateTask {
             StateEventBus.playerSectorSlash(player, 4 * Math.PI / 3);
             ServerBus.playServerSound(player.getLocation(), Sound.UI_TOAST_OUT, 3f, 0.1f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_DIAMOND, 1f, 0.5f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1017), 0, 3, 6);
-            state.current_sword_frame = 1017;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(17)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(17);
         } else if (tick == 6) {
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_TRIDENT_THROW, 1f, 0.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 1f, 1f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 0.1f, 0.5f);
             ServerBus.playServerSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1f, 0.5f);
-            PlayerBus.setPlayerInventoryList(player, new Sword(1018), 0, 3, 6);
-            state.current_sword_frame = 1018;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(18)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(18);
         } else if (tick == 10) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(1009), 0, 3, 6);
-            state.current_sword_frame = 1009;
+            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9)), 0, 3, 6);
+            state.current_sword_frame = PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(9);
         } else if (tick == 11) {
             finish();
         }
