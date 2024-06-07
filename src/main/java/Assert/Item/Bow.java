@@ -1,6 +1,7 @@
 package Assert.Item;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -25,6 +26,8 @@ public class Bow extends ItemStack {
 
         meta.displayName(display_name);
         meta.setCustomModelData(custom_mode_data);
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
         this.setItemMeta(meta);
     }
 
