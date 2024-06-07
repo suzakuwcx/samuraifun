@@ -78,7 +78,7 @@ public class DeflectTask implements Runnable{
 
     @Override
     public void run() {
-        if (tick == 1.5 * DEFLECT_TICK) {
+        if (tick == 2 * DEFLECT_TICK) {
             task_mapper.remove(player);
             return;
         }
