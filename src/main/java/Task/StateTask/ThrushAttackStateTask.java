@@ -1,5 +1,6 @@
 package Task.StateTask;
 
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -84,6 +85,7 @@ public class ThrushAttackStateTask extends BaseStateTask {
                 State state = PlayerStateMachineSchedule.getPlayerState(p2);
                 state.is_invincible_frame = false;
 
+                ServerBus.spawnServerParticle(Particle.GUST, ServerBus.getDirectionLocation(p2.getLocation().add(0, 1, 0), player.getEyeLocation().getDirection().setY(0), 2), 1, 0, 0, 0);
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_SHIELD_BREAK, 1f, 1f);
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_SHIELD_BREAK, 1f, 0.5f);
