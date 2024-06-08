@@ -38,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import Assert.Item.ItemDatabase;
+import DataBus.ConfigBus;
 import FunctionBus.ItemBus;
 import FunctionBus.ServerBus;
 import Task.DelayTask;
@@ -89,7 +90,57 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
     }
 
 
-    private List<String> onLogTabComplete(Player player, Command cmd, String commandLabel, String[] args){
+    /* /config [key] [type] [value] */
+    private boolean onConfigCommand(Player player, Command command, String label, String[] args) {
+        if (args.length != 3 && args.length != 4)
+            return false;
+
+        String path = args[1];
+
+        /* Getter */
+        if (args.length == 3) {
+            switch (args[2].toUpperCase()) {
+                case "STRING":
+                    player.sendMessage(ConfigBus.getValue(path, String.class));
+                    break;
+                case "INTEGER":
+                    player.sendMessage(ConfigBus.getValue(path, Integer.class).toString());
+                    break;
+                case "DOUBLE":
+                    player.sendMessage(ConfigBus.getValue(path, Double.class).toString());
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        } else if (args.length == 4) {
+            switch (args[2].toUpperCase()) {
+                case "STRING":
+                    ConfigBus.setValue(path, args[3], String.class);
+                    break;
+                case "INTEGER":
+                    ConfigBus.setValue(path, Integer.valueOf(args[3]), Integer.class);
+                    break;
+                case "DOUBLE":
+                    ConfigBus.setValue(path, Double.valueOf(args[3]), Double.class);
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+        return true;
+    }
+
+    private List<String> onConfigTabComplete(Player player, Command cmd, String commandLabel, String[] args) {
+        if (args.length == 2)
+            return Arrays.asList(ConfigBus.getKeys().toArray(new String[0]));
+        else if (args.length == 3)
+            return Arrays.asList("STRING", "INTEGER", "DOUBLE");
+        else
+            return Arrays.asList();
+    }
+
+
+    private List<String> onLogTabComplete(Player player, Command cmd, String commandLabel, String[] args) {
         return null;
     }
 
@@ -322,6 +373,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                     return onItemnbtCommand(player, command, label, args);
                 case "itemdb":
                     return onItemDBCommand(player, command, label, args);
+                case "config":
+                    return onConfigCommand(player, command, label, args);
                 case "log":
                     return onLogCommand(player, command, label, args);
                 case "char":
@@ -349,11 +402,13 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1)
-            return Arrays.asList("itemnbt", "itemdb", "log", "char", "os", "upgrade");
+            return Arrays.asList("itemnbt", "itemdb", "config", "log", "char", "os", "upgrade");
 
         switch (args[0]) {
             case "itemnbt":
                 return onItemnbtTabComplete(player, command, label, args);
+            case "config":
+                return onConfigTabComplete(player, command, label, args);
             case "log":
                 return onLogTabComplete(player, command, label, args);
             case "char":

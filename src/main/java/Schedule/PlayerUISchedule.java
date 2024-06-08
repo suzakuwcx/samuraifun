@@ -6,9 +6,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
-import Assert.Config.PlayerConfig;
 import Assert.Config.State;
 import Assert.Font.FontDatabase;
+import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import Task.AttackTask.RingShowTask;
 import Task.AttackTask.SubTitleShowTask;
@@ -41,7 +41,7 @@ public class PlayerUISchedule implements Runnable {
 
     private void updateActionBar(Player player, State state) {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < PlayerConfig.MAX_POSTURE - state.posture; ++i)
+        for (int i = 0; i < ConfigBus.getValue("max_posture", Integer.class) - state.posture; ++i)
             builder.append(FontDatabase.POSTURE_EMPTY);
 
         for (int i = 0; i < state.posture; ++i)
@@ -72,7 +72,7 @@ public class PlayerUISchedule implements Runnable {
         for (int i = 0; i < state.health; ++i)
             builder.append(FontDatabase.HEART_FULL);
 
-        for (int i = 0; i < PlayerConfig.MAX_HEALTH - state.health; ++i)
+        for (int i = 0; i < ConfigBus.getValue("max_health", Integer.class) - state.health; ++i)
             builder.append(FontDatabase.HEART_EMPTY);
 
         player.sendActionBar(Component.text(builder.toString()));

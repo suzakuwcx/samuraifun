@@ -1,0 +1,6 @@
+basic_attack_range: 4.1
+deflect_tick: 4
+max_health: 7
+sword_cooldown: 239
+skill_cooldown: 239
+max_posture: 7

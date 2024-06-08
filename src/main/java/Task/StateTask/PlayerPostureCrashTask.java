@@ -9,9 +9,9 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import Assert.Config.PlayerConfig;
 import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
+import DataBus.ConfigBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
@@ -47,7 +47,7 @@ public class PlayerPostureCrashTask extends BaseStateTask {
         if (tick == 30) {
             PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
             PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
-            PlayerStateMachineSchedule.getPlayerState(player).posture = PlayerConfig.MAX_POSTURE;
+            PlayerStateMachineSchedule.getPlayerState(player).posture = ConfigBus.getValue("max_posture", Integer.class);
         }
         
         PlayerBus.banPlayerJump(player, 3);

@@ -6,8 +6,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import Assert.Config.PlayerConfig;
 import Assert.Item.Sword;
+import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
 import Schedule.PlayerUISchedule;
@@ -19,7 +19,7 @@ public class PlayerJoinEventBus {
         PlayerStateMachineSchedule.init(event.getPlayer());
         PlayerUISchedule.init(player);
 
-        player.setShieldBlockingDelay(PlayerConfig.DEFLECT_TICK);
+        player.setShieldBlockingDelay(ConfigBus.getValue("deflect_tick", Integer.class));
         player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 3, false, false));

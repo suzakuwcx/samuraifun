@@ -2,6 +2,7 @@ package Assert.Config;
 
 import org.bukkit.entity.Player;
 
+import DataBus.ConfigBus;
 import Task.StateTask.BaseStateTask;
 import Task.StateTask.NormalStateTask;
 
@@ -22,9 +23,9 @@ public class State {
     public int health = 7;
     public int posture = 7;
     public Role role = Role.SAMURAI;
-    public int sword_cooldown = PlayerConfig.SWORD_COOLDOWN;
-    public int bow_cooldown = PlayerConfig.BOW_COOLDOWN;
-    public int skill_cooldown = PlayerConfig.SKILL_COOLDOWN;
+    public int sword_cooldown = ConfigBus.getValue("sword_cooldown", Integer.class);
+    public int bow_cooldown = ConfigBus.getValue("skill_cooldown", Integer.class);
+    public int skill_cooldown = ConfigBus.getValue("skill_cooldown", Integer.class);
     public int current_sword_frame = 1001;
     public int dash_cooldown = 4 * 20;
     public boolean is_invincible_frame = false;

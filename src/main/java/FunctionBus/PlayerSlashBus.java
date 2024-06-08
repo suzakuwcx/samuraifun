@@ -4,7 +4,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 
-import Assert.Config.PlayerConfig;
+import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import Task.SwipeTask.KiriotoshiTask;
 
@@ -14,7 +14,7 @@ public class PlayerSlashBus {
     }
 
     public static void onPlayerCanCriticalAttack(Player player) {
-        double range = PlayerConfig.BASIC_ATTACK_RANGE * player.getAttackCooldown() * 1.5;
+        double range = ConfigBus.getValue("basic_attack_range", Double.class) * player.getAttackCooldown() * 1.5;
         KiriotoshiTask.execute(player, range);
 
         for (Zombie e: ServerBus.getNearbyEntities(player.getEyeLocation(), range, 2, range, EntityType.ZOMBIE, Zombie.class)) {
@@ -38,7 +38,7 @@ public class PlayerSlashBus {
     }
 
     public static void onPlayerCommonAttack(Player player) {
-        double range = PlayerConfig.BASIC_ATTACK_RANGE * player.getAttackCooldown();
+        double range = ConfigBus.getValue("basic_attack_range", Double.class) * player.getAttackCooldown();
     }
 
     public static void onPlayerSlash(Player player) {

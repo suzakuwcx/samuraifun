@@ -13,10 +13,10 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.util.Vector;
 
-import Assert.Config.PlayerConfig;
 import Assert.Config.State;
 import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
+import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ScoreBoardBus;
@@ -53,7 +53,7 @@ public class StateEventBus {
     }
 
     public static void playerSectorSlash(Player player, double scope) {
-        for (Player e: ServerBus.getNearbyEntities(player.getEyeLocation(), PlayerConfig.BASIC_ATTACK_RANGE, 2, PlayerConfig.BASIC_ATTACK_RANGE, EntityType.PLAYER, Player.class)) {
+        for (Player e: ServerBus.getNearbyEntities(player.getEyeLocation(), ConfigBus.getValue("basic_attack_range", Double.class), 2, ConfigBus.getValue("basic_attack_range", Double.class), EntityType.PLAYER, Player.class)) {
             if (e.equals(player))
                 continue;
 
@@ -63,7 +63,7 @@ public class StateEventBus {
             if (ScoreBoardBus.isPlayerSameTeam(player, e))
                 continue;
 
-            if (!PlayerBus.isEntityInFrontOfPlayer(player, e, PlayerConfig.BASIC_ATTACK_RANGE, scope))
+            if (!PlayerBus.isEntityInFrontOfPlayer(player, e, ConfigBus.getValue("basic_attack_range", Double.class), scope))
                 continue;
 
             PlayerDataBus.downPlayerSlash(player);

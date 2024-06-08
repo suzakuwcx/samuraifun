@@ -6,14 +6,14 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import Assert.Config.PlayerConfig;
 import Assert.Font.FontDatabase;
+import DataBus.ConfigBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerUISchedule;
 
 public class DeflectTask implements Runnable{
     private static Map<Player, DeflectTask> task_mapper;
-    private static final int DEFLECT_TICK = PlayerConfig.DEFLECT_TICK;
+    private static final int DEFLECT_TICK = ConfigBus.getValue("deflect_tick", Integer.class);
 
     private Player player;
     private int tick = 0;

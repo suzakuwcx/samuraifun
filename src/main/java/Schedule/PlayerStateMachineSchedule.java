@@ -9,10 +9,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import Assert.Config.PlayerConfig;
 import Assert.Config.Role;
 import Assert.Config.State;
 import Assert.Item.Sword;
+import DataBus.ConfigBus;
 import FunctionBus.PlayerBus;
 import Task.StateTask.BaseStateTask;
 import Task.StateTask.NormalStateTask;
@@ -90,25 +90,25 @@ public class PlayerStateMachineSchedule implements Runnable {
     public static void recoverPosture(Player player, int value) {
         State state = getPlayerState(player);
         state.posture += value;
-        if (state.posture > PlayerConfig.MAX_POSTURE)
-            state.posture = PlayerConfig.MAX_POSTURE;
+        if (state.posture > ConfigBus.getValue("max_posture", Integer.class))
+            state.posture = ConfigBus.getValue("max_posture", Integer.class);
     }
 
     public static void recoverHealth(Player player, int value) {
         State state = getPlayerState(player);
         state.health += value;
-        if (state.health > PlayerConfig.MAX_HEALTH)
-            state.health = PlayerConfig.MAX_HEALTH;
+        if (state.health > ConfigBus.getValue("max_health", Integer.class))
+            state.health = ConfigBus.getValue("max_health", Integer.class);
     }
 
     public static void resetSwordCooldown(Player player) {
         State state = player_state_map.get(player.getUniqueId());
-        state.sword_cooldown = PlayerConfig.SWORD_COOLDOWN;
+        state.sword_cooldown = ConfigBus.getValue("sword_cooldown", Integer.class);
     }
 
     public static void resetBowCooldown(Player player) {
         State state = player_state_map.get(player.getUniqueId());
-        state.bow_cooldown = PlayerConfig.BOW_COOLDOWN;
+        state.bow_cooldown = ConfigBus.getValue("skill_cooldown", Integer.class);
     }
 
     private static void updateCooldown(Player player) {
