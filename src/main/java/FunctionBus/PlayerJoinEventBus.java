@@ -1,5 +1,6 @@
 package FunctionBus;
 
+import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -11,6 +12,7 @@ import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
 import Schedule.PlayerUISchedule;
+import Task.GameTask.GameTask;
 
 public class PlayerJoinEventBus {
     public static void onBusTrigger(PlayerJoinEvent event) {
@@ -19,14 +21,27 @@ public class PlayerJoinEventBus {
         PlayerStateMachineSchedule.init(event.getPlayer());
         PlayerUISchedule.init(player);
 
-        player.setShieldBlockingDelay(ConfigBus.getValue("deflect_tick", Integer.class));
+        /* Init player potion */
         player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 3, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, 3, false, false));
+
+        /* Init player attribute */
         player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
         player.setWalkSpeed(0.2f);
+        player.setShieldBlockingDelay(ConfigBus.getValue("deflect_tick", Integer.class));
         player.getInventory().setHeldItemSlot(0);
+
+        /* Init gamemode */
+        if (PlayerDataBus.isPlayerFirstJoin(player)) {
+            PlayerDataBus.registerPlayerFirstJoin(player);
+            if (GameTask.isInGame()) {
+                player.setGameMode(GameMode.SPECTATOR);
+            } else {
+                player.setGameMode(GameMode.ADVENTURE);
+            }
+        }
 
         PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)), 0, 3, 6);
     }

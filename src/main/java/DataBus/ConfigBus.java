@@ -17,7 +17,8 @@ public class ConfigBus {
             Map.entry("max_posture", 7),
             Map.entry("sword_cooldown", 12 * 20 - 1),
             Map.entry("skill_cooldown", 12 * 20 - 1),
-            Map.entry("bow_cooldown", 12 * 20 - 1)
+            Map.entry("bow_cooldown", 12 * 20 - 1),
+            Map.entry("game_time", 30 * 60 * 20)
         );
     }
 

@@ -42,6 +42,7 @@ import DataBus.ConfigBus;
 import FunctionBus.ItemBus;
 import FunctionBus.ServerBus;
 import Task.DelayTask;
+import Task.GameTask.GameTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
@@ -356,6 +357,17 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         return null;
     }
 
+    private boolean onGameCommand(CommandSender sender, Command command, String label, String[] args) {
+        GameTask.start();
+        return true;
+    }
+
+    private List<String> onGameTabComplete(Player player, Command cmd, String commandLabel, String[] args){
+        if (args.length == 2)
+            return Arrays.asList("start");
+
+        return Arrays.asList("");
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
@@ -363,6 +375,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         switch (args[0]) {
             case "upgrade":
                 return onUpgradeCommand(sender, command, label, args);
+            case "game":
+                return onGameCommand(sender, command, label, args);
             default:
                 break;
         }
@@ -402,7 +416,7 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1)
-            return Arrays.asList("itemnbt", "itemdb", "config", "log", "char", "os", "upgrade");
+            return Arrays.asList("itemnbt", "itemdb", "config", "log", "char", "os", "upgrade", "game");
 
         switch (args[0]) {
             case "itemnbt":
@@ -415,6 +429,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                 return onCharTabComplete(player, command, label, args);
             case "upgrade":
                 return onUpgradeTabComplete(player, command, label, args);
+            case "game":
+                return onGameTabComplete(player, command, label, args);
             default:
                 return null;
         }

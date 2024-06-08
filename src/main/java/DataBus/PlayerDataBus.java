@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -19,6 +21,7 @@ public class PlayerDataBus {
     private static Map<Player, Integer> player_slash_semaphore = new HashMap<>();
     private static Map<Player, Integer> player_drop_item_semaphore = new HashMap<>();
     private static Map<UUID, Player> player_dead_by_plugin_mapper = new HashMap<>();
+    private static Set<UUID> player_first_join_set = new HashSet<>();
 
     public static void addPlayerItemDisplay(Player player) {
         SpawnEntity<TextDisplay> display = new RingEntity(player.getLocation());
@@ -117,4 +120,16 @@ public class PlayerDataBus {
     public static Player upPlayerDeadByPlugin(Player player) {
         return player_dead_by_plugin_mapper.remove(player.getUniqueId());
     }
+
+    public static boolean registerPlayerFirstJoin(Player player) {
+        return player_first_join_set.add(player.getUniqueId());
+    }
+
+    public static boolean isPlayerFirstJoin(Player player) {
+        return !player_first_join_set.contains(player.getUniqueId());
+    }
+
+    public static void resetPlayerFirstJoin(Player player) {
+        player_first_join_set.clear();
+    } 
 }

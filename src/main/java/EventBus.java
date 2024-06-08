@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import FunctionBus.EntityDamageByEntityEventBus;
 import FunctionBus.InventoryClickEventBus;
@@ -24,6 +25,7 @@ import FunctionBus.PlayerJoinEventBus;
 import FunctionBus.PlayerMoveEventBus;
 import FunctionBus.PlayerQuitEventBus;
 import FunctionBus.PlayerRespawnEventBus;
+import FunctionBus.PlayerSpawnLocationEventBus;
 import FunctionBus.PlayerStopUsingItemEventBus;
 import FunctionBus.PlayerSwapHandItemsEventBus;
 import FunctionBus.ProjectileHitEventBus;
@@ -47,6 +49,11 @@ public class EventBus implements Listener {
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
         PlayerQuitEventBus.onBusTrigger(event);
         PlayerQuitEventBus.onBusComplete(event);
+    }
+
+    @EventHandler
+    public void onPlayerSpawnLocationEvent(PlayerSpawnLocationEvent event) {
+        PlayerSpawnLocationEventBus.onBusTrigger(event);
     }
 
 
