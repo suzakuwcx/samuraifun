@@ -3,6 +3,7 @@ package PacketBus;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -33,7 +34,11 @@ public class ServerEntityEquipmentPacketBus extends PacketAdapter {
         PacketContainer container = event.getPacket();
 
         int entity_id = container.getIntegers().read(0);
-        Player player = (Player) PacketBus.getEntityByID(entity_id);
+        Entity entity = (Entity) PacketBus.getEntityByID(entity_id);
+        if (!(entity instanceof Player))
+            return;
+
+        Player player = (Player) entity;
         State state = PlayerStateMachineSchedule.getPlayerState(player);
 
         if (!(state.state instanceof NormalAttackStateTask) && !(state.state instanceof ChargedAttackAnimStateTask))
