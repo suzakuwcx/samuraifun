@@ -1,6 +1,9 @@
 package Schedule;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,12 +23,11 @@ import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
 
 public class PlayerUISchedule implements Runnable {
+    private static Map<UUID, BossBar> playerbar;
     private static BossBar hinibar;
-    private static BossBar timebar;
 
     static {
-        timebar = BossBar.bossBar(Component.text(""), 1f, Color.RED, Overlay.PROGRESS);
-
+        playerbar = new HashMap<>();
         hinibar = BossBar.bossBar(Component.text(
             String.format("%c 攻击 %c 振刀 %c 防御 %c 重击 %c 收/拔刀 %c 垫步 %c + %c 肩撞",
                 FontDatabase.HINI_LEFT_CLICK,
@@ -36,7 +38,7 @@ public class PlayerUISchedule implements Runnable {
                 FontDatabase.HINI_SHIFT_CLICK,
                 FontDatabase.HINI_LONG_RIGHT_CLICK, FontDatabase.HINI_SHIFT_CLICK
             )
-        ), 1f, Color.WHITE, Overlay.PROGRESS);
+        ), 1f, Color.PURPLE, Overlay.PROGRESS);
     }
 
     private void updateActionBar(Player player, State state) {
@@ -149,7 +151,20 @@ public class PlayerUISchedule implements Runnable {
     }
 
     public static void init(Player player) {
-        player.showBossBar(timebar);
+        BossBar bar = BossBar.bossBar(Component.text(""), 1f, Color.PURPLE, Overlay.PROGRESS);
+        playerbar.put(player.getUniqueId(), bar);
+        refreshPlayerFirstBossbar(player);
+    }
+
+    public static BossBar getPlayerFirstBossbar(Player player) {
+        return playerbar.get(player.getUniqueId());
+    }
+
+    public static void refreshPlayerFirstBossbar(Player player) {
+        BossBar bar = playerbar.get(player.getUniqueId());
+        bar.removeViewer(player);
+        hinibar.removeViewer(player);
+        player.showBossBar(bar);
         player.showBossBar(hinibar);
     }
 }

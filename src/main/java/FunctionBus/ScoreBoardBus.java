@@ -75,8 +75,12 @@ public class ScoreBoardBus {
         return sortedEntries;
     }
 
+    public static Team getPlayerTeam(Player player) {
+        return board.getEntityTeam(player);
+    }
+
     public static boolean isPlayerSameTeam(Player first, Player second) {
-        Team team = board.getEntityTeam(first);
+        Team team = getPlayerTeam(first);
         if (team == null)
             return false;
         return team.hasEntity(second);
