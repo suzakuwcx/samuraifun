@@ -246,6 +246,9 @@ public class PlayerInteractEventBus {
                     continue;
 
                 Color color = display.getGlowColorOverride();
+                if (color == null)
+                    return;
+                    
                 if ((color.equals(Color.fromRGB(0xB22222)) && team.getName().equals("red_team")) ||
                 (color.equals(Color.AQUA) && team.getName().equals("blue_team")))
                 {
@@ -253,6 +256,9 @@ public class PlayerInteractEventBus {
                     Role.refreshPlayerArmor(player, PlayerStateMachineSchedule.getPlayerRole(player));
                     player.getInventory().setHeldItemSlot(0);
                     player.removePotionEffect(PotionEffectType.INVISIBILITY);
+                    ServerBus.playerShowServerEntity(player, PlayerDataBus.getPlayerRingDisplay(player));
+                    ServerBus.playerShowServerEntity(player, PlayerDataBus.getPlayerHealthDisplay(player));
+                    ServerBus.playerShowServerEntity(player, PlayerDataBus.getPlayerPostureDisplay(player));
                 }
             }
         }

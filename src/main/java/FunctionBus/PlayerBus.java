@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import Assert.Item.ReviveKey;
+import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 import Task.StateTask.NormalStateTask;
@@ -159,6 +160,10 @@ public class PlayerBus {
         PlayerBus.setPlayerInventoryList(player, new ItemStack(Material.AIR), 36, 37, 38);
         PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
         PlayerBus.setPlayerInventoryList(player, new ItemStack(Material.CARVED_PUMPKIN), 39);
+
+        ServerBus.playerHideServerEntity(player, PlayerDataBus.getPlayerHealthDisplay(player));
+        ServerBus.playerHideServerEntity(player, PlayerDataBus.getPlayerPostureDisplay(player));
+        ServerBus.playerHideServerEntity(player, PlayerDataBus.getPlayerRingDisplay(player));
 
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];

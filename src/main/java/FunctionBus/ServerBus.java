@@ -196,4 +196,10 @@ public class ServerBus {
             p.hideEntity(plugin, entity);
         }
     }
+
+    public static void playerShowServerEntity(Player player, Entity entity) {
+        for (Player p : player.getWorld().getPlayers()) {
+            p.showEntity(plugin, entity);
+        }
+    }
 }
