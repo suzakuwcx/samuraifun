@@ -52,6 +52,13 @@ public class GameTask implements Runnable {
 
     private static void set_player_spawnpoint() {
         for (Player player : Bukkit.getOnlinePlayers()) {
+            Team team = ScoreBoardBus.getPlayerTeam(player);
+            if (team == null || team.getName().equals("white_team")) {
+                player.getInventory().clear();
+                player.setGameMode(GameMode.SPECTATOR);
+                continue;
+            }
+
             player.setRespawnLocation(ConfigBus.getValue("respawn_point", Location.class), true);
 
             /* Player cannnot teleport if has passenger on it, but why???? */
