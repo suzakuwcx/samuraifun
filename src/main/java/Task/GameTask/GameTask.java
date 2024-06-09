@@ -12,6 +12,7 @@ import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.DisplaySlot;
 
 import Assert.Item.Buddha;
@@ -129,6 +130,12 @@ public class GameTask implements Runnable {
             has_red = false;
             has_blue = false;
             for (Player player :ServerBus.getNearbyEntities(display.getLocation(), 8, 7, 8, EntityType.PLAYER, Player.class)) {
+                if (player.hasPotionEffect(PotionEffectType.INVISIBILITY))
+                    continue;
+                
+                if (player.getGameMode() != GameMode.ADVENTURE)
+                    continue;
+
                 BossBar bar = PlayerUISchedule.getPlayerFirstBossbar(player);
                 bar.progress((float) buddha_map.get(display) / (float) ConfigBus.getValue("buddha_blood", Integer.class));
                 if (buddha_map.get(display) < ConfigBus.getValue("buddha_blood", Integer.class) / 3) {
