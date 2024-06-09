@@ -20,6 +20,7 @@ import FunctionBus.ServerBus;
 import Schedule.PlayerUISchedule;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
+import net.kyori.adventure.text.Component;
 
 public class GameTask implements Runnable {
     private static GameTask task;
@@ -79,6 +80,10 @@ public class GameTask implements Runnable {
         return task != null;
     }
 
+    public static int getLastTick() {
+        return ConfigBus.getValue("game_time", Integer.class) - task.tick;
+    }
+
     private void add_buddha(ItemDisplay display, int value) {
         int blood = buddha_map.get(display) + value;
         if (blood < 0)
@@ -115,10 +120,8 @@ public class GameTask implements Runnable {
                     } else if (ScoreBoardBus.getPlayerTeam(player).getName().equals("blue_team")) {
                         has_blue = true;
                     }
-                    PlayerUISchedule.refreshPlayerFirstBossbar(player);
                 } else {
                     bar.color(Color.PURPLE);
-                    PlayerUISchedule.refreshPlayerFirstBossbar(player);
                 }
             }
 
@@ -134,6 +137,14 @@ public class GameTask implements Runnable {
                 display.setGlowColorOverride(org.bukkit.Color.WHITE);
             } else {
                 display.setGlowColorOverride(org.bukkit.Color.AQUA);
+            }
+
+            for (Player player: Bukkit.getOnlinePlayers()) {
+                int minutes = GameTask.getLastTick() / 20 / 60;
+                int seconds = GameTask.getLastTick() / 20 % 60;
+                BossBar bar = PlayerUISchedule.getPlayerFirstBossbar(player);
+                bar.name(Component.text(String.format("%d:%d", minutes, seconds)));
+                PlayerUISchedule.refreshPlayerFirstBossbar(player);
             }
         }
     }
