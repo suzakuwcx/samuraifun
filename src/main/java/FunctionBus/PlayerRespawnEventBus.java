@@ -6,7 +6,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import Assert.Config.State;
-import Assert.Item.Sword;
 import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
@@ -23,7 +22,7 @@ public class PlayerRespawnEventBus {
         if (GameTask.isInGame()) {
             PlayerBus.toGhost(player);
         } else {
-            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)), 0, 3, 6);
+            PlayerBus.resetPlayerGame(player);
         }
         
         DelayTask.execute((args) -> {

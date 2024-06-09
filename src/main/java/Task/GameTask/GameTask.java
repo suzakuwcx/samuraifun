@@ -188,6 +188,7 @@ public class GameTask implements Runnable {
     
     private void release() {
         Bukkit.getScheduler().cancelTask(task_id);
+        GameTask.task = null;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.setRespawnLocation(Bukkit.getWorlds().get(0).getSpawnLocation());
