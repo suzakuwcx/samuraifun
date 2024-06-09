@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import Assert.Config.State;
@@ -58,6 +59,9 @@ public class StateEventBus {
                 continue;
 
             if (PlayerStateMachineSchedule.getPlayerState(e).is_invincible_frame)
+                continue;
+
+            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY))
                 continue;
 
             if (ScoreBoardBus.isPlayerSameTeam(player, e))
