@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +22,7 @@ import Assert.Item.Bow;
 import Assert.Item.ChestPlate;
 import Assert.Item.Helmet;
 import Assert.Item.Legging;
+import Assert.Item.Razor;
 import Assert.Item.SmokingDarts;
 import Assert.Item.Gun.Matchlock;
 import FunctionBus.PlayerBus;
@@ -52,12 +54,11 @@ public class CuCommand implements CommandExecutor, TabCompleter {
             PlayerBus.setPlayerInventoryList(player, new Bow(), 2, 5, 8);
 
             switch (role) {
-                case COMMON:
                 case SAMURAI:
                     PlayerBus.setPlayerInventoryList(player, new BattleFlag(), 1, 4, 7);
                     break;
                 case RONIN:
-
+                    PlayerBus.setPlayerInventoryList(player, new Razor(), 1, 4, 7);
                     break;
                 case SHINBI:
                     PlayerBus.setPlayerInventoryList(player, new SmokingDarts(), 1, 4, 7);
@@ -65,8 +66,9 @@ public class CuCommand implements CommandExecutor, TabCompleter {
                 case SOHEI:
                     PlayerBus.setPlayerInventoryList(player, new Matchlock(), 1, 4, 7);
                     break;
+                case COMMON:
                 default:
-                    PlayerBus.setPlayerInventoryList(player, new BattleFlag(), 1, 4, 7);
+                    break;
             }
             return true;
         }
