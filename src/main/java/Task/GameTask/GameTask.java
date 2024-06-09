@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
@@ -148,11 +149,25 @@ public class GameTask implements Runnable {
             }
         }
     }
+    
+    private void release() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.setRespawnLocation(Bukkit.getWorlds().get(0).getSpawnLocation());
+            PlayerDataBus.removePlayerItemDisplay(player);
+            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            player.setGameMode(GameMode.ADVENTURE);
+            PlayerDataBus.addPlayerItemDisplay(player);
+            BossBar bar = PlayerUISchedule.getPlayerFirstBossbar(player);
+            bar.name(Component.text(""));
+            PlayerUISchedule.refreshPlayerFirstBossbar(player);
+        }
+    }
 
     @Override
     public void run() {
         if (tick == ConfigBus.getValue("game_time", Integer.class)) {
             Bukkit.getScheduler().cancelTask(task_id);
+            release();
             return;
         }
 
