@@ -80,6 +80,21 @@ public class ScoreBoardBus {
         return board.getEntityTeam(player);
     }
 
+    public static void setPlayerTeam(Player player, String team) {
+        if (board.getTeam(team) == null)
+            board.registerNewTeam(team);
+        board.getTeam(team).addEntities(player);
+    }
+
+    public static void leavePlayerTeam(Player player, String t) {
+        Team team = board.getTeam(t);
+        team.removeEntity(player);
+    }
+
+    public static void leavePlayerTeam(Player player) {
+        board.getEntityTeam(player).removeEntities(player);
+    }
+
     public static boolean isPlayerSameTeam(Player first, Player second) {
         Team team = getPlayerTeam(first);
         if (team == null)

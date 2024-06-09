@@ -15,7 +15,9 @@ import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -36,6 +38,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,6 +50,7 @@ import FunctionBus.ServerBus;
 import Task.DelayTask;
 import Task.GameTask.GameTask;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
 
@@ -366,13 +370,42 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
     }
 
     private boolean onGameCommand(CommandSender sender, Command command, String label, String[] args) {
-        GameTask.start();
+        String operation = args[1];
+        List<Player> players = new ArrayList<>();
+
+        if (operation.equals("start")) {
+            GameTask.start();
+        } else if (operation.equals("team")) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Team team = ScoreBoardBus.getPlayerTeam(player);
+                if (team != null && !team.getName().equals("white_team"))
+                    players.add(player);
+                else if (team == null) {
+                    players.add(player);
+                } else {
+                    player.playerListName(Component.text(player.getName()).color(TextColor.color(255, 255, 255)));
+                }
+            }
+
+            Collections.shuffle(players);
+
+            for (int i = 0; i < players.size(); ++i) {
+                Player player = players.get(i);
+                if (i % 2 == 0) {
+                    ScoreBoardBus.setPlayerTeam(player, "red_team");
+                    player.playerListName(Component.text(player.getName()).color(TextColor.color(255, 69, 0)));
+                } else {
+                    ScoreBoardBus.setPlayerTeam(player, "blue_team");
+                    player.playerListName(Component.text(player.getName()).color(TextColor.color(0, 191, 255)));
+                }
+            }
+        }
         return true;
     }
 
     private List<String> onGameTabComplete(Player player, Command cmd, String commandLabel, String[] args){
         if (args.length == 2)
-            return Arrays.asList("start");
+            return Arrays.asList("start", "team");
 
         return Arrays.asList("");
     }
