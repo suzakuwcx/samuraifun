@@ -1,7 +1,7 @@
 package Assert.Config;
 
 public enum Role {
-    COMMON(1),
+    COMMON(0),
     SAMURAI(1),
     RONIN(2),
     SHINBI(3),
