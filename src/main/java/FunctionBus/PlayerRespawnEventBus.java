@@ -12,7 +12,6 @@ import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 import Task.GameTask.GameTask;
-import Task.StateTask.NormalStateTask;
 
 public class PlayerRespawnEventBus {
     public static void onBusTrigger(PlayerRespawnEvent event) {
@@ -26,8 +25,6 @@ public class PlayerRespawnEventBus {
         } else {
             PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)), 0, 3, 6);
         }
-        
-        PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
         
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
