@@ -1,5 +1,6 @@
 package FunctionBus;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -41,6 +42,7 @@ public class PlayerJoinEventBus {
                 player.setGameMode(GameMode.SPECTATOR);
             } else {
                 player.setGameMode(GameMode.ADVENTURE);
+                player.setRespawnLocation(Bukkit.getWorlds().get(0).getSpawnLocation());
             }
         }
     }
