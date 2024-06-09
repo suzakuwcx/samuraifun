@@ -19,7 +19,8 @@ public class ConfigBus {
             Map.entry("skill_cooldown", 12 * 20 - 1),
             Map.entry("bow_cooldown", 12 * 20 - 1),
             Map.entry("game_time", 30 * 60 * 20),
-            Map.entry("buddha_blood", 60 * 20)
+            Map.entry("buddha_blood", 60 * 20),
+            Map.entry("buddha_discard", 0)
         );
     }
 

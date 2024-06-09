@@ -85,6 +85,13 @@ public class GameTask implements Runnable {
             display.setGlowColorOverride(org.bukkit.Color.WHITE);
         }
 
+        ItemDisplay[] displays = task.buddha_map.keySet().toArray(new ItemDisplay[0]);
+        for(int i = 0; i < ConfigBus.getValue("buddha_discard", Integer.class); ++i) {
+            ItemDisplay dp = displays[i];
+            dp.setGlowing(false);
+            task.buddha_map.remove(dp);
+        }
+
         choose_random_spawn(task);
         set_player_spawnpoint();
         init_scoreboard();
