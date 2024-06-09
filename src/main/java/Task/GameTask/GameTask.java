@@ -12,6 +12,7 @@ import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.DisplaySlot;
 
 import Assert.Item.Buddha;
 import DataBus.ConfigBus;
@@ -64,6 +65,7 @@ public class GameTask implements Runnable {
 
     public static void start() {
         GameTask new_task = new GameTask();
+        ScoreBoardBus.setObjDisplay("global", DisplaySlot.SIDEBAR, "占领情况");
         new_task.task_id = Bukkit.getScheduler().runTaskTimer(ServerBus.getPlugin(), new_task, 0, 1).getTaskId();
         task = new_task;
 
@@ -169,6 +171,7 @@ public class GameTask implements Runnable {
             player.setRespawnLocation(Bukkit.getWorlds().get(0).getSpawnLocation());
             PlayerDataBus.removePlayerItemDisplay(player);
             player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            PlayerBus.resetPlayerGame(player);
             player.setGameMode(GameMode.ADVENTURE);
             PlayerDataBus.addPlayerItemDisplay(player);
             BossBar bar = PlayerUISchedule.getPlayerFirstBossbar(player);
@@ -209,6 +212,9 @@ public class GameTask implements Runnable {
                 release();
             }
         }
+
+        ScoreBoardBus.setPlayerScore("red_team", "global", red_count);
+        ScoreBoardBus.setPlayerScore("blue_team", "global", blue_count);
     }
 
     @Override

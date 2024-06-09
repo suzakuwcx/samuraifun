@@ -46,9 +46,10 @@ public class ScoreBoardBus {
         s.setScore(score);
     }
 
-    public static void setObjDisplay(String name, DisplaySlot slot) {
+    public static void setObjDisplay(String name, DisplaySlot slot, String display_name) {
         Objective obj = getOrCreateObjective(name);
         obj.setDisplaySlot(slot);
+        obj.displayName(Component.text(display_name));
     }
 
     public static SortedSet<Map.Entry<String, Integer>> getRank(String name) {
