@@ -5,3 +5,11 @@ sword_cooldown: 239
 skill_cooldown: 239
 max_posture: 7
 game_time: 36000
+respawn_point:
+  ==: org.bukkit.Location
+  world: world
+  x: 256.5
+  y: -25.0
+  z: 252.5
+  pitch: 0.0
+  yaw: 0.0

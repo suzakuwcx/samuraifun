@@ -4,15 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
-
-import com.mojang.datafixers.types.templates.List;
 
 import Assert.Item.Buddha;
 import DataBus.ConfigBus;
+import DataBus.PlayerDataBus;
 import FunctionBus.ScoreBoardBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerUISchedule;
@@ -41,6 +42,17 @@ public class GameTask implements Runnable {
         task.buddha_map.put(task.buddha_map.keySet().toArray(new ItemDisplay[0])[blue], ConfigBus.getValue("buddha_blood", Integer.class));
     }
 
+    private static void set_player_spawnpoint() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.setRespawnLocation(ConfigBus.getValue("respawn_point", Location.class), true);
+
+            /* Player cannnot teleport if has passenger on it, but why???? */
+            PlayerDataBus.removePlayerItemDisplay(player);
+            player.teleport(ConfigBus.getValue("respawn_point", Location.class), TeleportCause.COMMAND);
+            PlayerDataBus.addPlayerItemDisplay(player);
+        }
+    }
+
     public static void start() {
         GameTask new_task = new GameTask();
         new_task.task_id = Bukkit.getScheduler().runTaskTimer(ServerBus.getPlugin(), new_task, 0, 1).getTaskId();
@@ -57,6 +69,7 @@ public class GameTask implements Runnable {
         }
 
         choose_random_spawn(task);
+        set_player_spawnpoint();
     }
 
     public static boolean isInGame() {

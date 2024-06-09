@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -110,6 +111,9 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                 case "DOUBLE":
                     player.sendMessage(ConfigBus.getValue(path, Double.class).toString());
                     break;
+                case "LOCATION":
+                    player.sendMessage(ConfigBus.getValue(path, Location.class).toString());
+                    break;
                 default:
                     throw new IllegalArgumentException();
             }
@@ -123,6 +127,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                     break;
                 case "DOUBLE":
                     ConfigBus.setValue(path, Double.valueOf(args[3]), Double.class);
+                case "LOCATION":
+                    ConfigBus.setValue(path, player.getLocation(), Location.class);
                     break;
                 default:
                     throw new IllegalArgumentException();
@@ -135,7 +141,7 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         if (args.length == 2)
             return Arrays.asList(ConfigBus.getKeys().toArray(new String[0]));
         else if (args.length == 3)
-            return Arrays.asList("STRING", "INTEGER", "DOUBLE");
+            return Arrays.asList("STRING", "INTEGER", "DOUBLE", "LOCATION");
         else
             return Arrays.asList();
     }
