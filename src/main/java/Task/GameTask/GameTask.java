@@ -19,6 +19,7 @@ import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ScoreBoardBus;
 import FunctionBus.ServerBus;
+import Schedule.PlayerStateMachineSchedule;
 import Schedule.PlayerUISchedule;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
@@ -56,6 +57,8 @@ public class GameTask implements Runnable {
             PlayerDataBus.addPlayerItemDisplay(player);
 
             PlayerBus.toGhost(player);
+            PlayerStateMachineSchedule.recoverHealth(player, ConfigBus.getValue("max_health", Integer.class));
+            PlayerStateMachineSchedule.recoverPosture(player, ConfigBus.getValue("max_posture", Integer.class));
         }
     }
 
@@ -160,6 +163,8 @@ public class GameTask implements Runnable {
     }
     
     private void release() {
+        Bukkit.getScheduler().cancelTask(task_id);
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.setRespawnLocation(Bukkit.getWorlds().get(0).getSpawnLocation());
             PlayerDataBus.removePlayerItemDisplay(player);
@@ -172,15 +177,49 @@ public class GameTask implements Runnable {
         }
     }
 
+    private void victory_detection(boolean force) {
+        int red_count = 0;
+        int blue_count = 0;
+
+        for (ItemDisplay display : buddha_map.keySet()) {
+            if (buddha_map.get(display) < ConfigBus.getValue("buddha_blood", Integer.class) / 3) {
+                ++red_count;
+            } else if (buddha_map.get(display) > 2 * ConfigBus.getValue("buddha_blood", Integer.class) / 3) {
+                ++blue_count;
+            }
+        }
+
+        if (red_count == buddha_map.size()) {
+            Bukkit.broadcast(Component.text("红方胜利"));
+            release();
+        } else if (blue_count == buddha_map.size()) {
+            Bukkit.broadcast(Component.text("蓝方胜利"));
+            release();
+        }
+
+        if (force) {
+            if (red_count == blue_count) {
+                Bukkit.broadcast(Component.text("平局"));
+                release();
+            } else if (red_count > blue_count) {
+                Bukkit.broadcast(Component.text("红方胜利"));
+                release();
+            } else {
+                Bukkit.broadcast(Component.text("蓝方胜利"));
+                release();
+            }
+        }
+    }
+
     @Override
     public void run() {
         if (tick == ConfigBus.getValue("game_time", Integer.class)) {
-            Bukkit.getScheduler().cancelTask(task_id);
-            release();
+            victory_detection(true);
             return;
         }
 
         showBossBar();
+        victory_detection(false);
         ++tick;
     }
 }
