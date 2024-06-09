@@ -31,6 +31,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -41,6 +42,7 @@ import org.jetbrains.annotations.Nullable;
 import Assert.Item.ItemDatabase;
 import DataBus.ConfigBus;
 import FunctionBus.ItemBus;
+import FunctionBus.ScoreBoardBus;
 import FunctionBus.ServerBus;
 import Task.DelayTask;
 import Task.GameTask.GameTask;
@@ -375,6 +377,32 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         return Arrays.asList("");
     }
 
+    private boolean onStatisticsCommand(BlockCommandSender sender, Command command, String label, String[] args) {
+        BlockCommandSender bsender = (BlockCommandSender) sender;
+        int total_kill;
+        int total_dead;
+        int total_win;
+        int total_play;
+
+        for (Player player : ServerBus.getNearbyEntities(bsender.getBlock().getLocation(), 2, 2, 2, EntityType.PLAYER, Player.class)) {
+            total_kill = ScoreBoardBus.getPlayerScore(player.getName(), "total_kill");
+            total_dead = ScoreBoardBus.getPlayerScore(player.getName(), "total_dead");
+            total_win = ScoreBoardBus.getPlayerScore(player.getName(), "total_win");
+            total_play = ScoreBoardBus.getPlayerScore(player.getName(), "total_play");
+            player.sendMessage("==========================================");
+            player.sendMessage(String.format("武士: %s", player.getName()));
+            player.sendMessage(String.format("击杀数: %d", total_kill));
+            player.sendMessage(String.format("死亡数: %d", total_dead));
+            player.sendMessage(String.format("K/D: %f", (float) total_kill / (float)total_dead));
+            player.sendMessage(String.format("总游玩场数: %d", total_play));
+            player.sendMessage(String.format("胜场: %d", total_win));
+            player.sendMessage(String.format("胜率: %f", (float) total_win / (float) total_play));
+            player.sendMessage("==========================================");
+            return true;
+        }
+        return true;
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
@@ -406,6 +434,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
             }
         } else if (sender instanceof BlockCommandSender commandblock) {
             switch (args[0]) {
+                case "statistic":
+                    return onStatisticsCommand(commandblock, command, label, args);
                 default:
                     return false;
             }

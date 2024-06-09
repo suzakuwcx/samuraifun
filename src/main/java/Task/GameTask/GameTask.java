@@ -63,6 +63,12 @@ public class GameTask implements Runnable {
         }
     }
 
+    private static void init_scoreboard() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            ScoreBoardBus.setPlayerScore(player.getName(), "kill", 0);
+        }
+    }
+
     public static void start() {
         GameTask new_task = new GameTask();
         ScoreBoardBus.setObjDisplay("global", DisplaySlot.SIDEBAR, "占领情况");
@@ -81,6 +87,7 @@ public class GameTask implements Runnable {
 
         choose_random_spawn(task);
         set_player_spawnpoint();
+        init_scoreboard();
     }
 
     public static boolean isInGame() {
@@ -178,6 +185,33 @@ public class GameTask implements Runnable {
             bar.name(Component.text(""));
             PlayerUISchedule.refreshPlayerFirstBossbar(player);
         }
+
+        ScoreBoardBus.setObjDisplay("kill", DisplaySlot.SIDEBAR, "击杀数");
+    }
+
+    public static void red_win() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            ScoreBoardBus.setPlayerScore(player.getName(), "total_play", ScoreBoardBus.getPlayerScore(player.getName(), "total_play") + 1);
+
+            if (ScoreBoardBus.getPlayerTeam(player).getName().equals("red_team")) {
+                ScoreBoardBus.setPlayerScore(player.getName(), "total_win", ScoreBoardBus.getPlayerScore(player.getName(), "total_win") + 1);
+            }
+        }
+    }
+
+    public static void blue_win() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            ScoreBoardBus.setPlayerScore(player.getName(), "total_play", ScoreBoardBus.getPlayerScore(player.getName(), "total_play") + 1);
+
+            if (ScoreBoardBus.getPlayerTeam(player).getName().equals("blue_team")) {
+                ScoreBoardBus.setPlayerScore(player.getName(), "total_win", ScoreBoardBus.getPlayerScore(player.getName(), "total_win") + 1);
+            }
+        }
+    }
+
+    public static void draw() {
+        for (Player player : Bukkit.getOnlinePlayers())
+            ScoreBoardBus.setPlayerScore(player.getName(), "total_play", ScoreBoardBus.getPlayerScore(player.getName(), "total_play") + 1);
     }
 
     private void victory_detection(boolean force) {
@@ -194,21 +228,26 @@ public class GameTask implements Runnable {
 
         if (red_count == buddha_map.size()) {
             Bukkit.broadcast(Component.text("红方胜利"));
+            red_win();
             release();
         } else if (blue_count == buddha_map.size()) {
             Bukkit.broadcast(Component.text("蓝方胜利"));
+            blue_win();
             release();
         }
 
         if (force) {
             if (red_count == blue_count) {
                 Bukkit.broadcast(Component.text("平局"));
+                draw();
                 release();
             } else if (red_count > blue_count) {
                 Bukkit.broadcast(Component.text("红方胜利"));
+                red_win();
                 release();
             } else {
                 Bukkit.broadcast(Component.text("蓝方胜利"));
+                blue_win();
                 release();
             }
         }

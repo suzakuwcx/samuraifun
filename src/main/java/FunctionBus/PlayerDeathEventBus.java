@@ -35,6 +35,9 @@ public class PlayerDeathEventBus {
         PlayerStateMachineSchedule.getPlayerState(killer).main_title = String.valueOf(FontDatabase.STATUS_MAINTITLE_KILL);
 
         ServerBus.playServerSound(player.getLocation(), Sound.BLOCK_AMETHYST_CLUSTER_BREAK, 1f, 0.1f);
+        ScoreBoardBus.setPlayerScore(player.getName(), "kill", ScoreBoardBus.getPlayerScore(player.getName(), "kill" + 1));
+        ScoreBoardBus.setPlayerScore(player.getName(), "total_kill", ScoreBoardBus.getPlayerScore(player.getName(), "total_kill" + 1));
+        ScoreBoardBus.setPlayerScore(player.getName(), "total_dead", ScoreBoardBus.getPlayerScore(player.getName(), "total_kill" + 1));
 
         entity.spwan();
         DelayTask.execute((args) -> {
