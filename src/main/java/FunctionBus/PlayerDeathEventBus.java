@@ -41,7 +41,7 @@ public class PlayerDeathEventBus {
             Player p = (Player) args[0];
             Entity e = (Entity) args[1];
             e.remove();
-            PlayerStateMachineSchedule.getPlayerState(killer).main_title = "";
-        }, 40,killer , entity.getEntity());
+            PlayerStateMachineSchedule.getPlayerState(p).main_title = "";
+        }, 40, killer , entity.getEntity());
     }
 }

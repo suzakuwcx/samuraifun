@@ -35,6 +35,7 @@ public class PlayerJoinEventBus {
 
         /* Init gamemode */
         if (PlayerDataBus.isPlayerFirstJoin(player)) {
+            PlayerBus.resetPlayerGame(player);
             PlayerDataBus.registerPlayerFirstJoin(player);
             if (GameTask.isInGame()) {
                 player.setGameMode(GameMode.SPECTATOR);
@@ -42,8 +43,6 @@ public class PlayerJoinEventBus {
                 player.setGameMode(GameMode.ADVENTURE);
             }
         }
-
-        PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)), 0, 3, 6);
     }
 
     public static void onBusComplete(PlayerJoinEvent event) {
@@ -60,6 +59,4 @@ public class PlayerJoinEventBus {
     public static void onPlayerOperator(PlayerJoinEvent event) {
         event.getPlayer().sendMessage("Helloworld");
     }
-
- 
 }

@@ -15,6 +15,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import Assert.Item.ReviveKey;
+import Task.DelayTask;
 import net.kyori.adventure.text.Component;
 
 public class PlayerBus {
@@ -143,5 +145,20 @@ public class PlayerBus {
         player.setCooldown(Material.SHIELD, tick);
         if (player.getActiveItem().getType() == Material.SHIELD)
             player.completeUsingActiveItem();
+    }
+
+    public static void resetPlayerGame(Player player) {
+        player.removePotionEffect(PotionEffectType.INVISIBILITY);
+        player.getInventory().clear();
+    }
+
+    public static void toGhost(Player player) {
+        PlayerBus.setPlayerInventoryList(player, new ReviveKey(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
+        PlayerBus.setPlayerInventoryList(player, new ItemStack(Material.AIR), 36, 37, 38, 39);
+
+        DelayTask.execute((args) -> {
+            Player p = (Player) args[0];
+            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, PotionEffect.INFINITE_DURATION, 1, false, false));
+        }, 1, player);
     }
 }

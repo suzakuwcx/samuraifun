@@ -1,22 +1,32 @@
 package FunctionBus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Team;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import Assert.Config.Role;
 import Assert.Item.BattleFlag;
+import Assert.Item.Buddha;
+import Assert.Item.ReviveKey;
 import Assert.Item.SmokingDarts;
 import Assert.Item.Sword;
 import Assert.Item.Taijutsu;
 import Assert.Item.Gun.Matchlock;
 import Assert.Item.Gun.Rifle;
 import DataBus.PlayerDataBus;
+import Schedule.PlayerStateMachineSchedule;
 import Task.DelayTask;
 import Task.MonitorTask;
 import Task.AttackTask.BattleFlagTask;
@@ -205,5 +215,46 @@ public class PlayerInteractEventBus {
 
         Vector velocity = location.toVector().clone().subtract(result.getHitPosition()).normalize().multiply(0.5);
         result.getHitEntity().setVelocity(velocity);
+    }
+
+    public static boolean isPlayerUsingReviveKey(PlayerInteractEvent event) {
+        Action action = event.getAction();
+
+        if (event.getHand() != EquipmentSlot.HAND)
+            return false;
+
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
+            return false;
+
+        if (!ReviveKey._instanceof(event.getPlayer().getInventory().getItemInMainHand()))
+            return false;
+
+        return true;
+    }
+
+    public static void onPlayerUsingReviveKey(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Team team = ScoreBoardBus.getPlayerTeam(player);
+        if (team == null)
+            return;
+
+        for (Entity entity : player.getNearbyEntities(5, 3, 5)) {
+            if (entity.getType() == EntityType.ITEM_DISPLAY) {
+                ItemDisplay display = (ItemDisplay) entity;
+
+                if (!Buddha._instanceof(((ItemDisplay) entity).getItemStack()))
+                    continue;
+
+                Color color = display.getGlowColorOverride();
+                if ((color.equals(Color.fromRGB(0xB22222)) && team.getName().equals("red_team")) ||
+                (color.equals(Color.AQUA) && team.getName().equals("blue_team")))
+                {
+                    PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)), 0, 3, 6);
+                    Role.refreshPlayerArmor(player, PlayerStateMachineSchedule.getPlayerRole(player));
+                    player.getInventory().setHeldItemSlot(0);
+                    player.removePotionEffect(PotionEffectType.INVISIBILITY);
+                }
+            }
+        }
     }
 }

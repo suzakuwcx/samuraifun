@@ -71,6 +71,8 @@ public class EventBus implements Listener {
             PlayerInteractEventBus.onPlayerUsingSmokingDartsEntity(event);
         } else if (PlayerInteractEventBus.isPlayerUsingMatchlock(event)) {
             PlayerInteractEventBus.onPlayerUsingMatchlock(event);
+        } else if (PlayerInteractEventBus.isPlayerUsingReviveKey(event)) {
+            PlayerInteractEventBus.onPlayerUsingReviveKey(event);
         } else if (PlayerStateMachineSchedule.getStateTask(event.getPlayer()).isStateEvent(event)) {
             PlayerStateMachineSchedule.getStateTask(event.getPlayer()).onPlayerInteractEvent(event);
         }

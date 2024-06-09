@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import Assert.Item.Buddha;
 import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
+import FunctionBus.PlayerBus;
 import FunctionBus.ScoreBoardBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerUISchedule;
@@ -50,6 +51,8 @@ public class GameTask implements Runnable {
             PlayerDataBus.removePlayerItemDisplay(player);
             player.teleport(ConfigBus.getValue("respawn_point", Location.class), TeleportCause.COMMAND);
             PlayerDataBus.addPlayerItemDisplay(player);
+
+            PlayerBus.toGhost(player);
         }
     }
 
