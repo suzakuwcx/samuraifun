@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
@@ -95,6 +96,12 @@ public class GameTask implements Runnable {
         buddha_map.put(display, blood);
     }
 
+    private void player_sound(Player player) {
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 0.1f);
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, 1f, 0.5f);
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, 1f, 1f);
+    }
+
     public void showBossBar() {
         boolean has_red;
         boolean has_blue;
@@ -114,6 +121,8 @@ public class GameTask implements Runnable {
                 }
 
                 if (player.getLocation().toVector().setY(0).distance(display.getLocation().toVector().setY(0)) <= 5) {
+                    if (tick % 20 == 0)
+                        player_sound(player);
                     if (ScoreBoardBus.getPlayerTeam(player) == null) {
 
                     } else if (ScoreBoardBus.getPlayerTeam(player).getName().equals("red_team")) {
