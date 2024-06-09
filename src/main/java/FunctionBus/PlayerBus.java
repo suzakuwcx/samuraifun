@@ -156,8 +156,9 @@ public class PlayerBus {
 
     public static void toGhost(Player player) {
         PlayerBus.setPlayerInventoryList(player, new ReviveKey(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
-        PlayerBus.setPlayerInventoryList(player, new ItemStack(Material.AIR), 36, 37, 38, 39);
+        PlayerBus.setPlayerInventoryList(player, new ItemStack(Material.AIR), 36, 37, 38);
         PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
+        PlayerBus.setPlayerInventoryList(player, new ItemStack(Material.CARVED_PUMPKIN), 39);
 
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
