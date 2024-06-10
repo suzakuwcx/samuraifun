@@ -4,7 +4,7 @@ max_health: 7
 sword_cooldown: 239
 skill_cooldown: 239
 max_posture: 7
-game_time: 36000
+game_time: 1800
 respawn_point:
   ==: org.bukkit.Location
   world: world

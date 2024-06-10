@@ -12,7 +12,6 @@ import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Team;
 
@@ -81,7 +80,7 @@ public class GameTask implements Runnable {
     public static void start() {
         GameTask new_task = new GameTask();
         ScoreBoardBus.setObjDisplay("global", DisplaySlot.SIDEBAR, "占领情况");
-        new_task.task_id = Bukkit.getScheduler().runTaskTimer(ServerBus.getPlugin(), new_task, 0, 1).getTaskId();
+        new_task.task_id = Bukkit.getScheduler().runTaskTimer(ServerBus.getPlugin(), new_task, 0, 20).getTaskId();
         task = new_task;
 
         for (ItemDisplay display : Bukkit.getServer().getWorlds().get(0).getEntitiesByClass(ItemDisplay.class)) {
@@ -155,8 +154,7 @@ public class GameTask implements Runnable {
                 }
 
                 if (player.getLocation().toVector().setY(0).distance(display.getLocation().toVector().setY(0)) <= 5) {
-                    if (tick % 20 == 0)
-                        player_sound(player);
+                    player_sound(player);
                     if (ScoreBoardBus.getPlayerTeam(player) == null) {
 
                     } else if (ScoreBoardBus.getPlayerTeam(player).getName().equals("red_team")) {
@@ -184,8 +182,8 @@ public class GameTask implements Runnable {
             }
 
             for (Player player: Bukkit.getOnlinePlayers()) {
-                int minutes = GameTask.getLastTick() / 20 / 60;
-                int seconds = GameTask.getLastTick() / 20 % 60;
+                int minutes = GameTask.getLastTick() / 60;
+                int seconds = GameTask.getLastTick() % 60;
                 BossBar bar = PlayerUISchedule.getPlayerFirstBossbar(player);
                 bar.name(Component.text(String.format("%d:%d", minutes, seconds)));
                 PlayerUISchedule.refreshPlayerFirstBossbar(player);
