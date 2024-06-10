@@ -33,6 +33,7 @@ import Task.AttackTask.BattleFlagTask;
 import Task.AttackTask.SmokingDartsTask;
 import Task.GunTask.RecoilTask;
 import Task.GunTask.RifleTask;
+import Task.StateTask.NormalStateTask;
 
 public class PlayerInteractEventBus {
     public static boolean isTriggeredByDropItemEvent(PlayerInteractEvent event) {
@@ -263,6 +264,8 @@ public class PlayerInteractEventBus {
                     player.getInventory().setHeldItemSlot(0);
                     player.removePotionEffect(PotionEffectType.INVISIBILITY);
                     PlayerDataBus.addPlayerItemDisplay(player);
+                    player.removePotionEffect(PotionEffectType.SPEED);
+                    PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
                 } else {
                     player.sendMessage("无法在该佛像上复活");
                 }

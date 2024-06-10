@@ -169,6 +169,7 @@ public class PlayerBus {
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
             p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, PotionEffect.INFINITE_DURATION, 1, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 4, false, false, false));
         }, 1, player);
     }
 
