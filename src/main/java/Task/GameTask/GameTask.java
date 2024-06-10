@@ -1,6 +1,8 @@
 package Task.GameTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -12,12 +14,14 @@ import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Team;
 
 import Assert.Item.Buddha;
 import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
+import FunctionBus.EntityBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ScoreBoardBus;
 import FunctionBus.ServerBus;
@@ -89,6 +93,7 @@ public class GameTask implements Runnable {
                 continue;
 
             task.buddha_map.put(display, ConfigBus.getValue("buddha_blood", Integer.class) / 2);
+            EntityBus.setEntityNBT(display, "type", PersistentDataType.STRING, "white_team");
             display.setGlowing(true);
             display.setGlowColorOverride(org.bukkit.Color.WHITE);
         }
@@ -124,6 +129,41 @@ public class GameTask implements Runnable {
             bar.name(Component.text(""));
             PlayerUISchedule.refreshPlayerFirstBossbar(player);
         }
+    }
+
+    public static Location getReviveLocation(Player player) {
+        List<ItemDisplay> displays = new ArrayList<>();
+        String team = ScoreBoardBus.getPlayerTeam(player).getName();
+        int index = 0;
+        Location location;
+
+        for (ItemDisplay display : task.buddha_map.keySet()) {
+            if (!(EntityBus.hasEntityNBT(display, "type", PersistentDataType.STRING)))
+                continue;
+
+            if (!(EntityBus.getEntityNBT(display, "type", PersistentDataType.STRING)).equals(team))
+                continue;
+
+            displays.add(display);
+        }
+
+        if (displays.size() == 0)  {
+            for (ItemDisplay display : task.buddha_map.keySet()) {
+                if (!(EntityBus.hasEntityNBT(display, "type", PersistentDataType.STRING)))
+                    continue;
+    
+                if (!(EntityBus.getEntityNBT(display, "type", PersistentDataType.STRING)).equals("white_team"))
+                    continue;
+    
+                displays.add(display);
+            }
+        }
+
+        index = ServerBus.getRandom().nextInt(0, displays.size());
+        location = displays.get(index).getLocation();
+        ServerBus.getDirectionLocation(location, 1);
+
+        return location;
     }
 
     public static boolean isInGame() {
@@ -195,10 +235,13 @@ public class GameTask implements Runnable {
             }
 
             if (buddha_map.get(display) < ConfigBus.getValue("buddha_blood", Integer.class) / 3) {
+                EntityBus.setEntityNBT(display, "type", PersistentDataType.STRING, "red_team");
                 display.setGlowColorOverride(org.bukkit.Color.fromRGB(0xB22222));
             } else if (buddha_map.get(display) < 2 * ConfigBus.getValue("buddha_blood", Integer.class) / 3) {
+                EntityBus.setEntityNBT(display, "type", PersistentDataType.STRING, "white_team");
                 display.setGlowColorOverride(org.bukkit.Color.WHITE);
             } else {
+                EntityBus.setEntityNBT(display, "type", PersistentDataType.STRING, "blue_team");
                 display.setGlowColorOverride(org.bukkit.Color.AQUA);
             }
 

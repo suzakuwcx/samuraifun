@@ -162,9 +162,7 @@ public class PlayerBus {
         PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
         PlayerBus.setPlayerInventoryList(player, new ItemStack(Material.CARVED_PUMPKIN), 39);
 
-        ServerBus.playerHideServerEntity(player, PlayerDataBus.getPlayerHealthDisplay(player));
-        ServerBus.playerHideServerEntity(player, PlayerDataBus.getPlayerPostureDisplay(player));
-        ServerBus.playerHideServerEntity(player, PlayerDataBus.getPlayerRingDisplay(player));
+        PlayerDataBus.removePlayerItemDisplay(player);
 
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];

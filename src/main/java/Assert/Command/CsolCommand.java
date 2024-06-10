@@ -420,7 +420,7 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         int total_win;
         int total_play;
 
-        for (Player player : ServerBus.getNearbyEntities(bsender.getBlock().getLocation(), 2, 2, 2, EntityType.PLAYER, Player.class)) {
+        for (Player player : ServerBus.getNearbyEntities(bsender.getBlock().getLocation(), 7, 7, 7, EntityType.PLAYER, Player.class)) {
             total_kill = ScoreBoardBus.getPlayerScore(player.getName(), "total_kill");
             total_dead = ScoreBoardBus.getPlayerScore(player.getName(), "total_dead");
             total_win = ScoreBoardBus.getPlayerScore(player.getName(), "total_win");
@@ -434,6 +434,16 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
             player.sendMessage(String.format("胜场: %d", total_win));
             player.sendMessage(String.format("胜率: %f", (float) total_win / (float) total_play));
             player.sendMessage("==========================================");
+            return true;
+        }
+        return true;
+    }
+
+    private boolean onReviveCommand(BlockCommandSender sender, Command command, String label, String[] args) {
+        BlockCommandSender bsender = (BlockCommandSender) sender;
+
+        for (Player player : ServerBus.getNearbyEntities(bsender.getBlock().getLocation(), 7, 7, 7, EntityType.PLAYER, Player.class)) {
+            player.teleport(GameTask.getReviveLocation(player));
             return true;
         }
         return true;
@@ -472,6 +482,8 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
             switch (args[0]) {
                 case "statistic":
                     return onStatisticsCommand(commandblock, command, label, args);
+                case "revive":
+                    return onReviveCommand(commandblock, command, label, args);
                 default:
                     return false;
             }
