@@ -266,8 +266,24 @@ public class PlayerInteractEventBus {
                     PlayerDataBus.addPlayerItemDisplay(player);
                     player.removePotionEffect(PotionEffectType.SPEED);
                     PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
+                    return;
                 } else {
                     player.sendMessage("无法在该佛像上复活");
+                }
+            } else if (entity.getType() == EntityType.PLAYER) {
+                if (ScoreBoardBus.isPlayerSameTeam(player, (Player) entity)) {
+                    if (PlayerStateMachineSchedule.getPlayerState(((Player) entity)).state instanceof NormalStateTask) {
+                        PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)), 0, 3, 6);
+                        Role.refreshPlayerArmor(player, PlayerStateMachineSchedule.getPlayerRole(player));
+                        player.getInventory().setHeldItemSlot(0);
+                        player.removePotionEffect(PotionEffectType.INVISIBILITY);
+                        PlayerDataBus.addPlayerItemDisplay(player);
+                        player.removePotionEffect(PotionEffectType.SPEED);
+                        PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
+                        return;
+                    }
+                } else {
+                    player.sendMessage("无法在该玩家附近复活");
                 }
             }
         }
