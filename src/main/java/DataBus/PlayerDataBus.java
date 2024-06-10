@@ -80,13 +80,13 @@ public class PlayerDataBus {
     }
 
     public static void downPlayerSlash(Player player) {
-        int sem = player_slash_semaphore.getOrDefault(player, 0);
+        int sem = player_slash_semaphore.getOrDefault(player.getUniqueId(), 0);
         ++sem;
         player_slash_semaphore.put(player.getUniqueId(), sem);
     }
 
     public static boolean upPlayerSlash(Player player) {
-        int sem = player_slash_semaphore.getOrDefault(player, 0);
+        int sem = player_slash_semaphore.getOrDefault(player.getUniqueId(), 0);
         if (sem == 0)
             return false;
         
@@ -96,13 +96,13 @@ public class PlayerDataBus {
     }
 
     public static void downPlayerDropItem(Player player) {
-        int sem = player_drop_item_semaphore.getOrDefault(player, 0);
+        int sem = player_drop_item_semaphore.getOrDefault(player.getUniqueId(), 0);
         ++sem;
         player_drop_item_semaphore.put(player.getUniqueId(), sem);
     }
 
     public static boolean upPlayerDropItem(Player player) {
-        int sem = player_drop_item_semaphore.getOrDefault(player, 0);
+        int sem = player_drop_item_semaphore.getOrDefault(player.getUniqueId(), 0);
         if (sem == 0)
             return false;
         
