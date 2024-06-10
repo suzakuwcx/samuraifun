@@ -105,6 +105,24 @@ public class GameTask implements Runnable {
         init_scoreboard();
     }
 
+    public static void stop() {
+        Bukkit.getScheduler().cancelTask(task.task_id);
+        task = null;
+        Bukkit.broadcast(Component.text("游戏结束"));
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.setRespawnLocation(Bukkit.getWorlds().get(0).getSpawnLocation());
+            PlayerDataBus.removePlayerItemDisplay(player);
+            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            PlayerBus.resetPlayerGame(player);
+            player.setGameMode(GameMode.ADVENTURE);
+            PlayerDataBus.addPlayerItemDisplay(player);
+            BossBar bar = PlayerUISchedule.getPlayerFirstBossbar(player);
+            bar.name(Component.text(""));
+            PlayerUISchedule.refreshPlayerFirstBossbar(player);
+        }
+    }
+
     public static boolean isInGame() {
         return task != null;
     }
@@ -192,20 +210,7 @@ public class GameTask implements Runnable {
     }
     
     private void release() {
-        Bukkit.getScheduler().cancelTask(task_id);
-        GameTask.task = null;
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.setRespawnLocation(Bukkit.getWorlds().get(0).getSpawnLocation());
-            PlayerDataBus.removePlayerItemDisplay(player);
-            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-            PlayerBus.resetPlayerGame(player);
-            player.setGameMode(GameMode.ADVENTURE);
-            PlayerDataBus.addPlayerItemDisplay(player);
-            BossBar bar = PlayerUISchedule.getPlayerFirstBossbar(player);
-            bar.name(Component.text(""));
-            PlayerUISchedule.refreshPlayerFirstBossbar(player);
-        }
+        stop();
 
         ScoreBoardBus.setObjDisplay("kill", DisplaySlot.SIDEBAR, "击杀数");
     }

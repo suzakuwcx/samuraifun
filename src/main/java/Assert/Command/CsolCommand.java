@@ -399,13 +399,16 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
                     player.playerListName(Component.text(player.getName()).color(TextColor.color(0, 191, 255)));
                 }
             }
+        } else if (operation.equals("stop")) {
+            if (GameTask.isInGame())
+                GameTask.stop();
         }
         return true;
     }
 
     private List<String> onGameTabComplete(Player player, Command cmd, String commandLabel, String[] args){
         if (args.length == 2)
-            return Arrays.asList("start", "team");
+            return Arrays.asList("start", "team", "stop");
 
         return Arrays.asList("");
     }
