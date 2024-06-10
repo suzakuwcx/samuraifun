@@ -26,6 +26,7 @@ public class NormalStateTask extends BaseStateTask {
         this.player = player;
 
         player.setCooldown(Material.SHIELD, 500000);
+        player.getInventory().setHeldItemSlot(0);
         /* Allow player sprint */
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 0, false, false, false));
         player.setFoodLevel(20);
