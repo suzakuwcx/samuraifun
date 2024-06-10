@@ -285,22 +285,6 @@ public class GameTask implements Runnable {
         ScoreBoardBus.setPlayerScore("blue_team", "global", blue_count);
     }
 
-    private static void updateStatusBar() {
-        for (Player player: Bukkit.getOnlinePlayers()) {
-            Team team = ScoreBoardBus.getPlayerTeam(player);
-            if (team == null)
-                continue;
-
-            for (Player p : player.getWorld().getPlayers()) {
-                if (ScoreBoardBus.getPlayerTeam(p).getName().equals(team.getName())) {
-                    player.hideEntity(ServerBus.getPlugin(), PlayerDataBus.getPlayerRingDisplay(p));
-                    player.hideEntity(ServerBus.getPlugin(), PlayerDataBus.getPlayerHealthDisplay(p));
-                    player.hideEntity(ServerBus.getPlugin(), PlayerDataBus.getPlayerPostureDisplay(p));
-                }
-            }
-        }
-    }
-
     @Override
     public void run() {
         if (tick == ConfigBus.getValue("game_time", Integer.class)) {
@@ -309,7 +293,6 @@ public class GameTask implements Runnable {
         }
 
         showBossBar();
-        updateStatusBar();
         victory_detection(false);
         ++tick;
     }

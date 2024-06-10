@@ -17,9 +17,9 @@ import Assert.Entity.RingEntity;
 import Assert.Entity.SpawnEntity;
 
 public class PlayerDataBus {
-    private static Map<Player, List<TextDisplay>> item_display_mapper = new HashMap<>();
-    private static Map<Player, Integer> player_slash_semaphore = new HashMap<>();
-    private static Map<Player, Integer> player_drop_item_semaphore = new HashMap<>();
+    private static Map<UUID, List<TextDisplay>> item_display_mapper = new HashMap<>();
+    private static Map<UUID, Integer> player_slash_semaphore = new HashMap<>();
+    private static Map<UUID, Integer> player_drop_item_semaphore = new HashMap<>();
     private static Map<UUID, Player> player_dead_by_plugin_mapper = new HashMap<>();
     private static Set<UUID> player_first_join_set = new HashSet<>();
 
@@ -31,7 +31,7 @@ public class PlayerDataBus {
         blood.spwan();
         posture.spwan();
 
-        item_display_mapper.put(player, Arrays.asList(display.getEntity(), blood.getEntity(), posture.getEntity()));
+        item_display_mapper.put(player.getUniqueId(), Arrays.asList(display.getEntity(), blood.getEntity(), posture.getEntity()));
 
         player.addPassenger(display.getEntity());
         player.addPassenger(blood.getEntity());
@@ -39,7 +39,7 @@ public class PlayerDataBus {
     }
 
     public static List<TextDisplay> getPlayerItemDisplay(Player player) {
-        return item_display_mapper.get(player);
+        return item_display_mapper.get(player.getUniqueId());
     }
 
     public static TextDisplay getPlayerRingDisplay(Player player) {
@@ -75,12 +75,14 @@ public class PlayerDataBus {
             player.removePassenger(display);
             display.remove();
         }
+
+        item_display_mapper.put(player.getUniqueId(), null);
     }
 
     public static void downPlayerSlash(Player player) {
         int sem = player_slash_semaphore.getOrDefault(player, 0);
         ++sem;
-        player_slash_semaphore.put(player, sem);
+        player_slash_semaphore.put(player.getUniqueId(), sem);
     }
 
     public static boolean upPlayerSlash(Player player) {
@@ -89,14 +91,14 @@ public class PlayerDataBus {
             return false;
         
         --sem;
-        player_slash_semaphore.put(player, sem);
+        player_slash_semaphore.put(player.getUniqueId(), sem);
         return true;
     }
 
     public static void downPlayerDropItem(Player player) {
         int sem = player_drop_item_semaphore.getOrDefault(player, 0);
         ++sem;
-        player_drop_item_semaphore.put(player, sem);
+        player_drop_item_semaphore.put(player.getUniqueId(), sem);
     }
 
     public static boolean upPlayerDropItem(Player player) {
@@ -105,7 +107,7 @@ public class PlayerDataBus {
             return false;
         
         --sem;
-        player_drop_item_semaphore.put(player, sem);
+        player_drop_item_semaphore.put(player.getUniqueId(), sem);
         return true;
     }
 

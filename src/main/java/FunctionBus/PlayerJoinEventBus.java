@@ -8,7 +8,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import Assert.Item.Sword;
 import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
@@ -18,7 +17,6 @@ import Task.GameTask.GameTask;
 public class PlayerJoinEventBus {
     public static void onBusTrigger(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerDataBus.addPlayerItemDisplay(player);
         PlayerStateMachineSchedule.init(event.getPlayer());
         PlayerUISchedule.init(player);
 
@@ -42,6 +40,7 @@ public class PlayerJoinEventBus {
                 player.setGameMode(GameMode.SPECTATOR);
             } else {
                 player.setGameMode(GameMode.ADVENTURE);
+                PlayerDataBus.addPlayerItemDisplay(player);
                 player.setRespawnLocation(Bukkit.getWorlds().get(0).getSpawnLocation());
             }
         }

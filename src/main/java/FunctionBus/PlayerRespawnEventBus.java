@@ -23,11 +23,14 @@ public class PlayerRespawnEventBus {
             PlayerBus.toGhost(player);
         } else {
             PlayerBus.resetPlayerGame(player);
+            DelayTask.execute((args) -> {
+                PlayerDataBus.addPlayerItemDisplay((Player) args[0]);
+            }, 1, player);
+
         }
         
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
-            PlayerDataBus.addPlayerItemDisplay(p);
             p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
             p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 3, false, false));
