@@ -114,8 +114,11 @@ public class ThrushAttackStateTask extends BaseStateTask {
             PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(24)), 0, 3, 6);
             direction = player.getEyeLocation().getDirection().setY(0).normalize();
             RayTraceResult result = ServerBus.rayTraceEntities(player.getEyeLocation(), player.getEyeLocation().getDirection(), 6, 0.6, EntityType.PLAYER, player.getUniqueId());
-            if (result != null)
+            if (result != null) {
                 target = (Player) result.getHitEntity();
+                if (!PlayerBus.isPlayerCanAttackTarget(player, target))
+                    target = null;
+            }
         }
         
         if (target == null)

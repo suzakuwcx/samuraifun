@@ -58,13 +58,7 @@ public class StateEventBus {
             if (e.equals(player))
                 continue;
 
-            if (PlayerStateMachineSchedule.getPlayerState(e).is_invincible_frame)
-                continue;
-
-            if (e.hasPotionEffect(PotionEffectType.INVISIBILITY))
-                continue;
-
-            if (ScoreBoardBus.isPlayerSameTeam(player, e))
+            if (!PlayerBus.isPlayerCanAttackTarget(player, e))
                 continue;
 
             if (!PlayerBus.isEntityInFrontOfPlayer(player, e, ConfigBus.getValue("basic_attack_range", Double.class), scope))

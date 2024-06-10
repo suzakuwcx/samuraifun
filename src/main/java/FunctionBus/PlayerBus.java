@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -173,5 +174,21 @@ public class PlayerBus {
 
     public static boolean isPlayerGhost(Player player) {
         return player.hasPotionEffect(PotionEffectType.INVISIBILITY);
+    }
+
+    public static boolean isPlayerCanAttackTarget(Player player, Player target) {
+        if (ScoreBoardBus.isPlayerSameTeam(player, target))
+            return false;
+
+        if (isPlayerGhost(player) || isPlayerGhost(target))
+            return false;
+
+        if (target.getGameMode() != GameMode.ADVENTURE)
+            return false;
+
+        if (PlayerStateMachineSchedule.getPlayerState(target).is_invincible_frame)
+            return false;
+
+        return true;
     }
 }

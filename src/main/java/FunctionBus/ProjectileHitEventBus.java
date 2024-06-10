@@ -70,6 +70,10 @@ public class ProjectileHitEventBus {
     public static void onArrowHittingPlayer(ProjectileHitEvent event) {
         event.setCancelled(true);
         Player player = (Player) event.getHitEntity();
+
+        if (!PlayerBus.isPlayerCanAttackTarget(((Player)((Arrow) event.getEntity()).getShooter()).getPlayer(), player))
+            return;
+
         PlayerStateMachineSchedule.resetSwordCooldown(player);
 
         if (DeflectTask.isPlayerDeflect(player) || DeflectTask.isPlayerFakeDeflect(player) || DeflectTask.isPlayerDefense(player) || player.isBlocking()) {
