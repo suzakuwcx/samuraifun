@@ -235,19 +235,25 @@ public class PlayerInteractEventBus {
     public static void onPlayerUsingReviveKey(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Team team = ScoreBoardBus.getPlayerTeam(player);
-        if (team == null)
+        boolean has_buddha = false;
+        if (team == null) {
+            player.sendMessage("你目前不属于任何一个队伍");
             return;
+        }
 
         for (Entity entity : player.getNearbyEntities(5, 3, 5)) {
             if (entity.getType() == EntityType.ITEM_DISPLAY) {
                 ItemDisplay display = (ItemDisplay) entity;
 
-                if (!Buddha._instanceof(((ItemDisplay) entity).getItemStack()))
+                if (!Buddha._instanceof(((ItemDisplay) entity).getItemStack())) {
                     continue;
+                }
 
                 Color color = display.getGlowColorOverride();
                 if (color == null)
-                    return;
+                    continue;
+
+                has_buddha = true;
                     
                 if ((color.equals(Color.fromRGB(0xB22222)) && team.getName().equals("red_team")) ||
                 (color.equals(Color.AQUA) && team.getName().equals("blue_team")))
@@ -256,11 +262,15 @@ public class PlayerInteractEventBus {
                     Role.refreshPlayerArmor(player, PlayerStateMachineSchedule.getPlayerRole(player));
                     player.getInventory().setHeldItemSlot(0);
                     player.removePotionEffect(PotionEffectType.INVISIBILITY);
-                    ServerBus.playerShowServerEntity(player, PlayerDataBus.getPlayerRingDisplay(player));
-                    ServerBus.playerShowServerEntity(player, PlayerDataBus.getPlayerHealthDisplay(player));
-                    ServerBus.playerShowServerEntity(player, PlayerDataBus.getPlayerPostureDisplay(player));
+                    PlayerDataBus.addPlayerItemDisplay(player);
+                } else {
+                    player.sendMessage("无法在该佛像上复活");
                 }
             }
+        }
+
+        if (has_buddha == false) {
+            player.sendMessage("附近没有可用的佛像");
         }
     }
 }
