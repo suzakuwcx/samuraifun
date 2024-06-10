@@ -138,7 +138,7 @@ public class GameTask implements Runnable {
             has_red = false;
             has_blue = false;
             for (Player player :ServerBus.getNearbyEntities(display.getLocation(), 8, 7, 8, EntityType.PLAYER, Player.class)) {
-                if (player.hasPotionEffect(PotionEffectType.INVISIBILITY))
+                if (PlayerBus.isPlayerGhost(player))
                     continue;
                 
                 if (player.getGameMode() != GameMode.ADVENTURE)

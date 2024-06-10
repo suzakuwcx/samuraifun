@@ -170,4 +170,8 @@ public class PlayerBus {
             p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, PotionEffect.INFINITE_DURATION, 1, false, false));
         }, 1, player);
     }
+
+    public static boolean isPlayerGhost(Player player) {
+        return player.hasPotionEffect(PotionEffectType.INVISIBILITY);
+    }
 }
