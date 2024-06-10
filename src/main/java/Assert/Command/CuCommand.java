@@ -34,9 +34,11 @@ public class CuCommand implements CommandExecutor, TabCompleter {
         Role role = Role.valueOf(args[0]);
         boolean refreshArmor = Boolean.valueOf(args[1]);
 
-        for (Player player : ServerBus.getNearbyEntities(bsender.getBlock().getLocation(), 2, 2, 2, EntityType.PLAYER, Player.class)) {
+        for (Player player : ServerBus.getNearbyEntities(bsender.getBlock().getLocation(), 7, 7, 7, EntityType.PLAYER, Player.class)) {
             state = PlayerStateMachineSchedule.getPlayerState(player);
             state.role = role;
+            player.sendMessage(String.format("你已切换为: <%s>", Role.getRoleAlias(role)));
+
             if (refreshArmor)
                 Role.refreshPlayerArmor(player, role);
         }

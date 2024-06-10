@@ -67,4 +67,20 @@ public enum Role {
                 break;
         }
     }
+
+    public static String getRoleAlias(Role role) {
+        switch (role) {
+            case SAMURAI:
+                return "武士";
+            case RONIN:
+                return "浪人";
+            case SHINBI:
+                return "忍者";
+            case SOHEI:
+                return "僧兵";
+            case COMMON:
+            default:
+                return "学徒";
+        }
+    }
 }
