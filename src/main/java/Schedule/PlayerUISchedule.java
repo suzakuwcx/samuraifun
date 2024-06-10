@@ -162,8 +162,6 @@ public class PlayerUISchedule implements Runnable {
 
     public static void refreshPlayerFirstBossbar(Player player) {
         BossBar bar = playerbar.get(player.getUniqueId());
-        bar.removeViewer(player);
-        hinibar.removeViewer(player);
         player.showBossBar(bar);
         player.showBossBar(hinibar);
     }

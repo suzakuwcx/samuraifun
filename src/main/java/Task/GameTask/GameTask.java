@@ -106,6 +106,9 @@ public class GameTask implements Runnable {
     }
 
     public static void stop() {
+        for (ItemDisplay display : task.buddha_map.keySet())
+            display.setGlowing(false);
+
         Bukkit.getScheduler().cancelTask(task.task_id);
         task = null;
         Bukkit.broadcast(Component.text("游戏结束"));
@@ -154,7 +157,7 @@ public class GameTask implements Runnable {
         for (ItemDisplay display : buddha_map.keySet()) {
             has_red = false;
             has_blue = false;
-            for (Player player :ServerBus.getNearbyEntities(display.getLocation(), 8, 7, 8, EntityType.PLAYER, Player.class)) {
+            for (Player player :ServerBus.getNearbyEntities(display.getLocation(), 15, 7, 15, EntityType.PLAYER, Player.class)) {
                 if (PlayerBus.isPlayerGhost(player))
                     continue;
                 
