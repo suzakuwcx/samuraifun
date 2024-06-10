@@ -3,6 +3,7 @@ package Assert.Config;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Team;
 
 import Assert.Item.BattleFlag;
 import Assert.Item.Boot;
@@ -15,6 +16,7 @@ import Assert.Item.SmokingDarts;
 import Assert.Item.Sword;
 import Assert.Item.Gun.Matchlock;
 import FunctionBus.PlayerBus;
+import FunctionBus.ScoreBoardBus;
 import Schedule.PlayerStateMachineSchedule;
 import Task.StateTask.NormalStateTask;
 
@@ -40,10 +42,19 @@ public enum Role {
     }
 
     public static void refreshPlayerArmor(Player player, Role role) {
-        PlayerBus.setPlayerInventoryList(player, new Helmet(role), 39);
-        PlayerBus.setPlayerInventoryList(player, ChestPlate.getItem(role), 38);
-        PlayerBus.setPlayerInventoryList(player, Legging.getItem(role), 37);
-        PlayerBus.setPlayerInventoryList(player, Boot.getItem(role), 36);
+        Team team = ScoreBoardBus.getPlayerTeam(player);
+        if (team == null || team.getName().equals("red_team")) {
+            PlayerBus.setPlayerInventoryList(player, new Helmet(role, false), 39);
+            PlayerBus.setPlayerInventoryList(player, ChestPlate.getItem(role, false), 38);
+            PlayerBus.setPlayerInventoryList(player, Legging.getItem(role, false), 37);
+            PlayerBus.setPlayerInventoryList(player, Boot.getItem(role, false), 36);
+        } else {
+            PlayerBus.setPlayerInventoryList(player, new Helmet(role, true), 39);
+            PlayerBus.setPlayerInventoryList(player, ChestPlate.getItem(role, true), 38);
+            PlayerBus.setPlayerInventoryList(player, Legging.getItem(role, true), 37);
+            PlayerBus.setPlayerInventoryList(player, Boot.getItem(role, true), 36);
+        }
+        
         PlayerBus.setPlayerInventoryList(player, new Bow(), 2, 5, 8);
         PlayerBus.setPlayerInventoryList(player, new Sword(role.getSwordModelData(1)), 0, 3, 6);
         PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));

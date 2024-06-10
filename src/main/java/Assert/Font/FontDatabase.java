@@ -7,6 +7,9 @@ public class FontDatabase {
     public static final char HEART_EMPTY = 0xe901;
     public static final char HEART_BAN = 0xe902;
 
+    public static final char HEART_FULL_BLUE = 0xea40;
+    public static final char HEART_EMPTY_BLUE = 0xea41;
+
     public static final char POSTURE_FULL = 0xe903;
     public static final char POSTURE_EMPTY = 0xe904;
     public static final char POSTURE_BAN = 0xe905;
@@ -31,6 +34,8 @@ public class FontDatabase {
 
     public static final char HEALTH_RING_BASE = 0xea14;
     public static final char POSTURE_RING_BASE = 0xea1c;
+
+    public static final char HEALTH_RING_BASE_BLUE = 0xea38;
 
     public static final char STATUS_RING_EMPTY_SANURAI = 0xea24;
     public static final char STATUS_RING_EMPTY_RONIN = 0xea25;

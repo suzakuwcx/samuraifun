@@ -8,11 +8,13 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.scoreboard.Team;
 
 import Assert.Config.State;
 import Assert.Font.FontDatabase;
 import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
+import FunctionBus.ScoreBoardBus;
 import Task.AttackTask.RingShowTask;
 import Task.AttackTask.SubTitleShowTask;
 import net.kyori.adventure.bossbar.BossBar;
@@ -42,6 +44,7 @@ public class PlayerUISchedule implements Runnable {
     }
 
     private void updateActionBar(Player player, State state) {
+        Team team = ScoreBoardBus.getPlayerTeam(player);
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < ConfigBus.getValue("max_posture", Integer.class) - state.posture; ++i)
             builder.append(FontDatabase.POSTURE_EMPTY);
@@ -71,11 +74,21 @@ public class PlayerUISchedule implements Runnable {
 
         builder.append(FontDatabase.getCooldownFont(FontDatabase.BOW_COOLDOWN_BASE, state.bow_cooldown / 20));
 
-        for (int i = 0; i < state.health; ++i)
-            builder.append(FontDatabase.HEART_FULL);
+        for (int i = 0; i < state.health; ++i) {
+            if (team == null || team.getName().equals("red_team")) {
+                builder.append(FontDatabase.HEART_FULL);
+            } else {
+                builder.append(FontDatabase.HEART_FULL_BLUE);
+            }
+        }
 
-        for (int i = 0; i < ConfigBus.getValue("max_health", Integer.class) - state.health; ++i)
-            builder.append(FontDatabase.HEART_EMPTY);
+        for (int i = 0; i < ConfigBus.getValue("max_health", Integer.class) - state.health; ++i) {
+            if (team == null || team.getName().equals("red_team")) {
+                builder.append(FontDatabase.HEART_EMPTY);
+            } else {
+                builder.append(FontDatabase.HEART_EMPTY_BLUE);
+            }
+        }
 
         player.sendActionBar(Component.text(builder.toString()));
     }
@@ -122,10 +135,15 @@ public class PlayerUISchedule implements Runnable {
 
     private void updateRing(Player player, State state) {
         TextDisplay display;
+        Team team = ScoreBoardBus.getPlayerTeam(player);
 
         display = PlayerDataBus.getPlayerHealthDisplay(player);
-        if (display != null)
-            display.text(Component.text(FontDatabase.getRingFont(FontDatabase.HEALTH_RING_BASE, state.health)));
+        if (display != null) {
+            if (team == null || team.getName().equals("red_team"))
+                display.text(Component.text(FontDatabase.getRingFont(FontDatabase.HEALTH_RING_BASE, state.health)));
+            else
+                display.text(Component.text(FontDatabase.getRingFont(FontDatabase.HEALTH_RING_BASE_BLUE, state.health)));
+        }
         
         display = PlayerDataBus.getPlayerPostureDisplay(player);
         if (display != null)

@@ -23,10 +23,14 @@ public class ItemDatabase {
         set.add(new Bow());
         
         for (Role role : Role.values()) {
-            set.add(new Helmet(role));
-            set.add(ChestPlate.getItem(role));
-            set.add(Legging.getItem(role));
-            set.add(Boot.getItem(role));
+            set.add(new Helmet(role, false));
+            set.add(ChestPlate.getItem(role, false));
+            set.add(Legging.getItem(role, false));
+            set.add(Boot.getItem(role, false));
+            set.add(new Helmet(role, true));
+            set.add(ChestPlate.getItem(role, true));
+            set.add(Legging.getItem(role, true));
+            set.add(Boot.getItem(role, true));
         }
     }
 

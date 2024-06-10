@@ -7,12 +7,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Team;
+import org.checkerframework.checker.units.qual.t;
 
 import DataBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import Schedule.PlayerStateMachineSchedule;
 import Schedule.PlayerUISchedule;
 import Task.GameTask.GameTask;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 
 public class PlayerJoinEventBus {
     public static void onBusTrigger(PlayerJoinEvent event) {
@@ -31,6 +35,15 @@ public class PlayerJoinEventBus {
         player.setWalkSpeed(0.2f);
         player.setShieldBlockingDelay(ConfigBus.getValue("deflect_tick", Integer.class));
         player.getInventory().setHeldItemSlot(0);
+
+        /* Init name */
+        Team team = ScoreBoardBus.getPlayerTeam(player);
+        if (team != null) {
+            if (team.getName().equals("red_team"))
+                player.playerListName(Component.text(player.getName()).color(TextColor.color(255, 69, 0)));
+            else if (team.getName().equals("blue_team"))
+                player.playerListName(Component.text(player.getName()).color(TextColor.color(0, 191, 255)));
+        }
 
         /* Init gamemode */
         if (PlayerDataBus.isPlayerFirstJoin(player)) {

@@ -161,9 +161,8 @@ public class GameTask implements Runnable {
 
         index = ServerBus.getRandom().nextInt(0, displays.size());
         location = displays.get(index).getLocation();
-        ServerBus.getDirectionLocation(location, 1);
 
-        return location;
+        return ServerBus.getDirectionLocation(location, 2);
     }
 
     public static boolean isInGame() {

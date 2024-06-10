@@ -41,6 +41,8 @@ public class CuCommand implements CommandExecutor, TabCompleter {
 
             if (refreshArmor)
                 Role.refreshPlayerArmor(player, role);
+
+            return true;
         }
 
         return false;
