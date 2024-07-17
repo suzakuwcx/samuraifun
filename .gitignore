@@ -1,10 +1,24 @@
-# Ignore Gradle project-specific cache directory
-.gradle
+#
+# Ignore dot-files
+#
+.*
 
-# Ignore Gradle build output directory
+#
+# We don't want to ignore the following even if they are dot-files
+#
+.gitignore
+.gitattributes
+.vscode
+
+#
+# Ignore gradle build output directory
+#
 build
 bin
 
+#
+# Ignore unmodified files in server
+#
 server/*
 !server/*.jar
 
