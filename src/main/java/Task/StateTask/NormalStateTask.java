@@ -5,6 +5,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -55,6 +56,12 @@ public class NormalStateTask extends BaseStateTask {
             PlayerBus.setPlayerInventoryList(p, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
         }, 4, event.getPlayer());
         PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new BattleStateTask(event.getPlayer()));
+    }
+
+
+    @Override
+    public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
+        event.setCancelled(false);
     }
 
     @Override

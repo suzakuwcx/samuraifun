@@ -73,20 +73,6 @@ public class BattleStateTask extends BaseStateTask {
     }
 
     @Override
-    public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
-        event.setCancelled(false);
-        if (event.getNewSlot() == 0 || event.getNewSlot() == 3 || event.getNewSlot() == 6) {
-            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_IRON, 1f, 1f);
-        } else if (event.getNewSlot() == 1 || event.getNewSlot() == 4 || event.getNewSlot() == 7) {
-            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_GOLD, 1f, 1f);
-        } else if (event.getNewSlot() == 2 || event.getNewSlot() == 5 || event.getNewSlot() == 8) {
-            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 1f);            
-            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_CROSSBOW_LOADING_START, 1f, 1f);
-            ServerBus.playServerSound(event.getPlayer().getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1f, 1f);
-        }
-    }
-
-    @Override
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         State state = PlayerStateMachineSchedule.getPlayerState(player);
         if (state.sword_cooldown != 0)
