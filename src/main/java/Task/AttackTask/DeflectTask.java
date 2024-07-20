@@ -2,6 +2,7 @@ package Task.AttackTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,7 +13,7 @@ import FunctionBus.ServerBus;
 import Schedule.PlayerUISchedule;
 
 public class DeflectTask implements Runnable{
-    private static Map<Player, DeflectTask> task_mapper;
+    private static Map<UUID, DeflectTask> task_mapper;
     private static final int DEFLECT_TICK = ConfigBus.getValue("deflect_tick", Integer.class);
 
     private Player player;
@@ -24,10 +25,10 @@ public class DeflectTask implements Runnable{
     }
     
     public static boolean isPlayerDefense(Player player) {
-        if (!task_mapper.containsKey(player))
+        if (!task_mapper.containsKey(player.getUniqueId()))
             return false;
 
-        DeflectTask task = task_mapper.get(player);
+        DeflectTask task = task_mapper.get(player.getUniqueId());
         if (task.failure > 3)
             return false;
 
@@ -35,10 +36,10 @@ public class DeflectTask implements Runnable{
     }
 
     public static boolean isPlayerDeflect(Player player) {
-        if (!task_mapper.containsKey(player))
+        if (!task_mapper.containsKey(player.getUniqueId()))
             return false;
 
-        DeflectTask task = task_mapper.get(player);
+        DeflectTask task = task_mapper.get(player.getUniqueId());
         if (task.failure >= 1)
             return false;
 
@@ -47,10 +48,10 @@ public class DeflectTask implements Runnable{
 
 
     public static boolean isPlayerFakeDeflect(Player player) {
-        if (!task_mapper.containsKey(player))
+        if (!task_mapper.containsKey(player.getUniqueId()))
             return false;
 
-        DeflectTask task = task_mapper.get(player);
+        DeflectTask task = task_mapper.get(player.getUniqueId());
         if (task.failure > 3 || task.failure < 1)
             return false;
 
@@ -60,15 +61,15 @@ public class DeflectTask implements Runnable{
     public static void execute(Player player) {
         DeflectTask task = null;
 
-        if (task_mapper.containsKey(player)) {
-            task = task_mapper.get(player);
+        if (task_mapper.containsKey(player.getUniqueId())) {
+            task = task_mapper.get(player.getUniqueId());
             ++task.failure;
             task.tick = 0;
             return;
         }
 
         task = new DeflectTask();
-        task_mapper.put(player, task);
+        task_mapper.put(player.getUniqueId(), task);
         task.player = player;
 
         PlayerUISchedule.setPlayerSideRing(player, FontDatabase.STATUS_RING_CAN_DEFLECT, DEFLECT_TICK);
@@ -79,7 +80,7 @@ public class DeflectTask implements Runnable{
     @Override
     public void run() {
         if (tick == 2 * DEFLECT_TICK) {
-            task_mapper.remove(player);
+            task_mapper.remove(player.getUniqueId());
             return;
         }
 

@@ -17,9 +17,9 @@ import Assert.Entity.RingEntity;
 import Assert.Entity.SpawnEntity;
 
 public class PlayerDataBus {
-    private static Map<Player, List<TextDisplay>> item_display_mapper = new HashMap<>();
-    private static Map<Player, Integer> player_slash_semaphore = new HashMap<>();
-    private static Map<Player, Integer> player_drop_item_semaphore = new HashMap<>();
+    private static Map<UUID, List<TextDisplay>> item_display_mapper = new HashMap<>();
+    private static Map<UUID, Integer> player_slash_semaphore = new HashMap<>();
+    private static Map<UUID, Integer> player_drop_item_semaphore = new HashMap<>();
     private static Map<UUID, Player> player_dead_by_plugin_mapper = new HashMap<>();
 
 
@@ -31,10 +31,10 @@ public class PlayerDataBus {
 
 
     public static List<TextDisplay> getPlayerItemDisplay(Player player) {
-        List<TextDisplay> displays = item_display_mapper.get(player);
+        List<TextDisplay> displays = item_display_mapper.get(player.getUniqueId());
         if (displays == null) {
             displays = Arrays.asList(null, null, null);
-            item_display_mapper.put(player, displays);
+            item_display_mapper.put(player.getUniqueId(), displays);
         }
 
         return displays;
@@ -116,34 +116,34 @@ public class PlayerDataBus {
 
 
     public static void downPlayerSlash(Player player) {
-        int sem = player_slash_semaphore.getOrDefault(player, 0);
+        int sem = player_slash_semaphore.getOrDefault(player.getUniqueId(), 0);
         ++sem;
-        player_slash_semaphore.put(player, sem);
+        player_slash_semaphore.put(player.getUniqueId(), sem);
     }
 
     public static boolean upPlayerSlash(Player player) {
-        int sem = player_slash_semaphore.getOrDefault(player, 0);
+        int sem = player_slash_semaphore.getOrDefault(player.getUniqueId(), 0);
         if (sem == 0)
             return false;
         
         --sem;
-        player_slash_semaphore.put(player, sem);
+        player_slash_semaphore.put(player.getUniqueId(), sem);
         return true;
     }
 
     public static void downPlayerDropItem(Player player) {
-        int sem = player_drop_item_semaphore.getOrDefault(player, 0);
+        int sem = player_drop_item_semaphore.getOrDefault(player.getUniqueId(), 0);
         ++sem;
-        player_drop_item_semaphore.put(player, sem);
+        player_drop_item_semaphore.put(player.getUniqueId(), sem);
     }
 
     public static boolean upPlayerDropItem(Player player) {
-        int sem = player_drop_item_semaphore.getOrDefault(player, 0);
+        int sem = player_drop_item_semaphore.getOrDefault(player.getUniqueId(), 0);
         if (sem == 0)
             return false;
         
         --sem;
-        player_drop_item_semaphore.put(player, sem);
+        player_drop_item_semaphore.put(player.getUniqueId(), sem);
         return true;
     }
 

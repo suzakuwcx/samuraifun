@@ -1,5 +1,6 @@
 package Assert.Command;
 
+import java.util.UUID;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Handler;
@@ -9,21 +10,21 @@ import org.bukkit.entity.Player;
 
 public class PlayerMessageLogHandler extends Handler{
     private Player player;
-    private static Map<Player, PlayerMessageLogHandler> map = new HashMap<>();
+    private static Map<UUID, PlayerMessageLogHandler> map = new HashMap<>();
 
     private PlayerMessageLogHandler(Player player) {
         this.player = player;
     }
 
     public static boolean hasHandler(Player player) {
-        return map.containsKey(player);
+        return map.containsKey(player.getUniqueId());
     }
 
     public static PlayerMessageLogHandler getHandler(Player player) {
-        PlayerMessageLogHandler handler = map.get(player);
+        PlayerMessageLogHandler handler = map.get(player.getUniqueId());
         if (handler == null) {
             handler = new PlayerMessageLogHandler(player);
-            map.put(player, handler);
+            map.put(player.getUniqueId(), handler);
         }
         return handler;
     }

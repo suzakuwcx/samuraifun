@@ -2,6 +2,7 @@ package FunctionBus;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 import org.bukkit.Bukkit;
@@ -71,13 +72,13 @@ public class PlayerBus {
         return true;
     }
 
-    private static Map<Player, ItemStack> player_head = new HashMap<>(); // prevent duplicate socket request to mojang
+    private static Map<UUID, ItemStack> player_head = new HashMap<>(); // prevent duplicate socket request to mojang
 
     public static ItemStack getPlayerHeader(Player player) {
         if (player == null)
             return null;
 
-        ItemStack item = player_head.get(player);
+        ItemStack item = player_head.get(player.getUniqueId());
         if (item != null)
             return item;
 
@@ -87,7 +88,7 @@ public class PlayerBus {
         skull.setPlayerProfile(player.getPlayerProfile());
         item.setItemMeta(skull);
 
-        player_head.put(player, item);
+        player_head.put(player.getUniqueId(), item);
         return item;
     }
 
