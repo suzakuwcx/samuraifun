@@ -4,7 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import Assert.Command.CsolCommand;
 import Assert.Command.CuCommand;
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 import PacketBus.PacketBus;
 
 public class csol extends JavaPlugin {
@@ -16,7 +16,7 @@ public class csol extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new EventBus(), this);
         PacketBus.onEnable(this);
-        ConfigBus.onEnable(getConfig());
+        ConfigBus.onEnable(this);
         Objects.requireNonNull(getCommand("csol")).setExecutor(new CsolCommand());
         Objects.requireNonNull(getCommand("cu")).setExecutor(new CuCommand());
 

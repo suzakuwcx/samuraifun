@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import Assert.Config.State;
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 
 public class PlayerPostureRecoverSchedule implements Runnable {
 

@@ -11,7 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;

@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import Assert.Font.FontDatabase;
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerUISchedule;
 

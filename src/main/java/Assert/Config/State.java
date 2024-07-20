@@ -2,7 +2,7 @@ package Assert.Config;
 
 import org.bukkit.entity.Player;
 
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 import Task.StateTask.BaseStateTask;
 import Task.StateTask.NormalStateTask;
 

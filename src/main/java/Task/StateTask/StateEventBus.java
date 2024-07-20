@@ -16,7 +16,7 @@ import org.bukkit.util.Vector;
 import Assert.Config.State;
 import Assert.Font.FontDatabase;
 import Assert.Item.Sword;
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
 import FunctionBus.ScoreBoardBus;

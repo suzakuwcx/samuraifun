@@ -4,7 +4,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import Task.SwipeTask.KiriotoshiTask;
 

@@ -8,7 +8,7 @@ import org.bukkit.entity.TextDisplay;
 
 import Assert.Config.State;
 import Assert.Font.FontDatabase;
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 import DataBus.PlayerDataBus;
 import Task.AttackTask.RingShowTask;
 import Task.AttackTask.SubTitleShowTask;

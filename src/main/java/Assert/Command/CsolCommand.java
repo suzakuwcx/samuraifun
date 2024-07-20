@@ -38,7 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import Assert.Item.ItemDatabase;
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 import FunctionBus.ItemBus;
 import FunctionBus.ServerBus;
 import Task.DelayTask;

@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import Assert.Config.Role;
 import Assert.Config.State;
 import Assert.Item.Sword;
-import DataBus.ConfigBus;
+import ConfigBus.ConfigBus;
 import FunctionBus.PlayerBus;
 import Task.StateTask.BaseStateTask;
 import Task.StateTask.NormalStateTask;
