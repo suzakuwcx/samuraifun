@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -16,6 +17,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import Assert.Config.State;
+import Assert.Item.Sword;
+import ConfigBus.ConfigBus;
+import DataBus.PlayerDataBus;
+import Schedule.PlayerStateMachineSchedule;
+import Task.DelayTask;
+import Task.StateTask.NormalStateTask;
 import net.kyori.adventure.text.Component;
 
 public class PlayerBus {
@@ -157,5 +165,34 @@ public class PlayerBus {
         player.setCooldown(Material.SHIELD, tick);
         if (player.getActiveItem().getType() == Material.SHIELD)
             player.completeUsingActiveItem();
+    }
+
+    public static void resetPlayerState(Player player) {
+        State state = PlayerStateMachineSchedule.getPlayerState(player);
+        state.posture = ConfigBus.getValue("max_posture", Integer.class);
+        state.health = ConfigBus.getValue("max_health", Integer.class);
+        state.state = new NormalStateTask(player);
+
+        player.setShieldBlockingDelay(ConfigBus.getValue("deflect_tick", Integer.class));
+        player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
+        player.setWalkSpeed(0.2f);
+        player.getInventory().setHeldItemSlot(0);
+
+        DelayTask.execute((args) -> {
+            Player p = (Player) args[0];
+            PlayerDataBus.initPlayerItemDisplay(player);
+            
+            p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 3, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, 3, false, false));
+        }, 1, player);
+
+        replacePlayerInventoryAnySlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)), (src) -> {
+            if (src == null)
+                return false;
+
+            return Sword._instanceof(src);
+        });
     }
 }

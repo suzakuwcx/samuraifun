@@ -15,7 +15,6 @@ import Assert.Item.Sword;
 import ConfigBus.ConfigBus;
 import FunctionBus.PlayerBus;
 import Task.StateTask.BaseStateTask;
-import Task.StateTask.NormalStateTask;
 import Task.StateTask.PlayerPostureCrashTask;
 
 public class PlayerStateMachineSchedule implements Runnable {
@@ -25,18 +24,14 @@ public class PlayerStateMachineSchedule implements Runnable {
         player_state_map = new HashMap<>();
     }
 
-    public static void init(Player player) {
-        State state;
-        if (!player_state_map.containsKey(player.getUniqueId())) {
-            player_state_map.put(player.getUniqueId(), new State(player));
-        } else {
-            state = player_state_map.get(player.getUniqueId());
-            state.state = new NormalStateTask(player);
-        }
-    }
-
     public static State getPlayerState(Player player) {
-        return player_state_map.get(player.getUniqueId());
+        State state = player_state_map.get(player.getUniqueId());
+        if (state == null) {
+            state = new State(player);
+            player_state_map.put(player.getUniqueId(), state);
+        }
+
+        return state;
     }
 
     public static Role getPlayerRole(Player player) {
@@ -102,17 +97,17 @@ public class PlayerStateMachineSchedule implements Runnable {
     }
 
     public static void resetSwordCooldown(Player player) {
-        State state = player_state_map.get(player.getUniqueId());
+        State state = getPlayerState(player);
         state.sword_cooldown = ConfigBus.getValue("sword_cooldown", Integer.class);
     }
 
     public static void resetBowCooldown(Player player) {
-        State state = player_state_map.get(player.getUniqueId());
+        State state = getPlayerState(player);
         state.bow_cooldown = ConfigBus.getValue("skill_cooldown", Integer.class);
     }
 
     private static void updateCooldown(Player player) {
-        State state = player_state_map.get(player.getUniqueId());
+        State state = getPlayerState(player);
         state.dash_cooldown = noMinusDecrease(state.dash_cooldown, 1);
         state.sword_cooldown = noMinusDecrease(state.sword_cooldown, 1);
         state.skill_cooldown = noMinusDecrease(state.skill_cooldown, 1);
@@ -131,8 +126,8 @@ public class PlayerStateMachineSchedule implements Runnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player_state_map.get(player.getUniqueId()).state.run();
-            player_state_map.get(player.getUniqueId()).refresh();
+            getPlayerState(player).state.run();
+            getPlayerState(player).refresh();
             updateCooldown(player);
             updatePlayerEffect(player);
         }
