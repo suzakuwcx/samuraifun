@@ -2,6 +2,7 @@ package FunctionBus;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -137,6 +138,19 @@ public class PlayerBus {
         Inventory inventory = player.getInventory();
         for (int i : slots)
             inventory.setItem(i, item);
+    }
+
+    public static void replacePlayerInventoryAnySlot(Player player, ItemStack dst, Function<ItemStack, Boolean> function) {
+        Inventory inventory = player.getInventory();
+        ItemStack[] items = inventory.getContents();
+        ItemStack item;
+        for (int i = 0; i < items.length; ++i) {
+            item = items[i];
+            if (function.apply(item))
+                items[i] = dst; 
+        }
+
+        inventory.setContents(items);
     }
 
     public static void disableShield(Player player, int tick) {
