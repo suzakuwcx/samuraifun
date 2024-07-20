@@ -15,7 +15,7 @@ import Schedule.PlayerUISchedule;
 public class PlayerJoinEventBus {
     public static void onBusTrigger(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerDataBus.addPlayerItemDisplay(player);
+        PlayerDataBus.initPlayerItemDisplay(player);
         PlayerStateMachineSchedule.init(event.getPlayer());
         PlayerUISchedule.init(player);
 

@@ -1,6 +1,8 @@
 package DataBus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,59 +22,98 @@ public class PlayerDataBus {
     private static Map<Player, Integer> player_drop_item_semaphore = new HashMap<>();
     private static Map<UUID, Player> player_dead_by_plugin_mapper = new HashMap<>();
 
-    public static void addPlayerItemDisplay(Player player) {
-        SpawnEntity<TextDisplay> display = new RingEntity(player.getLocation());
-        SpawnEntity<TextDisplay> blood = new HealthRingEntity(player.getLocation(), 0);
-        SpawnEntity<TextDisplay> posture = new PostureRingEntity(player.getLocation(), 0);
-        display.spwan();
-        blood.spwan();
-        posture.spwan();
 
-        item_display_mapper.put(player, Arrays.asList(display.getEntity(), blood.getEntity(), posture.getEntity()));
-
-        player.addPassenger(display.getEntity());
-        player.addPassenger(blood.getEntity());
-        player.addPassenger(posture.getEntity());
+    public static void initPlayerItemDisplay(Player player) {
+        addDisplay(player, new RingEntity(player.getLocation()), 0);
+        addDisplay(player, new HealthRingEntity(player.getLocation(), 0), 1);
+        addDisplay(player, new PostureRingEntity(player.getLocation(), 0), 2);
     }
+
 
     public static List<TextDisplay> getPlayerItemDisplay(Player player) {
-        return item_display_mapper.get(player);
+        List<TextDisplay> displays = item_display_mapper.get(player);
+        if (displays == null) {
+            displays = Arrays.asList(null, null, null);
+            item_display_mapper.put(player, displays);
+        }
+
+        return displays;
     }
+
+
+    private static TextDisplay addDisplay(Player player, SpawnEntity<TextDisplay> display, int index) {
+        List<TextDisplay> displays = getPlayerItemDisplay(player);
+
+        removeDisplay(player, index);
+
+        display.spwan();
+        player.addPassenger(display.getEntity());
+        displays.set(index, display.getEntity());
+        return display.getEntity();
+    }
+
+    private static void removeDisplay(Player player, int index) {
+        List<TextDisplay> displays = getPlayerItemDisplay(player);
+        TextDisplay display = displays.get(index);
+
+        if (display == null)
+            return;
+            
+        player.removePassenger(display);
+        display.remove();
+        displays.set(index, null);
+    }
+
+
+    private static TextDisplay getDisplay(Player player, int index) {
+        List<TextDisplay> displays = getPlayerItemDisplay(player);
+        TextDisplay display = displays.get(index);
+
+        if (display != null && !display.isValid()) {
+            removeDisplay(player, index);
+            return null;
+        }
+
+        return display;
+    }
+
 
     public static TextDisplay getPlayerRingDisplay(Player player) {
-        List<TextDisplay> display = getPlayerItemDisplay(player);
+        TextDisplay display = getDisplay(player, 0);
+
         if (display == null)
-            return null;
-        else
-            return display.get(0);
+            display = addDisplay(player, new RingEntity(player.getLocation()), 0);
+        
+        return display;
     }
+
 
     public static TextDisplay getPlayerHealthDisplay(Player player) {
-        List<TextDisplay> display = getPlayerItemDisplay(player);
+        TextDisplay display = getDisplay(player, 1);
+
         if (display == null)
-            return null;
-        else
-            return display.get(1);
+            display = addDisplay(player, new HealthRingEntity(player.getLocation(), 0), 1);
+        
+        return display;
     }
+
 
     public static TextDisplay getPlayerPostureDisplay(Player player) {
-        List<TextDisplay> display = getPlayerItemDisplay(player);
+        TextDisplay display = getDisplay(player, 1);
+
         if (display == null)
-            return null;
-        else
-            return display.get(2);
+            display = addDisplay(player, new PostureRingEntity(player.getLocation(), 0), 2);
+        
+        return display;
     }
+
 
     public static void removePlayerItemDisplay(Player player) {
-        List<TextDisplay> displays = getPlayerItemDisplay(player);
-        if (displays == null)
-            return;
-
-        for (TextDisplay display: displays) {
-            player.removePassenger(display);
-            display.remove();
-        }
+        removeDisplay(player, 0);
+        removeDisplay(player, 1);
+        removeDisplay(player, 2);
     }
+
 
     public static void downPlayerSlash(Player player) {
         int sem = player_slash_semaphore.getOrDefault(player, 0);

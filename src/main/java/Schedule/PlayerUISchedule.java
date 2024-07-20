@@ -121,6 +121,10 @@ public class PlayerUISchedule implements Runnable {
     private void updateRing(Player player, State state) {
         TextDisplay display;
 
+        /* Dead player should not update ring, else a new ring will appear in the air */
+        if (!player.isValid())
+            return;
+
         display = PlayerDataBus.getPlayerHealthDisplay(player);
         if (display != null)
             display.text(Component.text(FontDatabase.getRingFont(FontDatabase.HEALTH_RING_BASE, state.health)));
