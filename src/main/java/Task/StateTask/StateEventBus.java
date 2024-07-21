@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import Assert.Config.State;
@@ -192,7 +193,16 @@ public class StateEventBus {
 
     public static void onPlayerDefense(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
+        StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)));
         PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new DefenseStateTask(event.getPlayer()));
+    }
+
+    public static void replacePlayerSwordSlot(Player player, ItemStack item) {
+        PlayerBus.replacePlayerInventoryAnySlot(player, item, (src) -> {
+            if (src == null)
+                return false;
+
+            return Sword._instanceof(src);
+        });
     }
 }

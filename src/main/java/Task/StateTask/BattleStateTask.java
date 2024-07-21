@@ -84,12 +84,12 @@ public class BattleStateTask extends BaseStateTask {
         
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
-            PlayerBus.setPlayerInventoryList(p, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(2)), 0, 3, 6);
+            StateEventBus.replacePlayerSwordSlot(p, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(2)));
         }, 2, event.getPlayer());
 
         DelayTask.execute((args) -> {
             Player p = (Player) args[0];
-            PlayerBus.setPlayerInventoryList(p, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)), 0, 3, 6);
+            StateEventBus.replacePlayerSwordSlot(p, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(1)));
         }, 4, event.getPlayer());
         PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new NormalStateTask(event.getPlayer()));
     }

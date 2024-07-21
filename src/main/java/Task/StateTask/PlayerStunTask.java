@@ -35,7 +35,7 @@ public class PlayerStunTask extends BaseStateTask {
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
         if (StateEventBus.isPlayerDash(event)) {
             StateEventBus.onPlayerDash(event);
-            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
+            StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)));
             PlayerStateMachineSchedule.player_state_map.get(player.getUniqueId()).state = new BattleStateTask(player);
         }
     }
@@ -48,7 +48,7 @@ public class PlayerStunTask extends BaseStateTask {
             PlayerBus.banPlayerJump(player, 2);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3, 3, false, false));
         } else {
-            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
+            StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)));
             PlayerStateMachineSchedule.player_state_map.get(player.getUniqueId()).state = new BattleStateTask(player);
         }
     }

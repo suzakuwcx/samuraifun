@@ -45,7 +45,7 @@ public class PlayerPostureCrashTask extends BaseStateTask {
     @Override
     public void run() {
         if (tick == 30) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
+            StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)));
             PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
             PlayerStateMachineSchedule.getPlayerState(player).posture = ConfigBus.getValue("max_posture", Integer.class);
         }

@@ -45,9 +45,9 @@ public class ThrushAttackStateTask extends BaseStateTask {
             playDashSound();
             player.setVelocity(direction.clone().multiply(new Vector(ServerBus.getDistanceVelocity(2), 0, ServerBus.getDistanceVelocity(2))));
         } else if (tick == 9) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(25)), 0, 3, 6);
+            StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(25)));
         } else if (tick == 10) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
+            StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)));
             PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
         }
     }
@@ -90,15 +90,15 @@ public class ThrushAttackStateTask extends BaseStateTask {
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1f, 0.8f);
                 ServerBus.playServerSound(p2.getLocation(), Sound.ITEM_SHIELD_BREAK, 1f, 0.5f);
                 
-                PlayerBus.setPlayerInventoryList(t2, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(23)), 0, 3, 6);
+                StateEventBus.replacePlayerSwordSlot(t2, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(23)));
                 PlayerStateMachineSchedule.setStateTask(t2, new PlayerStunTask(t2));
 
-                PlayerBus.setPlayerInventoryList(p2, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
+                StateEventBus.replacePlayerSwordSlot(p2, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)));
                 PlayerStateMachineSchedule.setStateTask(p2, new BattleStateTask(p2));
             }, player, target)
             .setTimeoutFunction((args) -> {
                 Player p3 = (Player) args[0];
-                PlayerBus.setPlayerInventoryList(p3, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)), 0, 3, 6);
+                StateEventBus.replacePlayerSwordSlot(p3, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)));
                 PlayerStateMachineSchedule.setStateTask(p3, new BattleStateTask(p3));
 
                 State state = PlayerStateMachineSchedule.getPlayerState(p3);
@@ -111,7 +111,7 @@ public class ThrushAttackStateTask extends BaseStateTask {
     @Override
     public void run() {
         if (tick == 0) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(24)), 0, 3, 6);
+            StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(24)));
             direction = player.getEyeLocation().getDirection().setY(0).normalize();
             RayTraceResult result = ServerBus.rayTraceEntities(player.getEyeLocation(), player.getEyeLocation().getDirection(), 6, 0.6, EntityType.PLAYER, player.getUniqueId());
             if (result != null)

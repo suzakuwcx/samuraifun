@@ -16,6 +16,7 @@ import ConfigBus.ConfigBus;
 import FunctionBus.PlayerBus;
 import Task.StateTask.BaseStateTask;
 import Task.StateTask.PlayerPostureCrashTask;
+import Task.StateTask.StateEventBus;
 
 public class PlayerStateMachineSchedule implements Runnable {
     public static Map<UUID, State> player_state_map = new HashMap<>();
@@ -68,7 +69,7 @@ public class PlayerStateMachineSchedule implements Runnable {
         State state = getPlayerState(player);
         state.posture = noMinusDecrease(state.posture, damage);
         if (is_crash && state.posture == 0) {
-            PlayerBus.setPlayerInventoryList(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(23)), 0, 3, 6);
+            StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(23)));
             state.state = new PlayerPostureCrashTask(player);
         }
     }
