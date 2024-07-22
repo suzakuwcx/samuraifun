@@ -100,7 +100,7 @@ public class PlayerDataBus {
 
 
     public static TextDisplay getPlayerPostureDisplay(Player player) {
-        TextDisplay display = getDisplay(player, 1);
+        TextDisplay display = getDisplay(player, 2);
 
         if (display == null)
             display = addDisplay(player, new PostureRingEntity(player.getLocation(), 0), 2);
