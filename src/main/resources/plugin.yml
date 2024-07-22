@@ -16,3 +16,8 @@ commands:
     description: Your description
     usage: /cu <subcommand>
     permission: csol.cu
+
+  ca:
+    description: Your description
+    usage: /ca <subcommand>
+    permission: csol.ca

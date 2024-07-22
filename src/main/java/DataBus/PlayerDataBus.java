@@ -1,11 +1,11 @@
 package DataBus;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
@@ -21,6 +21,7 @@ public class PlayerDataBus {
     private static Map<UUID, Integer> player_slash_semaphore = new HashMap<>();
     private static Map<UUID, Integer> player_drop_item_semaphore = new HashMap<>();
     private static Map<UUID, Player> player_dead_by_plugin_mapper = new HashMap<>();
+    private static Set<UUID> monitored_player_set = new HashSet<>();
 
 
     public static void initPlayerItemDisplay(Player player) {
@@ -157,5 +158,17 @@ public class PlayerDataBus {
 
     public static Player upPlayerDeadByPlugin(Player player) {
         return player_dead_by_plugin_mapper.remove(player.getUniqueId());
+    }
+
+    public static boolean addMonitorPlayer(Player player) {
+        return monitored_player_set.add(player.getUniqueId());
+    }
+
+    public static boolean hasMonitorPlayer(Player player) {
+        return monitored_player_set.contains(player.getUniqueId());
+    }
+
+    public static boolean removeMonitorPlayer(Player player) {
+        return monitored_player_set.remove(player.getUniqueId());
     }
 }

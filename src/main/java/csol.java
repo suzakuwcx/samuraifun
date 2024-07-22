@@ -2,6 +2,7 @@ import java.util.Objects;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import Assert.Command.CaCommand;
 import Assert.Command.CsolCommand;
 import Assert.Command.CuCommand;
 import ConfigBus.ConfigBus;
@@ -19,7 +20,7 @@ public class csol extends JavaPlugin {
         ConfigBus.onEnable(this);
         Objects.requireNonNull(getCommand("csol")).setExecutor(new CsolCommand());
         Objects.requireNonNull(getCommand("cu")).setExecutor(new CuCommand());
-
+        Objects.requireNonNull(getCommand("ca")).setExecutor(new CaCommand());
         SchedulerBus.run();
     }
 

@@ -20,6 +20,10 @@ public class PlayerMessageLogHandler extends Handler{
         return map.containsKey(player.getUniqueId());
     }
 
+    public static void removePlayer(Player player) {
+        map.remove(player.getUniqueId());
+    }
+
     public static PlayerMessageLogHandler getHandler(Player player) {
         PlayerMessageLogHandler handler = map.get(player.getUniqueId());
         if (handler == null) {

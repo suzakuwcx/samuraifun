@@ -126,8 +126,24 @@ public class ServerBus {
     }
     
     @SuppressWarnings({"unchecked"})
-    public static <T> Collection<T> getNearbyEntities(Location location, double x, double y, double z, EntityType type, Class<T> clazz) {
+    public static <T extends Entity> Collection<T> getNearbyEntities(Location location, double x, double y, double z, EntityType type, Class<T> clazz) {
         return (Collection<T>) getNearbyEntities(location, x, y, z, type);
+    }
+
+    public static <T extends Entity> T getNearestEntity(Location location, double x, double y, double z, EntityType type, Class<T> clazz) {
+        T target = null;
+        double distance;
+        double min = x * x + y * y + z * z;
+
+        for (T entity : getNearbyEntities(location, x, y, z, type, clazz)) {
+            distance = entity.getLocation().distance(location);
+            if (distance < min) {
+                target = entity;
+                min = distance;
+            }
+        }
+
+        return target;
     }
 
     public static void dropItemStatic(Location location, ItemStack item) {

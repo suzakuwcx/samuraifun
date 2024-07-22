@@ -3,6 +3,7 @@ package Schedule;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,13 +14,15 @@ import Assert.Config.Role;
 import Assert.Config.State;
 import Assert.Item.Sword;
 import ConfigBus.ConfigBus;
+import DataBus.PlayerDataBus;
 import FunctionBus.PlayerBus;
+import FunctionBus.ServerBus;
 import Task.StateTask.BaseStateTask;
 import Task.StateTask.PlayerPostureCrashTask;
 import Task.StateTask.StateEventBus;
 
 public class PlayerStateMachineSchedule implements Runnable {
-    public static Map<UUID, State> player_state_map = new HashMap<>();
+    private static Map<UUID, State> player_state_map = new HashMap<>();
 
     static {
         player_state_map = new HashMap<>();
@@ -44,7 +47,17 @@ public class PlayerStateMachineSchedule implements Runnable {
     }
 
     public static void setStateTask(Player player, BaseStateTask task) {
-        getPlayerState(player).state = task;
+        State state = getPlayerState(player);
+
+        if (PlayerDataBus.hasMonitorPlayer(player))
+            ServerBus.getPlugin().getLogger().log(Level.WARNING, 
+                String.format("%s: %s --> %s",
+                player.getName(),
+                state.state.getClass().getSimpleName(),
+                task.getClass().getSimpleName())
+            );
+
+        state.state = task;
     }
 
     private static int noMinusDecrease(int arg, int value) {
@@ -70,7 +83,7 @@ public class PlayerStateMachineSchedule implements Runnable {
         state.posture = noMinusDecrease(state.posture, damage);
         if (is_crash && state.posture == 0) {
             StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(23)));
-            state.state = new PlayerPostureCrashTask(player);
+            PlayerStateMachineSchedule.setStateTask(player, new PlayerPostureCrashTask(player));
         }
     }
 

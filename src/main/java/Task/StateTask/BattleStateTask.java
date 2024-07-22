@@ -6,13 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.potion.PotionEffectType;
 
 import Assert.Config.State;
 import Assert.Item.Sword;
-import FunctionBus.PlayerBus;
 import FunctionBus.ServerBus;
 import Schedule.PlayerStateMachineSchedule;
 import Schedule.PlayerUISchedule;
@@ -34,8 +32,7 @@ public class BattleStateTask extends BaseStateTask {
     }
 
     public static void onPlayerAttack(PlayerInteractEvent event) {
-        State state = PlayerStateMachineSchedule.player_state_map.get(event.getPlayer().getUniqueId());
-        state.state = new NormalAttackStateTask(event.getPlayer());
+        PlayerStateMachineSchedule.setStateTask(event.getPlayer(), new NormalAttackStateTask(event.getPlayer()));
     }
 
     public static void onPlayerAttack(EntityDamageByEntityEvent event) {

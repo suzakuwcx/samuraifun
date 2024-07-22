@@ -157,6 +157,7 @@ public class CsolCommand implements CommandExecutor, TabCompleter {
         else {
             player.sendMessage("Log Disable");
             logger.removeHandler(PlayerMessageLogHandler.getHandler(player));
+            PlayerMessageLogHandler.removePlayer(player);
         }
             
         return true;

@@ -172,7 +172,8 @@ public class PlayerBus {
         State state = PlayerStateMachineSchedule.getPlayerState(player);
         state.posture = ConfigBus.getValue("max_posture", Integer.class);
         state.health = ConfigBus.getValue("max_health", Integer.class);
-        state.state = new NormalStateTask(player);
+        
+        PlayerStateMachineSchedule.setStateTask(player, new NormalStateTask(player));
 
         player.setShieldBlockingDelay(ConfigBus.getValue("deflect_tick", Integer.class));
         player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1);
