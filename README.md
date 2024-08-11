@@ -7,6 +7,8 @@
 
 A plugin to add sword swing, defense and deflect mechanism in minecraft paper server, no local mod requirement.
 
+For more detail, see **[https://community.craft.moe/d/5100](https://community.craft.moe/d/5100)**
+
 ## Install
 
 **Skip**, This project does not fully meet our final requirements, and we will complete the installation tutorial in the next update.
