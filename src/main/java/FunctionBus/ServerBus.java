@@ -70,7 +70,7 @@ public class ServerBus {
     }
 
     public static void spawnServerDustParticle(Location location, int count, double offsetX, double offsetY, double offsetZ, Particle.DustOptions options) {
-        location.getWorld().spawnParticle(Particle.REDSTONE, location, count, offsetX, offsetY, offsetZ, options);
+        location.getWorld().spawnParticle(Particle.DUST, location, count, offsetX, offsetY, offsetZ, options);
     }
 
     public static void spawnServerParticle(Particle particle, Location location, int count, double offsetX, double offsetY, double offsetZ) {

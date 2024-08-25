@@ -41,7 +41,7 @@ public class BattleFlagTask implements Runnable {
 
         for (int i = 0; i < 2; i++) {
             vec.rotateAroundY(Math.PI / 36);
-            ServerBus.spawnServerParticle(Particle.FIREWORKS_SPARK, ServerBus.toLocalCoordinates(location, vec), 1, 0, 0, 0, 0);
+            ServerBus.spawnServerParticle(Particle.FIREWORK, ServerBus.toLocalCoordinates(location, vec), 1, 0, 0, 0, 0);
         }
 
         if (tick % 80 == 0) {

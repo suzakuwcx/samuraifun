@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'io.papermc.paperweight.userdev' version "1.5.5"
+    id 'io.papermc.paperweight.userdev' version "1.7.2"
 }
 
 group = 'com.suzakuwcx'
@@ -27,12 +27,12 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
-    compileOnly("com.comphenix.protocol:ProtocolLib:5.2.0-SNAPSHOT")
-    runtimeOnly ':paper-1.20.4-485'
+    paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0-SNAPSHOT")
+    runtimeOnly ':paper-1.21.1-41'
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

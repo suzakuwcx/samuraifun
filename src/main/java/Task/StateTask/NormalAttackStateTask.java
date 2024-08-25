@@ -301,7 +301,7 @@ public class NormalAttackStateTask extends BaseStateTask {
 
     @Override
     public void run() {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 4, 4));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 4, 4));
 
         ++tick;
 

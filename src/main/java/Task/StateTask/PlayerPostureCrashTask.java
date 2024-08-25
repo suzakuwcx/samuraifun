@@ -52,7 +52,7 @@ public class PlayerPostureCrashTask extends BaseStateTask {
         
         PlayerBus.banPlayerJump(player, 3);
         player.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 3, 1, false, false));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3, 5, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 3, 5, false, false));
         ServerBus.spawnServerDustParticle(player.getLocation(), 3, 1, 1, 1, new DustOptions(Color.YELLOW, 3));
         ++tick;
     }

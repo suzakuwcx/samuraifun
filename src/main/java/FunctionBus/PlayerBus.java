@@ -136,11 +136,11 @@ public class PlayerBus {
     }
 
     public static void banPlayerLeftClickAnimation(Player player, int duration) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, duration, 39, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, duration, 39, false, false));
     }
 
     public static void banPlayerJump(Player player, int duration) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, duration, 128, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, duration, 128, false, false));
     }
 
     public static void setPlayerInventoryList(Player player, ItemStack item, int... slots) {
@@ -184,9 +184,9 @@ public class PlayerBus {
             Player p = (Player) args[0];
             PlayerDataBus.initPlayerItemDisplay(player);
             
-            p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, PotionEffect.INFINITE_DURATION, 40, false, false));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 3, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, PotionEffect.INFINITE_DURATION, 40, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE, PotionEffect.INFINITE_DURATION, 40, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 3, false, false));
             p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, 3, false, false));
         }, 1, player);
 

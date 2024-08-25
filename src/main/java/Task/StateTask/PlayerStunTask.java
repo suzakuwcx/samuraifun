@@ -46,7 +46,7 @@ public class PlayerStunTask extends BaseStateTask {
 
         if (tick <= 20) {
             PlayerBus.banPlayerJump(player, 2);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3, 3, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 3, 3, false, false));
         } else {
             StateEventBus.replacePlayerSwordSlot(player, new Sword(PlayerStateMachineSchedule.getPlayerRole(player).getSwordModelData(3)));
             PlayerStateMachineSchedule.setStateTask(player, new BattleStateTask(player));
